@@ -7,6 +7,7 @@ import {
   StatNumber,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useGetVersionQuery } from "./features/infrastructure/version";
 
 interface StatsCardProps {
   title: string;
@@ -34,6 +35,7 @@ function StatsCard(props: StatsCardProps) {
 }
 
 function Landing() {
+  const { data } = useGetVersionQuery();
   return (
     <Box maxW="7xl" mx={"auto"} pt={5} px={{ base: 2, sm: 12, md: 17 }}>
       <chakra.h1
@@ -45,7 +47,7 @@ function Landing() {
         What is this all about?
       </chakra.h1>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
-        <StatsCard title={"We serve"} stat={"50,000 placeholders"} />
+        {data && <StatsCard title={"We run on version"} stat={data.data} />}
         <StatsCard title={"In"} stat={"1 singular country"} />
         <StatsCard title={"Who speak"} stat={"just 1 language"} />
       </SimpleGrid>

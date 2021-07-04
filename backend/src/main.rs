@@ -1,19 +1,33 @@
 #[macro_use]
 extern crate rocket;
 
-use rocket::{Build, Rocket, serde::json::{Value, json}};
+mod infrastructure;
 
-#[get("/")]
-fn index() -> &'static str {
-    "Hello, world!"
-}
+use rocket::http::Method;
+use rocket_cors::{AllowedOrigins, CorsOptions, AllowedHeaders};
 
-#[get("/_ping")]
-fn ping() -> Value {
-    json!({"data": "pong"})
-}
+use rocket::{Build, Rocket};
+
+
+
 //noinspection RsMainFunctionNotFound
 #[launch]
 fn rocket() -> Rocket<Build> {
-    rocket::build().mount("/", routes![index, ping])
+    // This needs to change to be environment specific
+    let allowed_origins = AllowedOrigins::All;
+
+    // You can also deserialize this
+    let cors = CorsOptions {
+        allowed_origins,
+        allowed_methods: vec![Method::Get].into_iter().map(From::from).collect(),
+        allowed_headers: AllowedHeaders::some(&["Authorization", "Accept"]),
+        allow_credentials: true,
+        ..Default::default()
+    }
+        .to_cors()
+        .expect("error creating CORS fairing");
+
+    rocket::build()
+        .mount("/", routes![infrastructure::ping_handler, infrastructure::version_handler])
+        .attach(cors)
 }
