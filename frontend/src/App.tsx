@@ -1,27 +1,21 @@
 import { ChakraProvider, theme } from "@chakra-ui/react";
-import React, { PropsWithChildren } from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter } from "react-router-dom";
-import { AuthenticatedNavbar } from "./Authenticated/AuthenticatedNavbar";
-import { AuthProvider } from "./Contexts/authContext";
+import { PropsWithChildren } from "react";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Landing } from "./landing";
 
 const AppProviders = ({ children }: PropsWithChildren<{}>) => {
-  const queryClient = new QueryClient();
-
   return (
     <ChakraProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AuthProvider>{children}</AuthProvider>
-        </BrowserRouter>
-      </QueryClientProvider>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/">
+            <Landing />
+          </Route>
+        </Switch>
+      </BrowserRouter>
     </ChakraProvider>
   );
 };
 export const App = () => {
-  return (
-    <AppProviders>
-      <AuthenticatedNavbar />
-    </AppProviders>
-  );
+  return <AppProviders></AppProviders>;
 };
