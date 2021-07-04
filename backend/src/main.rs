@@ -8,7 +8,10 @@ use rocket_cors::{AllowedOrigins, CorsOptions, AllowedHeaders};
 
 use rocket::{Build, Rocket};
 
-
+#[get("/")]
+fn index() -> &'static str {
+    "Hello, world!"
+}
 
 //noinspection RsMainFunctionNotFound
 #[launch]
@@ -28,6 +31,6 @@ fn rocket() -> Rocket<Build> {
         .expect("error creating CORS fairing");
 
     rocket::build()
-        .mount("/", routes![infrastructure::ping_handler, infrastructure::version_handler])
+        .mount("/", routes![index, infrastructure::ping_handler, infrastructure::version_handler])
         .attach(cors)
 }
