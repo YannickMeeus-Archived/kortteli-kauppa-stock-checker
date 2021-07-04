@@ -1,36 +1,33 @@
-# Build/Packaging
-frontend/node_modules: frontend/package.json
-	@yarn --cwd frontend install
-
-backend/target: backend/Cargo.toml
-	@cargo build --manifest-path ./backend/Cargo.toml
-
-.PHONY: init
-init: frontend/node_modules backend/target
-
-.PHONY: clean
 clean:
-	@rm -rf ./frontend/build ./frontend/node_modules
-	@rm -rf ./backend/target
+	@cd ./frontend && yarn clean
+	@cd ./backend && cargo clean
 
-# Operational Commands
 up:
 	@docker compose up -d
 
 down:
 	@docker compose down -v
 
+init:
+	@cd ./frontend && yarn install
+	@cd ./backend && cargo update
+
 dev: init up
-	yarn stmux -M [ "yarn --cwd frontend start" .. "cargo run ----manifest-path ./backend/Cargo.toml" ]
+	npx stmux -M [ "yarn --cwd frontend start" .. "cargo watch -x run --workdir ./backend/" ]
 
-start: up
-	@yarn start
+deploy-frontend:
+	@cd ./frontend && yarn deploy
 
-deploy:
-	@flyctl deploy
+build-backend:
+	@cd ./backend && cargo build --manifest-path ./backend/Cargo.toml
+	
+build-backend-docker:
+	@cd ./backend && docker build .
+
+deploy: deploy-frontend deploy-backend
 
 browse:
-	@open https://kk-stock.sillygoose.io
+	@open https://korttelikauppastockchecker.sillygoose.io/
 
 portal:
 	@flyctl dashboard
