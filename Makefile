@@ -18,6 +18,9 @@ dev: init up
 deploy-frontend:
 	@cd ./frontend && yarn deploy
 
+deploy-backend:
+	@cd ./backend && flyctl deploy
+
 build-backend:
 	@cd ./backend && cargo build --manifest-path ./backend/Cargo.toml
 	

@@ -17,7 +17,8 @@ fn index() -> &'static str {
 #[launch]
 fn rocket() -> Rocket<Build> {
     // This needs to change to be environment specific
-    let allowed_origins = AllowedOrigins::All;
+    let match_against = ["^https://(.+).sillygoose.io$"];
+    let allowed_origins = AllowedOrigins::some_regex(&match_against);
 
     // You can also deserialize this
     let cors = CorsOptions {

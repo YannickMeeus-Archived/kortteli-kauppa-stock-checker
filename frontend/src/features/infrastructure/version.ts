@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { apiBaseUrl } from "../../configuration";
 
 interface VersionResponse {
   data: string;
@@ -7,7 +8,7 @@ interface VersionResponse {
 export const versionApi = createApi({
   reducerPath: "versionApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/",
+    baseUrl: apiBaseUrl,
   }),
   endpoints: (builder) => ({
     getVersion: builder.query<VersionResponse, void>({
