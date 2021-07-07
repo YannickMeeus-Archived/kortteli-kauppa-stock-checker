@@ -11,6 +11,7 @@ serde_derive = "1.0.126"
 serde_json = "1.0.64"
 rocket_cors = { git = "https://github.com/lawliet89/rocket_cors", branch = "master" }
 dotenv = "0.15.0"
+dotenv_codegen = "0.15.0"
 
 [dependencies.rocket]
 version = "0.5.0-rc.1"

@@ -1,5 +1,7 @@
 #[macro_use]
 extern crate rocket;
+#[macro_use]
+extern crate dotenv_codegen;
 extern crate dotenv;
 
 mod infrastructure;
@@ -21,10 +23,13 @@ fn rocket() -> Rocket<Build> {
 
     dotenv().ok();
 
-    use std::env;
-    // This needs to change to be environment specific
-    let match_against = ["^https://(.+).sillygoose.io$"];
-    let allowed_origins = AllowedOrigins::some_regex(&match_against);
+    let environment = dotenv!("ENVIRONMENT");
+
+    let allowed_origins = match environment {
+        "development" => AllowedOrigins::some_exact(&["http://localhost:3000"]),
+        "production" => AllowedOrigins::some_regex(&["^https://(.+).sillygoose.io$"]),
+        _ => panic!("ENVIRONMENT NEEDS TO BE SET")
+    };
 
     // You can also deserialize this
     let cors = CorsOptions {
