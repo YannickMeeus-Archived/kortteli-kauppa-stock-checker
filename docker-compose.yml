@@ -1,14 +1,10 @@
-version: "3.7"
 services:
-  mongodb_container:
-    image: mongo:latest
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    ports:
-      - 27017:27017
-    volumes:
-      - mongodb_data_container:/data/db
-
-volumes:
-  mongodb_data_container:
+  postgres:
+      container_name: pg_local
+      hostname: postgres
+      image: postgres:13.3-alpine
+      ports:
+      - "5432:5432"
+      environment:
+        POSTGRES_USER: db_user
+        POSTGRES_PASSWORD: d9383e87-c02f-4032-8b18-7515cbbe0b8f

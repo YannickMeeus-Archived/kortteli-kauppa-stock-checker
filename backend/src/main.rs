@@ -21,6 +21,7 @@ fn rocket() -> Rocket<Build> {
 
     dotenv().ok();
 
+    use std::env;
     // This needs to change to be environment specific
     let match_against = ["^https://(.+).sillygoose.io$"];
     let allowed_origins = AllowedOrigins::some_regex(&match_against);
