@@ -1,12 +1,14 @@
 #[macro_use]
 extern crate rocket;
+extern crate dotenv;
 
 mod infrastructure;
 
 use rocket::http::Method;
 use rocket_cors::{AllowedOrigins, CorsOptions, AllowedHeaders};
-
 use rocket::{Build, Rocket};
+
+use dotenv::dotenv;
 
 #[get("/")]
 fn index() -> &'static str {
@@ -16,6 +18,9 @@ fn index() -> &'static str {
 //noinspection RsMainFunctionNotFound
 #[launch]
 fn rocket() -> Rocket<Build> {
+
+    dotenv().ok();
+
     // This needs to change to be environment specific
     let match_against = ["^https://(.+).sillygoose.io$"];
     let allowed_origins = AllowedOrigins::some_regex(&match_against);
