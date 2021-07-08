@@ -6,7 +6,7 @@ up:
 	@docker compose up -d
 
 down:
-	@docker compose down -v
+	@docker compose down
 
 init:
 	@cd ./frontend && yarn install
