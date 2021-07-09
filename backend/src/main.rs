@@ -1,24 +1,45 @@
 #[macro_use]
 extern crate rocket;
+extern crate diesel;
+#[macro_use]
+extern crate diesel_migrations;
+#[macro_use]
+extern crate dotenv_codegen;
+extern crate dotenv;
 
 mod infrastructure;
+mod database;
 
 use rocket::http::Method;
 use rocket_cors::{AllowedOrigins, CorsOptions, AllowedHeaders};
-
 use rocket::{Build, Rocket};
+
+use dotenv::dotenv;
+use crate::database::establish_connection;
 
 #[get("/")]
 fn index() -> &'static str {
     "Hello, world!"
 }
 
-//noinspection RsMainFunctionNotFound
+embed_migrations!();
+
 #[launch]
 fn rocket() -> Rocket<Build> {
-    // This needs to change to be environment specific
-    let match_against = ["^https://(.+).sillygoose.io$"];
-    let allowed_origins = AllowedOrigins::some_regex(&match_against);
+
+    dotenv().ok();
+
+    let environment = dotenv!("ENVIRONMENT");
+    let connection = establish_connection();
+    embedded_migrations
+        ::run_with_output(&connection, &mut std::io::stdout())
+        .expect("Migrations could not be run");
+
+    let allowed_origins = match environment {
+        "development" => AllowedOrigins::some_exact(&["http://localhost:3000"]),
+        "production" => AllowedOrigins::some_regex(&["^https://(.+).sillygoose.io$"]),
+        _ => panic!("ENVIRONMENT environment variable needs to be one of ['development', 'production'")
+    };
 
     // You can also deserialize this
     let cors = CorsOptions {
