@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate rocket;
+#[macro_use]
 extern crate diesel;
 #[macro_use]
 extern crate diesel_migrations;
@@ -9,13 +10,18 @@ extern crate dotenv;
 
 mod infrastructure;
 mod database;
+mod schema;
+mod shops;
 
 use rocket::http::Method;
 use rocket_cors::{AllowedOrigins, CorsOptions, AllowedHeaders};
 use rocket::{Build, Rocket};
+use std::sync::Arc;
 
 use dotenv::dotenv;
 use crate::database::establish_connection;
+use crate::shops::{GetAllShops, CreateNewShop};
+use crate::shops::{handle_get_all_shops, handle_create_new_shop};
 
 #[get("/")]
 fn index() -> &'static str {
@@ -30,9 +36,10 @@ fn rocket() -> Rocket<Build> {
     dotenv().ok();
 
     let environment = dotenv!("ENVIRONMENT");
-    let connection = establish_connection();
+    let connection_pool = establish_connection();
+
     embedded_migrations
-        ::run_with_output(&connection, &mut std::io::stdout())
+        ::run_with_output(&connection_pool.get().unwrap(), &mut std::io::stdout())
         .expect("Migrations could not be run");
 
     let allowed_origins = match environment {
@@ -52,7 +59,21 @@ fn rocket() -> Rocket<Build> {
         .to_cors()
         .expect("error creating CORS fairing");
 
+    let connection_pool_ref = Arc::new(connection_pool);
+    let get_all_shops = GetAllShops::new(connection_pool_ref.clone());
+    let create_new_shop = CreateNewShop::new(connection_pool_ref.clone());
     rocket::build()
-        .mount("/", routes![index, infrastructure::ping_handler, infrastructure::version_handler])
+        .manage(get_all_shops)
+        .manage(create_new_shop)
+        .mount(
+            "/",
+            routes![
+                index,
+                infrastructure::ping_handler,
+                infrastructure::version_handler,
+                handle_get_all_shops,
+                handle_create_new_shop,
+            ]
+        )
         .attach(cors)
 }
