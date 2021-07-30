@@ -1,14 +1,17 @@
 use uuid::Uuid;
 use std::sync::Arc;
-use crate::database::ConnectionPool;
-use rocket::State;
-use rocket::serde::json::{Value, Json};
-use rocket::serde::json::json;
-use rocket::serde::Serialize;
-use rocket::serde::Deserialize;
-use crate::diesel::RunQueryDsl;
+
+use rocket::{
+    serde::json::{Value, Json},
+    State,
+    serde::json::json,
+    serde::Serialize,
+    serde::Deserialize,
+    response::status::BadRequest
+};
 use crate::schema::shops;
-use rocket::response::status::BadRequest;
+use crate::database::ConnectionPool;
+use crate::diesel::prelude::*;
 // Model
 
 #[derive(Serialize, Deserialize, Debug, Queryable)]
@@ -20,21 +23,23 @@ pub struct Shop {
 
 //region GetAllShops
 pub struct GetAllShops{
-    _connection: Arc<ConnectionPool>
+    connection_pool: Arc<ConnectionPool>
 }
 
 impl GetAllShops {
-    pub fn new(connection: Arc<ConnectionPool>) -> GetAllShops {
-        GetAllShops { _connection: connection }
+    pub fn new(connection_pool: Arc<ConnectionPool>) -> GetAllShops {
+        GetAllShops { connection_pool }
     }
 
     pub fn get(&self) -> Vec<Shop> {
-        let mut shops_to_return = Vec::new();
-        shops_to_return.push (Shop {
-            key: Uuid::new_v4(),
-            name: "mock name".to_string()
-        });
-        shops_to_return
+        use crate::schema::shops::dsl::*;
+        let connection = self.connection_pool.get().expect("Connection to be acquired");
+        let shops_found = shops
+            .select((key, name))
+            .load::<Shop>(&connection)
+            .unwrap();
+
+        shops_found
     }
 }
 //endregion
@@ -55,23 +60,23 @@ pub struct NewShop<'a> {
 }
 
 pub struct CreateNewShop {
-    _connection:  Arc<ConnectionPool>
+    connection_pool:  Arc<ConnectionPool>
 }
 
 impl CreateNewShop {
 
-    pub fn new(connection: Arc<ConnectionPool>) -> CreateNewShop {
-        CreateNewShop { _connection: connection }
+    pub fn new(connection_pool: Arc<ConnectionPool>) -> CreateNewShop {
+        CreateNewShop { connection_pool }
     }
 
     pub fn execute(&self, to_create: CreateShopCommand) -> Result<Shop, String> {
-            use crate::schema::shops as schema;
-        let _connection = self._connection.get().expect("Connection to be acquired");
+        use crate::schema::shops::dsl::*;
+        let _connection = self.connection_pool.get().expect("Connection to be acquired");
         let new_shop = NewShop {name: to_create.name.as_str()};
 
-        let created  = diesel::insert_into(crate::schema::shops::table)
+        let created  =  diesel::insert_into(shops)
             .values(&new_shop)
-            .returning((schema::key, schema::name))
+            .returning((key, name))
             .get_result(&_connection);
 
         // TODO: Map this to a better error - use https://crates.io/crates/http-api-problem
@@ -108,3 +113,4 @@ pub fn handle_create_new_shop(shop: Json<CreateShopCommand>, c: &State<CreateNew
     };
     response
 }
+
