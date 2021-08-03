@@ -9,3 +9,5 @@
 # SUPER SECRETS
 .env
 .idea
+*.cert
+*.crt
