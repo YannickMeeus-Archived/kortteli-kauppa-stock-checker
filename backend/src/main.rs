@@ -12,6 +12,7 @@ mod infrastructure;
 mod database;
 mod schema;
 mod shops;
+mod cert_helper;
 
 use rocket::http::Method;
 use rocket_cors::{AllowedOrigins, CorsOptions, AllowedHeaders};
@@ -19,9 +20,11 @@ use rocket::{Build, Rocket};
 use std::sync::Arc;
 
 use dotenv::dotenv;
+use crate::cert_helper::*;
 use crate::database::establish_connection;
 use crate::shops::{GetAllShops, CreateNewShop};
-use crate::shops::{handle_get_all_shops, handle_create_new_shop};
+use crate::shops::*;
+
 
 #[get("/")]
 fn index() -> &'static str {
@@ -36,6 +39,12 @@ fn rocket() -> Rocket<Build> {
     dotenv().ok();
 
     let environment = dotenv!("ENVIRONMENT");
+    if environment == "production" {
+        let pg_client_certificate_multiline: &str = dotenv!("PG_CLIENT_CERTIFICATE");
+        let parsed = parse_certificate_environment_variable(pg_client_certificate_multiline);
+        write_certificate_file(parsed)
+    }
+
     let connection_pool = establish_connection();
 
     embedded_migrations
