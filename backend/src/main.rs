@@ -1,26 +1,19 @@
 #[macro_use]
 extern crate rocket;
 #[macro_use]
-extern crate diesel;
-#[macro_use]
-extern crate diesel_migrations;
-#[macro_use]
 extern crate dotenv_codegen;
 extern crate dotenv;
 
 mod infrastructure;
 mod database;
-mod schema;
 mod shops;
-mod cert_helper;
 
 use rocket::http::Method;
 use rocket_cors::{AllowedOrigins, CorsOptions, AllowedHeaders};
-use rocket::{Build, Rocket};
+
 use std::sync::Arc;
 
 use dotenv::dotenv;
-use crate::cert_helper::*;
 use crate::database::establish_connection;
 use crate::shops::{GetAllShops, CreateNewShop};
 use crate::shops::*;
@@ -31,25 +24,26 @@ fn index() -> &'static str {
     "Hello, world!"
 }
 
-embed_migrations!();
-
-#[launch]
-fn rocket() -> Rocket<Build> {
+#[rocket::main]
+async fn main() -> Result<(), String> {
 
     dotenv().ok();
 
     let environment = dotenv!("ENVIRONMENT");
-    if environment == "production" {
-        let pg_client_certificate_multiline: &str = dotenv!("PG_CLIENT_CERTIFICATE");
-        let parsed = parse_certificate_environment_variable(pg_client_certificate_multiline);
-        write_certificate_file(parsed)
-    }
+    // TODO: IS this still worth something?
+    // if environment == "production" {
+    //     let pg_client_certificate_multiline: &str = dotenv!("PG_CLIENT_CERTIFICATE");
+    //     let parsed = parse_certificate_environment_variable(pg_client_certificate_multiline);
+    //     write_certificate_file(parsed)
+    // }
 
-    let connection_pool = establish_connection();
+    let connection_pool = establish_connection()
+        .await
+        .expect("Failed to create connection pool");
 
-    embedded_migrations
-        ::run_with_output(&connection_pool.get().unwrap(), &mut std::io::stdout())
-        .expect("Migrations could not be run");
+    // embedded_migrations
+    //     ::run_with_output(&connection_pool.get().unwrap(), &mut std::io::stdout())
+    //     .expect("Migrations could not be run");
 
     let allowed_origins = match environment {
         "development" => AllowedOrigins::some_exact(&["http://localhost:3000"]),
@@ -68,10 +62,13 @@ fn rocket() -> Rocket<Build> {
         .to_cors()
         .expect("error creating CORS fairing");
 
+    sqlx::migrate!("./migrations").run(&connection_pool).await.expect("Migrations went... poorly");
+
     let connection_pool_ref = Arc::new(connection_pool);
     let get_all_shops = GetAllShops::new(connection_pool_ref.clone());
     let create_new_shop = CreateNewShop::new(connection_pool_ref.clone());
-    rocket::build()
+
+    let rocket = rocket::build()
         .manage(get_all_shops)
         .manage(create_new_shop)
         .mount(
@@ -84,5 +81,8 @@ fn rocket() -> Rocket<Build> {
                 handle_create_new_shop,
             ]
         )
-        .attach(cors)
+        .attach(cors);
+
+    rocket.launch().await.expect("What the hell, failed launch?");
+    Ok(())
 }
