@@ -1,20 +1,12 @@
 
-use diesel::{
-    r2d2::Pool,
-    pg::PgConnection,
-    r2d2::ConnectionManager,
-    r2d2::PoolError
-};
 use dotenv::dotenv;
 use std::env;
+use sqlx::postgres::PgPoolOptions;
+use sqlx::{Postgres, Pool};
 
-pub type ConnectionPool = Pool<ConnectionManager<PgConnection>>;
+pub type ConnectionPool = Pool<Postgres>;
 
-fn init_pool(database_url: &str) -> Result<ConnectionPool, PoolError> {
-    let manager = ConnectionManager::<PgConnection>::new(database_url);
-    Pool::builder().build(manager)
-}
-pub fn establish_connection() -> ConnectionPool {
+pub async fn establish_connection() -> Result<ConnectionPool, String> {
     dotenv().ok();
 
     let database_url =
@@ -22,8 +14,7 @@ pub fn establish_connection() -> ConnectionPool {
             ::var("DATABASE_URL")
             .expect("DATABASE_URL must be set");
 
-    init_pool(&database_url)
-        .unwrap_or_else(|_| {
-            panic!("Error creating pool against '{}'", database_url);
-        })
+    PgPoolOptions::new()
+        .max_connections(5)
+        .connect(database_url.as_str()).await.map_err(|e| e.to_string())
 }
