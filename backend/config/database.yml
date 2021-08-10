@@ -51,6 +51,7 @@ test:
 #
 production:
   <<: *default
-  database: backend_production
-  username: backend
+  database: postgres
+  username: postgres
+  host: db.howwwetlrbiwwdtxzgkx.supabase.co
   password: <%= ENV['BACKEND_DATABASE_PASSWORD'] %>
