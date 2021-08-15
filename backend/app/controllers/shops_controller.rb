@@ -5,7 +5,7 @@ class ShopsController < ApplicationController
   def index
     @shops = Shop.all
 
-    render json: @shops
+    render json: enveloped(@shops)
   end
 
   # GET /shops/1
@@ -42,6 +42,10 @@ class ShopsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_shop
       @shop = Shop.find(params[:id])
+    end
+
+    def enveloped(to_wrap)
+      {data: to_wrap}
     end
 
     def require_api_key
