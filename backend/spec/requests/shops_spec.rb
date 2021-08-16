@@ -23,7 +23,6 @@ RSpec.describe "Shops", type: :request do
       expect(json_response['data']).to include(second_shop.as_json)
     end
   end
-
   describe "POST /shops" do
     describe "When no API key is provided" do
       it 'should reject calls' do
@@ -32,15 +31,37 @@ RSpec.describe "Shops", type: :request do
         expect(response).to have_http_status 403
       end
     end
-  end
-  describe "DELETE /shops" do
-    describe "When no API key is provided" do
-      let(:existing_shop) {create :shop}
-      it 'should reject calls' do
-        delete shop_path(existing_shop.id)
-        expect(response).to have_http_status 403
+    describe "When an incorrect API key is provided" do
+      incorrect_values = { emptyString: "", nilValue: nil, onlySpaces: " ", validStringButNotCorrectValue: "not-the-real-secret" }
+      incorrect_values.each do |scenario, incorrect_header|
+        let(:headers) {{"x-api-key" => incorrect_header}}
+        it "should reject calls, scenario: '#{scenario}'" do
+          shop_to_try_and_create = build :shop
+          post shops_path, :params => { shop: shop_to_try_and_create.as_json }, :headers => headers
+          expect(response).to have_http_status 403
+        end
+      end
+    end
+    describe "When the correct API key is provided" do
+      let(:headers) {{"x-api-key" => "superdupersecret"}}
+      it 'should create a new shop' do
+        shop_to_try_and_create = build :shop
+        post shops_path, :params => { shop: shop_to_try_and_create.as_json }, :headers => headers
+        expect(response).to have_http_status 201
       end
     end
   end
-  private
+  describe "DELETE /shops" do
+    describe "When an incorrect API key is provided" do
+      incorrect_values = { emptyString: "", nilValue: nil, onlySpaces: " ", validStringButNotCorrectValue: "not-the-real-secret" }
+      incorrect_values.each do |scenario, incorrect_header|
+        let(:headers) {{"x-api-key" => incorrect_header}}
+        let(:existing_shop) {create :shop}
+        it "should reject calls, scenario: '#{scenario}'" do
+          delete shop_path(existing_shop.id), :headers => headers
+          expect(response).to have_http_status 403
+        end
+      end
+    end
+  end
 end
