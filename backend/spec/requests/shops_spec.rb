@@ -5,7 +5,7 @@ RSpec.describe "Shops", type: :request do
   let(:first_shop) { create :shop }
   let(:second_shop) { create :shop }
   let!(:existing_shops) {[first_shop, second_shop]}
-  describe "GET /index" do
+  describe "GET /shops" do
     before do
       get shops_path
     end
@@ -24,5 +24,23 @@ RSpec.describe "Shops", type: :request do
     end
   end
 
+  describe "POST /shops" do
+    describe "When no API key is provided" do
+      it 'should reject calls' do
+        shop_to_try_and_create = build :shop
+        post shops_path, :params => { shop: shop_to_try_and_create.as_json }
+        expect(response).to have_http_status 403
+      end
+    end
+  end
+  describe "DELETE /shops" do
+    describe "When no API key is provided" do
+      let(:existing_shop) {create :shop}
+      it 'should reject calls' do
+        delete shop_path(existing_shop.id)
+        expect(response).to have_http_status 403
+      end
+    end
+  end
   private
 end

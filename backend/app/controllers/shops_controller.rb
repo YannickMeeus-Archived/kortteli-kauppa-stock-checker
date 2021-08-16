@@ -1,5 +1,6 @@
 class ShopsController < ApplicationController
-  before_action :set_shop, only: [:show, :update, :destroy]
+  before_action :set_shop, only: [:show, :destroy]
+  before_action :require_api_key, only: [:create, :destroy]
 
   # GET /shops
   def index
@@ -15,19 +16,11 @@ class ShopsController < ApplicationController
 
   # POST /shops
   def create
+
     @shop = Shop.new(shop_params)
 
     if @shop.save
       render json: @shop, status: :created, location: @shop
-    else
-      render json: @shop.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /shops/1
-  def update
-    if @shop.update(shop_params)
-      render json: @shop
     else
       render json: @shop.errors, status: :unprocessable_entity
     end
@@ -46,10 +39,6 @@ class ShopsController < ApplicationController
 
     def enveloped(to_wrap)
       {data: to_wrap}
-    end
-
-    def require_api_key
-      ENV['STATIC_API_KEY'] = request.env['x-api-key']
     end
 
     # Only allow a list of trusted parameters through.

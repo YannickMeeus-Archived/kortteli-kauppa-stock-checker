@@ -13,6 +13,9 @@
 # it.
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
+require 'dotenv'
+Dotenv.load
+
 RSpec.configure do |config|
 
 
