@@ -5,13 +5,16 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
-development:
-  <<: *default
-  database: korttelikaupa_local
+local-defaults: &local-defaults
   username: db_user
   password: d9383e87-c02f-4032-8b18-7515cbbe0b8f
   host: localhost
   port: 5432
+
+development:
+  <<: *default
+  <<: *local-defaults
+  database: backend_dev
 
   # Schema search path. The server defaults to $user,public
   #schema_search_path: myapp,sharedapp,public
@@ -27,6 +30,7 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
+  <<: *local-defaults
   database: backend_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
@@ -50,7 +54,6 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
   database: postgres
   username: postgres
   host: db.howwwetlrbiwwdtxzgkx.supabase.co

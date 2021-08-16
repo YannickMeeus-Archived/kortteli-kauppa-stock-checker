@@ -8,6 +8,7 @@
 /.bundle
 **/.idea
 # Ignore all logfiles and tempfiles.
+.env
 /log/*
 /tmp/*
 !/log/.keep

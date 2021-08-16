@@ -3,5 +3,10 @@
 start:
 	bin/rails server
 
-version:
+config/initializers/version.rb:
 	bin/rake update:version
+
+.PHONY: test-watch
+.SILENT: test-watch
+test-watch:
+	bundle exec guard
