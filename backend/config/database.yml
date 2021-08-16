@@ -54,6 +54,7 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
+  <<: *default
   database: postgres
   username: postgres
   host: db.howwwetlrbiwwdtxzgkx.supabase.co
