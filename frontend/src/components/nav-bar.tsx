@@ -1,11 +1,8 @@
 import {
   Box,
-  Button,
   Flex,
   HStack,
   Link,
-  Menu,
-  MenuButton,
   useColorModeValue,
   Heading,
 } from "@chakra-ui/react";

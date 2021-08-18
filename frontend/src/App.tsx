@@ -1,18 +1,17 @@
-import { ChakraProvider, Heading, theme } from "@chakra-ui/react";
+import { ChakraProvider, theme } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { Navigation } from "./components/nav-bar";
-import { Landing } from "./landing";
-import { ShopsPage } from "./pages/shops";
+import { LandingPage, ShopsPage } from "./pages/";
 
-const AppProviders = ({ children }: PropsWithChildren<{}>) => {
+const Framework = ({ children }: PropsWithChildren<{}>) => {
   return (
     <ChakraProvider theme={theme}>
       <BrowserRouter>
         <Navigation />
         <Switch>
           <Route path="/" exact>
-            <Landing />
+            <LandingPage />
           </Route>
           <Route path="/shops">
             <ShopsPage />
@@ -23,5 +22,5 @@ const AppProviders = ({ children }: PropsWithChildren<{}>) => {
   );
 };
 export const App = () => {
-  return <AppProviders></AppProviders>;
+  return <Framework />;
 };

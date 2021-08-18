@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { versionApi } from "./features/infrastructure/version";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { shopsApi } from "./features/shops/shopsApi";
 export const store = configureStore({
   reducer: {
     [versionApi.reducerPath]: versionApi.reducer,
+    [shopsApi.reducerPath]: shopsApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(versionApi.middleware),
+    getDefaultMiddleware().concat(versionApi.middleware, shopsApi.middleware),
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

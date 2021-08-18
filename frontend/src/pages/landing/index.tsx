@@ -1,15 +1,13 @@
 import {
-  Box,
-  chakra,
   SimpleGrid,
   Stat,
   StatLabel,
   StatNumber,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Page } from "./components/page";
-import { PageHeader } from "./components/page-header";
-import { useGetVersionQuery } from "./features/infrastructure/version";
+import { Page } from "../../components/page";
+import { PageHeader } from "../../components/page-header";
+import { useGetVersionQuery } from "../../features/infrastructure/version";
 
 interface StatsCardProps {
   title: string;
@@ -36,7 +34,7 @@ function StatsCard(props: StatsCardProps) {
   );
 }
 
-function Landing() {
+function LandingPage() {
   const { data } = useGetVersionQuery();
   return (
     <Page>
@@ -50,4 +48,4 @@ function Landing() {
   );
 }
 
-export { Landing };
+export { LandingPage };

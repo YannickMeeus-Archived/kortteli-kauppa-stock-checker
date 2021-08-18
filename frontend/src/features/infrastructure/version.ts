@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { apiBaseUrl } from "../../configuration";
+import { apiBaseUrl } from "../../lib/configuration";
 
 interface VersionResponse {
   data: string;
