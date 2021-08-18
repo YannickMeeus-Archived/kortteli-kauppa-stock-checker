@@ -1,2 +1,3 @@
-export * from './landing';
-export * from './shops';
+export * from "./explanation";
+export * from "./inventory";
+export * from "./shops";

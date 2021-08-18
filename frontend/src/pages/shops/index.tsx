@@ -2,15 +2,15 @@ import { Loader } from "../../components/loader";
 import { Page } from "../../components/page";
 import { PageHeader } from "../../components/page-header";
 import { Shops, useGetShopsQuery } from "../../features/shops/shopsApi";
-import { Box, Grid } from "@chakra-ui/react";
+import { Grid } from "@chakra-ui/react";
 import {
-  Stat,
   StatLabel,
   StatNumber,
   // StatHelpText,
   // StatArrow,
   // StatGroup,
 } from "@chakra-ui/react";
+import { InformationCard } from "../../components/information-card";
 
 interface ShopStatsProps {
   name: string;
@@ -22,14 +22,12 @@ const ShopStats = ({ name }: ShopStatsProps) => {
   const randomCabinetCount = getRandomUpto(10);
   const randomProductCount = getRandomUpto(100);
   return (
-    <Box w="100%" p={4} rounded="md" background="lightsteelblue">
-      <Stat>
-        <StatLabel>{name}</StatLabel>
-        <StatNumber>{randomCabinetCount} Cabinets</StatNumber>
-        <StatNumber>{randomProductCount} Products</StatNumber>
-        {/* <StatHelpText>Feb 12 - Feb 28</StatHelpText> */}
-      </Stat>
-    </Box>
+    <InformationCard>
+      <StatLabel>{name}</StatLabel>
+      <StatNumber>{randomCabinetCount} Cabinets</StatNumber>
+      <StatNumber>{randomProductCount} Products</StatNumber>
+      {/* <StatHelpText>Feb 12 - Feb 28</StatHelpText> */}
+    </InformationCard>
   );
 };
 

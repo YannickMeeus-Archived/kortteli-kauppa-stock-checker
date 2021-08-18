@@ -17,6 +17,10 @@ const routing: { [key: string]: RoutingDetails } = {
     path: "/shops",
     text: "Shops",
   },
+  inventory: {
+    path: "/inventory",
+    text: "Inventory",
+  },
 };
 interface NavLinkProps {
   routing: RoutingDetails;
@@ -58,6 +62,7 @@ export const Navigation = () => {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
+              <NavLink routing={routing.inventory} />
               <NavLink routing={routing.shops} />
             </HStack>
           </HStack>
