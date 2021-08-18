@@ -10,10 +10,10 @@ down:
 
 init:
 	@cd ./frontend && yarn install
-	@cd ./backend && cargo update
+	@cd ./backend && ./bin/bundle install
 
 dev: init up
-	npx stmux -M [ "yarn --cwd frontend start" .. "cargo watch -x run --workdir ./backend/" ]
+	npx stmux -M [ "yarn --cwd frontend start" .. "cd ./backend && rails s" ]
 
 deploy-frontend:
 	@cd ./frontend && yarn deploy

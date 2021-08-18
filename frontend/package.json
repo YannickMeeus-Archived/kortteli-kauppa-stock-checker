@@ -28,7 +28,7 @@
   "scripts": {
     "clean": "rm -rf ./build ./dist ./workers-site",
     "deploy": "yarn clean && yarn build && wrangler publish && yarn clean",
-    "start": "react-scripts start",
+    "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -57,5 +57,5 @@
     "@types/react-router": "5.1.12",
     "@types/react-router-dom": "5.1.7"
   },
-  "proxy": "http://localhost:8000"
+  "proxy": "http://localhost:3000"
 }
