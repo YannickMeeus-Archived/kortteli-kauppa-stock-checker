@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { versionApi } from "./features/infrastructure/version";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { shopsApi } from "./features/shops/shopsApi";
+import { shopsApi } from "./features/shops/shops.api";
+import { shopsSlice } from "./features/shops";
 export const store = configureStore({
   reducer: {
     [versionApi.reducerPath]: versionApi.reducer,
     [shopsApi.reducerPath]: shopsApi.reducer,
+    shop: shopsSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(versionApi.middleware, shopsApi.middleware),

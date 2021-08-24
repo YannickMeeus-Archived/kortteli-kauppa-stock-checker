@@ -1,11 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { apiBaseUrl } from "../../lib/configuration";
-
-export interface Shop {
-  id: string;
-  name: string;
-}
-export type Shops = Shop[];
+import { Shops } from "./types/shops.type";
 
 interface ShopsResponse {
   data: Shops;

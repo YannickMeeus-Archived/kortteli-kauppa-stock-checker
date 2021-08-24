@@ -1,7 +1,6 @@
 import { Loader } from "../../components/loader";
 import { Page } from "../../components/page";
 import { PageHeader } from "../../components/page-header";
-import { Shops, useGetShopsQuery } from "../../features/shops/shopsApi";
 import { Grid } from "@chakra-ui/react";
 import {
   StatLabel,
@@ -11,6 +10,7 @@ import {
   // StatGroup,
 } from "@chakra-ui/react";
 import { InformationCard } from "../../components/information-card";
+import { Shops, useGetShopsQuery } from "../../features/shops";
 
 interface ShopStatsProps {
   name: string;
@@ -26,7 +26,6 @@ const ShopStats = ({ name }: ShopStatsProps) => {
       <StatLabel>{name}</StatLabel>
       <StatNumber>{randomCabinetCount} Cabinets</StatNumber>
       <StatNumber>{randomProductCount} Products</StatNumber>
-      {/* <StatHelpText>Feb 12 - Feb 28</StatHelpText> */}
     </InformationCard>
   );
 };
