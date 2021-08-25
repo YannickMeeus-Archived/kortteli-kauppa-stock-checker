@@ -10,6 +10,10 @@ gem 'pg', '~> 1.1'
 # Use Puma as the app server
 gem 'puma', '~> 5.0'
 
+# Use Good_Job as a backend for ActiveJob
+
+gem 'good_job'
+
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
