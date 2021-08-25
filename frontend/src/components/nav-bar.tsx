@@ -62,7 +62,6 @@ export const Navigation = () => {
               spacing={4}
               display={{ base: "none", md: "flex" }}
             >
-              <NavLink routing={routing.inventory} />
               <NavLink routing={routing.shops} />
             </HStack>
           </HStack>
