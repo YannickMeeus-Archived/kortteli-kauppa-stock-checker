@@ -1,0 +1,2 @@
+class IngestedProductInformation < ApplicationRecord
+end
