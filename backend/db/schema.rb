@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_25_104455) do
+ActiveRecord::Schema.define(version: 2021_08_26_075137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -35,6 +35,13 @@ ActiveRecord::Schema.define(version: 2021_08_25_104455) do
     t.index ["cron_key", "created_at"], name: "index_good_jobs_on_cron_key_and_created_at"
     t.index ["queue_name", "scheduled_at"], name: "index_good_jobs_on_queue_name_and_scheduled_at", where: "(finished_at IS NULL)"
     t.index ["scheduled_at"], name: "index_good_jobs_on_scheduled_at", where: "(finished_at IS NULL)"
+  end
+
+  create_table "ingested_product_informations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "shop"
+    t.jsonb "raw_data"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "shops", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

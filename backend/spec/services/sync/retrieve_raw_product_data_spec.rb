@@ -13,10 +13,10 @@ RSpec.describe 'RetrieveProductData' do
   end
 
   context 'A call is made to the Kortteli Kauppa endpoint to retrieve products', :vcr do
-    let(:query) {Sync::RetrieveProductData.new}
+    let(:raw_products_query) {Sync::RetrieveProductData.new}
     it 'returns a list of products' do
-      products = query.for_shop('existing-shop')
-      expect(products).not_to be_empty
+      raw_body = raw_products_query.for_shop('existing-shop')
+      expect(raw_body).not_to be_nil
     end
   end
 end

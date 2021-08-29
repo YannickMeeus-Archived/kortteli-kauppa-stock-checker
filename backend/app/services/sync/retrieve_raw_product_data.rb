@@ -1,7 +1,7 @@
 require 'faraday'
 
 module Sync
-  class RetrieveProductData
+  class RetrieveRawProductData
     def for_shop(shop_id)
       # match to external shop id (name)
       # pull all json through
