@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec'
 require 'spec_helper'
 require 'rails_helper'
@@ -13,7 +15,7 @@ RSpec.describe 'RetrieveProductData' do
   end
 
   context 'A call is made to the Kortteli Kauppa endpoint to retrieve products', :vcr do
-    let(:raw_products_query) {Sync::RetrieveProductData.new}
+    let(:raw_products_query) { Sync::RetrieveProductData.new }
     it 'returns a list of products' do
       raw_body = raw_products_query.for_shop('existing-shop')
       expect(raw_body).not_to be_nil

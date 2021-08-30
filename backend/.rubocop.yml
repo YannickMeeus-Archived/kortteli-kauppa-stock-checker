@@ -1,0 +1,12 @@
+AllCops:
+  NewCops: enable
+  Exclude:
+    - 'bin/bundle'
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'db/**/*.rb'
+    - 'spec/**/*.rb'
+    - 'Guardfile'
+
+Style/Documentation:
+  Enabled: false

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ShopsController < ApplicationController
-  before_action :set_shop, only: [:show, :destroy]
-  before_action :require_api_key, only: [:create, :destroy]
+  before_action :set_shop, only: %i[show destroy]
+  before_action :require_api_key, only: %i[create destroy]
 
   # GET /shops
   def index
@@ -16,7 +18,6 @@ class ShopsController < ApplicationController
 
   # POST /shops
   def create
-
     @shop = Shop.new(shop_params)
 
     if @shop.save
@@ -32,17 +33,18 @@ class ShopsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_shop
-      @shop = Shop.find(params[:id])
-    end
 
-    def enveloped(to_wrap)
-      {data: to_wrap}
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_shop
+    @shop = Shop.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def shop_params
-      params.require(:shop).permit(:id, :key, :name)
-    end
+  def enveloped(to_wrap)
+    { data: to_wrap }
+  end
+
+  # Only allow a list of trusted parameters through.
+  def shop_params
+    params.require(:shop).permit(:id, :key, :name)
+  end
 end

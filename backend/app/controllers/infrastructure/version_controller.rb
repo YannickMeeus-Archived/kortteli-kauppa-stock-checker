@@ -1,11 +1,15 @@
-class Infrastructure::VersionController < ApplicationController
-  def get
-    render json: {data: self.version}
-  end
+# frozen_string_literal: true
 
-  private
+module Infrastructure
+  class VersionController < ApplicationController
+    def get
+      render json: { data: version }
+    end
 
-  def version
-    @version ||= VERSION.join('.')
+    private
+
+    def version
+      @version ||= VERSION.join('.')
+    end
   end
 end
