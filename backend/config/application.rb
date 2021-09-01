@@ -29,7 +29,7 @@ module Backend
     config.good_job.enable_cron = true
     config.good_job.cron = {
       product_downsync: {
-        cron: '*/5 * * * *',
+        cron: '*/30 * * * *',
         class: 'ProductDownsyncJob'
       }
     }
