@@ -98,6 +98,8 @@ GEM
     faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     faraday-rack (1.0.0)
+    faraday_middleware (1.1.0)
+      faraday (~> 1.0)
     ffi (1.15.3)
     formatador (0.3.0)
     fugit (1.5.1)
@@ -271,6 +273,7 @@ DEPENDENCIES
   dotenv-rails
   factory_bot_rails
   faraday
+  faraday_middleware
   good_job
   guard-rspec
   listen (~> 3.3)

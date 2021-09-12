@@ -6,20 +6,19 @@ module Admin
 
     def initialize
       super
-      @acceptable_operations = ['purge_old_jobs']
-      @delete_old_jobs = Maintenance::DeleteOldJobs.new
+      @acceptable_operations = ['purge_old_jobs' => Maintenance::DeleteOldJobs.new.execute.to_proc]
     end
 
     def index
-      render status: 200, json: { available_jobs: @acceptable_operations }
+      render status: 200, json: { available_jobs: @acceptable_operations.keys }
     end
 
     def create
       potential_operation = params.require(:operation)
-      return render status: :bad_request unless @acceptable_operations.include? potential_operation
+      return render status: :bad_request unless @acceptable_operations.key? potential_operation
 
-      affected_job_ids = @delete_old_jobs.execute
-      render status: :accepted, json: { accepted_operation: potential_operation, affected_records: affected_job_ids }
+      results = @acceptable_operations.fetch(potential_operation).call
+      render status: :accepted, json: { accepted_operation: potential_operation, results => results }
     end
   end
 end

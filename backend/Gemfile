@@ -17,7 +17,7 @@ gem 'good_job'
 
 # Use Faraday for HTTP requests
 gem 'faraday'
-
+gem 'faraday_middleware'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
