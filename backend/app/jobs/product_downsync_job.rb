@@ -3,7 +3,7 @@
 class ProductDownsyncJob < ApplicationJob
   queue_as :default
 
-  def perform(*args)
-    # Do something later
+  def perform(*_args)
+    Sync::DownloadAllStoreData.execute
   end
 end
