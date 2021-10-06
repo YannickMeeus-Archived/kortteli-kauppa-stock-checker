@@ -38,6 +38,7 @@ group :test do
   gem 'vcr'
 end
 group :development do
+  gem 'annotate'
   gem 'guard-rspec', require: false
   gem 'listen', '~> 3.3'
 end
