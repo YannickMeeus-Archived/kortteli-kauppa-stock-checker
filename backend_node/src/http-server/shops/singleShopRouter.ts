@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import { Request } from "express";
-import { DeleteShop } from "./deleteShop";
-import { GetSingleShop } from "./getSingleShop";
+import { DeleteShop } from "../../shops/deleteShop";
+import { GetSingleShop } from "../../shops/getSingleShop";
 
 type HasId = { id: string };
 type RequestWithId = Request & HasId;
@@ -11,15 +11,18 @@ const hasId = (req: Request): req is RequestWithId => {
   return req.params.id !== undefined;
 };
 
-interface useCases {
+interface UseCases {
   getSingleShop: GetSingleShop;
   deleteShop: DeleteShop;
 }
+interface ApplicableMiddleware {
+  requireApiKey: RequestHandler;
+}
 
-const makeSingleShopRouter = ({
-  getSingleShop,
-  deleteShop,
-}: useCases): Router => {
+const makeSingleShopRouter = (
+  { getSingleShop, deleteShop }: UseCases,
+  { requireApiKey }: ApplicableMiddleware
+): Router => {
   const singleShopRouter = Router({ mergeParams: true });
 
   singleShopRouter.get("/", async (req, res) => {
@@ -34,7 +37,7 @@ const makeSingleShopRouter = ({
     return res.sendStatus(400);
   });
 
-  singleShopRouter.delete("/", async (req, res) => {
+  singleShopRouter.delete("/", requireApiKey, async (req, res) => {
     if (hasId(req)) {
       const { id } = req.params;
       const shop = await getSingleShop.byId(id);

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { CreateNewShop } from "./createNewShop";
-import { GetAllShops } from "./getShops";
+import { CreateNewShop } from "../../shops/createNewShop";
+import { GetAllShops } from "../../shops/getShops";
 
 interface UseCases {
   getAllShops: GetAllShops;

@@ -1,10 +1,10 @@
 import Request from "supertest";
-import { makeHttpApi } from "../../src/http-server/composition-root";
+import { makeFakeHttpApi } from "./makeTestingApi";
 
 describe("Shop Routes", () => {
   describe("GET /shops", () => {
     it("should return all created shops", async () => {
-      const app = makeHttpApi();
+      const app = makeFakeHttpApi();
 
       // Create a few shops
       await Request(app).post("/shops").send({ name: "Shop 1" });
@@ -18,7 +18,7 @@ describe("Shop Routes", () => {
   });
   describe("POST /shops", () => {
     it("should create a new shop", async () => {
-      const app = makeHttpApi();
+      const app = makeFakeHttpApi();
 
       const response = await Request(app)
         .post("/shops")
