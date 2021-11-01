@@ -18,7 +18,7 @@ const makeShopsRouter = ({ getAllShops, createNewShop }: UseCases) => {
   shopsRouter.post("/", async (req, res) => {
     const { name } = req.body;
     const createdShop = await createNewShop.execute({ name });
-    res.status(200).json({ data: createdShop });
+    res.status(201).json({ data: createdShop });
   });
 
   return shopsRouter;

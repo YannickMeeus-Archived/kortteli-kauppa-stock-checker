@@ -18,14 +18,14 @@ describe("Single Shop Routes", () => {
       expect(body.data.id).toEqual(createdShopId);
       expect(body.data.name).toEqual(expectedShop.name);
     });
-    it("should return a 404 if the shop can't be found",  async () => {
+    it("should return a 404 if the shop can't be found", async () => {
       const app = makeHttpApi();
-      const existingShop = {name: "Existing Shop"}
-      await Request(app).post("/shops").send(existingShop)
+      const existingShop = { name: "Existing Shop" };
+      await Request(app).post("/shops").send(existingShop);
 
-      const {statusCode} = await Request(app).get('/shops/non-existent-id');
+      const { statusCode } = await Request(app).get("/shops/non-existent-id");
 
-      expect(statusCode).toEqual(404)
-    })
+      expect(statusCode).toEqual(404);
+    });
   });
 });

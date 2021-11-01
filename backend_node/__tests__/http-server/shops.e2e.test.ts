@@ -16,4 +16,17 @@ describe("Shop Routes", () => {
       expect(response.body.data).toHaveLength(2);
     });
   });
+  describe("POST /shops", () => {
+    it("should create a new shop", async () => {
+      const app = makeHttpApi();
+
+      const response = await Request(app)
+        .post("/shops")
+        .send({ name: "Shop 1" });
+
+      expect(response.status).toBe(201);
+      expect(response.body.data).toHaveProperty("id");
+      expect(response.body.data.name).toBe("Shop 1");
+    });
+  });
 });
