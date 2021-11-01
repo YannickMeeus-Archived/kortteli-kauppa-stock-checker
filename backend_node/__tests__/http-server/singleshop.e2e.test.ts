@@ -28,4 +28,30 @@ describe("Single Shop Routes", () => {
       expect(statusCode).toEqual(404);
     });
   });
+  describe("DELETE /shops/:id", () => {
+    it("should delete a shop", async () => {
+      const app = makeHttpApi();
+      const expectedShop = { name: "Created Shop" };
+      const {
+        body: {
+          data: { id: createdShopId },
+        },
+      } = await Request(app).post("/shops").send(expectedShop);
+
+      const { statusCode } = await Request(app).delete(`/shops/${createdShopId}`);
+
+      expect(statusCode).toEqual(204);
+      const existingShops = await Request(app).get("/shops");
+      expect(existingShops.body.data).toHaveLength(0);
+    });
+    it("should return a 404 if the shop can't be found", async () => {
+      const app = makeHttpApi();
+      const existingShop = { name: "Existing Shop" };
+      await Request(app).post("/shops").send(existingShop);
+
+      const { statusCode } = await Request(app).delete("/shops/non-existent-id");
+
+      expect(statusCode).toEqual(404);
+    });
+  }
 });
