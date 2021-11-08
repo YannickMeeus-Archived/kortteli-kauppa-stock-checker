@@ -5,7 +5,7 @@ import { DeleteShopFromMemory } from "../shops/deleteShop";
 import { GetAllShopsFromMemory } from "../shops/getShops";
 import { GetSingleShopFromMemory } from "../shops/getSingleShop";
 import { Shop } from "../shops/models/shop";
-import { infrastructureRouter } from "./infrastructure/pingRouter";
+import { makeInfrastructureRouter } from "./infrastructure/pingRouter";
 import { MakeRequireApiKey } from "./middleware/requireApiKey";
 import { makeShopsRouter } from "./shops/shopsRouter";
 import { makeSingleShopRouter } from "./shops/singleShopRouter";
@@ -25,7 +25,7 @@ const makeHttpApi = ({ apiKey }: Configuration) => {
 
   const httpApi = express();
   httpApi.use(json());
-  httpApi.use("/", infrastructureRouter);
+  httpApi.use("/", makeInfrastructureRouter({ requireApiKey }));
   httpApi.use("/shops/", makeShopsRouter({ getAllShops, createNewShop }));
   httpApi.use(
     "/shops/:id",

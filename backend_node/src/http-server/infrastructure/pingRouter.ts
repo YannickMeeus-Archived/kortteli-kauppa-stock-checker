@@ -1,9 +1,19 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 
-const infrastructureRouter = Router();
+interface ApplicableMiddleware {
+  requireApiKey: RequestHandler;
+}
 
-infrastructureRouter.get("/_ping", (req, res) => {
-  res.send({ data: "pong" });
-});
+const makeInfrastructureRouter = ({ requireApiKey }: ApplicableMiddleware) => {
+  const infrastructureRouter = Router();
+  infrastructureRouter.get("/_ping", (req, res) => {
+    res.send({ data: "pong" });
+  });
+  infrastructureRouter.get("/_secure_ping", requireApiKey, (req, res) => {
+    res.send({ data: "secret pong" });
+  });
 
-export { infrastructureRouter };
+  return infrastructureRouter;
+};
+
+export { makeInfrastructureRouter };
