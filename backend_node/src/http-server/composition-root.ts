@@ -9,18 +9,24 @@ import { makeInfrastructureRouter } from "./infrastructure/pingRouter";
 import { MakeRequireApiKey } from "./middleware/requireApiKey";
 import { makeShopsRouter } from "./shops/shopsRouter";
 import { makeSingleShopRouter } from "./shops/singleShopRouter";
+import {Postgres} from "../postgres/configuration";
 
 interface SecurityConfiguration {
   apiKey: string;
 }
-type Configuration = SecurityConfiguration;
-const makeHttpApi = ({ apiKey }: Configuration) => {
+interface HttpConfiguration {
+  security: SecurityConfiguration,
+  database: Postgres
+}
+const makeHttpApi = ({ security, database }: HttpConfiguration) => {
+  const {apiKey} = security
   const shops: Shop[] = [];
 
   const getAllShops = new GetAllShopsFromMemory(shops);
   const createNewShop = new CreateNewShopInMemory(shops);
   const getSingleShop = new GetSingleShopFromMemory(shops);
   const deleteShop = new DeleteShopFromMemory(shops);
+
   const requireApiKey = MakeRequireApiKey(apiKey);
 
   const httpApi = express();
