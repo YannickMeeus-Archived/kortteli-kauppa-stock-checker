@@ -13,7 +13,8 @@
     "test:watch": "jest --watch",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
-    "fmt": "eslint . --ext .ts --fix"
+    "fmt": "eslint . --ext .ts --fix",
+    "migrate": "node-pg-migrate"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.1",
@@ -39,6 +40,8 @@
     "body-parser": "^1.19.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-list-endpoints": "^6.0.0"
+    "express-list-endpoints": "^6.0.0",
+    "node-pg-migrate": "^6.0.0",
+    "pg": "^8.7.1"
   }
 }
