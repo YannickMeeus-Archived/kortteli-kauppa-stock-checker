@@ -1,5 +1,5 @@
-import { makeHttpApi } from "../../../src/http-server/composition-root";
-import { getTestDatabase } from "../../lifecycle/getTestDatabase";
+import { makeHttpApi } from "../../src/http-server/composition-root";
+import { getTestDatabase } from "../lifecycle/getTestDatabase";
 
 const testingApiKey = "testing-api-key";
 
