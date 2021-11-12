@@ -1,23 +1,10 @@
 import Request from "supertest";
-import {
-  makeFakeHttpApi,
-  makeTestingDatabase,
-  TestingDatabase,
-} from "./makeTestingApi";
+import { makeFakeHttpApi } from "./makeTestingApi";
 
 describe("Shop Routes", () => {
-  let testingDatabase: TestingDatabase;
-
-  beforeAll(async () => {
-    testingDatabase = await makeTestingDatabase();
-  });
-
-  afterAll(async () => {
-    await testingDatabase.stop();
-  });
   describe("GET /shops", () => {
     it("should return all created shops", async () => {
-      const app = makeFakeHttpApi(testingDatabase.database);
+      const app = makeFakeHttpApi();
 
       // Create a few shops
       await Request(app).post("/shops").send({ name: "Shop 1" });
@@ -31,7 +18,7 @@ describe("Shop Routes", () => {
   });
   describe("POST /shops", () => {
     it("should create a new shop", async () => {
-      const app = makeFakeHttpApi(testingDatabase.database);
+      const app = makeFakeHttpApi();
 
       const response = await Request(app)
         .post("/shops")

@@ -1,24 +1,10 @@
 import Request from "supertest";
-import {
-  makeFakeHttpApi,
-  makeTestingDatabase,
-  testingApiKey,
-  TestingDatabase,
-} from "./makeTestingApi";
+import { makeFakeHttpApi, testingApiKey } from "./makeTestingApi";
 
 describe("Single Shop Routes", () => {
-  let testingDatabase: TestingDatabase;
-
-  beforeAll(async () => {
-    testingDatabase = await makeTestingDatabase();
-  });
-
-  afterAll(async () => {
-    await testingDatabase.stop();
-  });
   describe("GET /shops/:id", () => {
     it("should return a shop by id", async () => {
-      const app = makeFakeHttpApi(testingDatabase.database);
+      const app = makeFakeHttpApi();
       const expectedShop = { name: "Created Shop" };
       const {
         body: {
@@ -33,7 +19,7 @@ describe("Single Shop Routes", () => {
       expect(body.data.name).toEqual(expectedShop.name);
     });
     it("should return a 404 if the shop can't be found", async () => {
-      const app = makeFakeHttpApi(testingDatabase.database);
+      const app = makeFakeHttpApi();
 
       const existingShop = { name: "Existing Shop" };
       await Request(app).post("/shops").send(existingShop);
@@ -45,7 +31,7 @@ describe("Single Shop Routes", () => {
   });
   describe("DELETE /shops/:id", () => {
     it("should delete a shop", async () => {
-      const app = makeFakeHttpApi(testingDatabase.database);
+      const app = makeFakeHttpApi();
 
       const expectedShop = { name: "Created Shop" };
       const {
@@ -62,7 +48,7 @@ describe("Single Shop Routes", () => {
       expect(existingShops.body.data).toHaveLength(0);
     });
     it("should return a 404 if the shop can't be found", async () => {
-      const app = makeFakeHttpApi(testingDatabase.database);
+      const app = makeFakeHttpApi();
 
       const existingShop = { name: "Existing Shop" };
       await Request(app).post("/shops").send(existingShop);
@@ -74,7 +60,7 @@ describe("Single Shop Routes", () => {
       expect(statusCode).toEqual(404);
     });
     it("should reject calls without an x-api-key header", async () => {
-      const app = makeFakeHttpApi(testingDatabase.database);
+      const app = makeFakeHttpApi();
 
       const existingShop = { name: "Existing Shop" };
       await Request(app).post("/shops").send(existingShop);
@@ -86,7 +72,7 @@ describe("Single Shop Routes", () => {
       expect(statusCode).toEqual(401);
     });
     it("should reject calls with an invalid x-api-key header", async () => {
-      const app = makeFakeHttpApi(testingDatabase.database);
+      const app = makeFakeHttpApi();
 
       const existingShop = { name: "Existing Shop" };
       await Request(app).post("/shops").send(existingShop);
