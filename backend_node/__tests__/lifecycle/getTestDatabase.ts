@@ -29,5 +29,6 @@ export const makeTestingDatabase = async (): Promise<TestingDatabase> => {
 };
 
 export const getTestDatabase = (): TestingDatabase => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (global as any).__DBFIXTURE__ as TestingDatabase;
 };

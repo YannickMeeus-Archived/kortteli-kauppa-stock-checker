@@ -15,7 +15,7 @@ class Migrations {
 
   public async execute({ silent }: Opts = defaults) {
     const options: RunnerOption = {
-      databaseUrl: this.postgres.getUrl(),
+      databaseUrl: this.postgres.getConnectionString(),
       direction: "up",
       migrationsTable: "pgmigrations",
       dir: `${this.rootPath}/migrations/`,

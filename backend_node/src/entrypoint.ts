@@ -34,7 +34,7 @@ import { asNumber } from "./lib/asNumber";
   ); // TODO: Fix this up so that it blows up when it's not set
 
   console.log("---- Postgres URL ----");
-  console.log(postgres.getUrl());
+  console.log(postgres.getConnectionString());
 
   console.log("---- Migrations ----");
   const migrations = new Migrations(postgres, root);

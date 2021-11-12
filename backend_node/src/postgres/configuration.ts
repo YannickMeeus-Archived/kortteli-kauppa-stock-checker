@@ -1,14 +1,23 @@
-class Postgres {
-  constructor(
-    private readonly host: string,
-    private readonly port: number,
-    private readonly dbName: string,
-    private readonly username: string,
-    private readonly password: string
-  ) {}
+import { Pool } from "pg";
 
-  public getUrl() {
-    return `postgres://${this.username}:${this.password}@${this.host}:${this.port}/${this.dbName}`;
+class Postgres {
+  private readonly pool: Pool;
+  private readonly connectionString: string;
+  constructor(
+    host: string,
+    port: number,
+    dbName: string,
+    username: string,
+    password: string
+  ) {
+    this.connectionString = `postgres://${username}:${password}@${host}:${port}/${dbName}`;
+    this.pool = new Pool({
+      connectionString: this.connectionString,
+    });
+  }
+
+  public getConnectionString() {
+    return this.connectionString;
   }
 }
 
