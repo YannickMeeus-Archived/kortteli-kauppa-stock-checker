@@ -10,20 +10,26 @@
     "start": "node ./dist/entrypoint.js",
     "dev": "ts-node-dev --respawn --transpile-only src/entrypoint.ts",
     "test": "jest",
+    "e2e": "jest -c jest.config.e2e.ts --runInBand",
+    "int": "jest -c jest.config.int.ts --runInBand",
     "test:watch": "jest --watch",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
-    "fmt": "eslint . --ext .ts --fix"
+    "fmt": "eslint . --ext .ts --fix",
+    "migrate": "node-pg-migrate"
   },
   "devDependencies": {
+    "@types/app-root-path": "^1.2.4",
     "@types/body-parser": "^1.19.1",
     "@types/express": "^4.17.13",
     "@types/express-list-endpoints": "^6.0.0",
+    "@types/is-number": "^7.0.1",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.6",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "~5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
+    "app-root-path": "^3.0.0",
     "eslint": "^8.1.0",
     "eslint-config-prettier": "~8.3.0",
     "eslint-plugin-jest": "^25.2.2",
@@ -31,13 +37,18 @@
     "prettier": "~2.4.1",
     "rimraf": "~3.0.2",
     "supertest": "^6.1.6",
+    "testcontainers": "^7.22.1",
     "ts-jest": "~27.0.5",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.4"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
-    "express-list-endpoints": "^6.0.0"
+    "express-list-endpoints": "^6.0.0",
+    "is-number": "^7.0.0",
+    "node-pg-migrate": "^6.0.0",
+    "pg": "^8.7.1"
   }
 }

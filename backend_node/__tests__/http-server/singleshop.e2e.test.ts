@@ -20,6 +20,7 @@ describe("Single Shop Routes", () => {
     });
     it("should return a 404 if the shop can't be found", async () => {
       const app = makeFakeHttpApi();
+
       const existingShop = { name: "Existing Shop" };
       await Request(app).post("/shops").send(existingShop);
 
@@ -31,6 +32,7 @@ describe("Single Shop Routes", () => {
   describe("DELETE /shops/:id", () => {
     it("should delete a shop", async () => {
       const app = makeFakeHttpApi();
+
       const expectedShop = { name: "Created Shop" };
       const {
         body: {
@@ -47,6 +49,7 @@ describe("Single Shop Routes", () => {
     });
     it("should return a 404 if the shop can't be found", async () => {
       const app = makeFakeHttpApi();
+
       const existingShop = { name: "Existing Shop" };
       await Request(app).post("/shops").send(existingShop);
 
@@ -58,6 +61,7 @@ describe("Single Shop Routes", () => {
     });
     it("should reject calls without an x-api-key header", async () => {
       const app = makeFakeHttpApi();
+
       const existingShop = { name: "Existing Shop" };
       await Request(app).post("/shops").send(existingShop);
 
@@ -69,6 +73,7 @@ describe("Single Shop Routes", () => {
     });
     it("should reject calls with an invalid x-api-key header", async () => {
       const app = makeFakeHttpApi();
+
       const existingShop = { name: "Existing Shop" };
       await Request(app).post("/shops").send(existingShop);
 
