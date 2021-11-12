@@ -1,22 +1,26 @@
 import { json } from "body-parser";
 import express from "express";
-import { CreateNewShopInMemory } from "../shops/createNewShop";
-import { DeleteShopFromMemory } from "../shops/deleteShop";
-import { GetAllShopsFromMemory } from "../shops/getShops";
-import { GetSingleShopFromMemory } from "../shops/getSingleShop";
+
 import { Shop } from "../shops/models/shop";
+
 import { makeInfrastructureRouter } from "./infrastructure/pingRouter";
 import { MakeRequireApiKey } from "./middleware/requireApiKey";
 import { makeShopsRouter } from "./shops/shopsRouter";
 import { makeSingleShopRouter } from "./shops/singleShopRouter";
 import { Postgres } from "../postgres/configuration";
+import {
+  GetAllShopsFromMemory,
+  CreateNewShopInMemory,
+  GetSingleShopFromMemory,
+  DeleteShopFromMemory,
+} from "../shops";
 
 interface SecurityConfiguration {
   apiKey: string;
 }
 interface HttpConfiguration {
   security: SecurityConfiguration;
-  database?: Postgres;
+  database: Postgres;
 }
 const makeHttpApi = ({ security, database: _database }: HttpConfiguration) => {
   const { apiKey } = security;

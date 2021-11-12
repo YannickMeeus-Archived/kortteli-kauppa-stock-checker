@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Postgres } from "./postgres/configuration";
-
+import { path as root } from "app-root-path";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { config } from "dotenv";
-
 const configurationLoadingResult = config();
 if (configurationLoadingResult.error) {
   throw configurationLoadingResult.error;
@@ -13,6 +12,7 @@ import listEndpoints from "express-list-endpoints";
 import { makeHttpApi } from "./http-server/composition-root";
 import { Migrations } from "./postgres/migrations";
 import { asString } from "./lib/asString";
+import { asNumber } from "./lib/asNumber";
 
 (async () => {
   // TODO: Remove this once live
@@ -27,7 +27,7 @@ import { asString } from "./lib/asString";
   // TODO: Implement safe configuration parser
   const postgres = new Postgres(
     asString(process.env.DATABASE_HOST),
-    asString(process.env.DATABASE_PORT),
+    asNumber(process.env.DATABASE_PORT),
     asString(process.env.DATABASE_NAME),
     asString(process.env.DATABASE_USERNAME),
     asString(process.env.DATABASE_PASSWORD)
@@ -37,7 +37,7 @@ import { asString } from "./lib/asString";
   console.log(postgres.getUrl());
 
   console.log("---- Migrations ----");
-  const migrations = new Migrations(postgres, process.env.PWD!);
+  const migrations = new Migrations(postgres, root);
   await migrations.execute();
   const httpApi = makeHttpApi({
     security: { apiKey },
