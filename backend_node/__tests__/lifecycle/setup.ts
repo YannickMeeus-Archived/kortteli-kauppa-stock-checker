@@ -1,41 +1,32 @@
-import { path } from "app-root-path";
-import { PostgreSqlContainer } from "testcontainers";
-import { Postgres } from "../../src/postgres/configuration";
+import RootPath from "app-root-path";
 import { Migrations } from "../../src/postgres/migrations";
-import { TestingDatabase } from "./getTestDatabase";
+import { getTestDatabase, makeTestingDatabase } from "./getTestDatabase";
+
+import { config } from "dotenv";
+import path from "path";
+
+config({ path: path.join(RootPath.path, ".env.test") });
 
 beforeAll(async () => {
   const fixture = await makeTestingDatabase();
-  const migration = new Migrations(fixture.database, path);
+  const migration = new Migrations(fixture.database, RootPath.path);
   await migration.execute({ silent: true });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   (global as any).__DBFIXTURE__ = fixture;
 });
-
-afterAll(async () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  await (global as any).__DBFIXTURE__.stop();
+beforeEach(async () => {
+  const { database } = getTestDatabase();
+  const allTables = await database.sql.query(`
+  SELECT table_name
+  FROM information_schema.tables
+  WHERE table_type='BASE TABLE'
+    AND table_schema='public'
+      and table_name <> 'pgmigrations'`);
+  const tableNames = allTables.rows.map((row) => row.table_name).join(", ");
+  const truncateAllApartFromMigrationTable = `TRUNCATE TABLE ${tableNames} RESTART IDENTITY CASCADE`;
+  await database.sql.query(truncateAllApartFromMigrationTable);
 });
-
-export const makeTestingDatabase = async (): Promise<TestingDatabase> => {
-  const container = await new PostgreSqlContainer("postgres:13.3-alpine")
-    .withExposedPorts(5432)
-    .withDatabase("backend_test")
-    .withUsername("db_user")
-    .withUsername("db_user")
-    .withPassword("f71a0e2a-943b-4dfa-99cc-3afde6af79e1")
-    .start();
-
-  const database = new Postgres(
-    container.getHost(),
-    container.getPort(),
-    container.getDatabase(),
-    container.getUsername(),
-    container.getPassword()
-  );
-
-  const stop = async (): Promise<void> => {
-    await container.stop();
-  };
-  return { database, stop };
-};
+afterAll(async () => {
+  await getTestDatabase().stop();
+});

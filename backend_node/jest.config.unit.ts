@@ -1,11 +1,8 @@
 import type { Config } from "@jest/types";
 import baseConfig from "./jest.config";
-
 const config: Config.InitialOptions = {
   ...baseConfig,
-  testRegex: ".*\\.e2e.test.ts$",
-  testTimeout: 30_000,
-  verbose: true,
-  maxWorkers: 1,
+  testRegex: "\\.unit.test\\.ts$",
+  setupFilesAfterEnv: [],
 };
 export default config;
