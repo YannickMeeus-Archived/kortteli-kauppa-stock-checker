@@ -4,7 +4,7 @@ import baseConfig from "./jest.config";
 const config: Config.InitialOptions = {
   ...baseConfig,
   testRegex: ".*\\.e2e.test.ts$",
-  testTimeout: 30000,
+  testTimeout: 30_000,
   verbose: true,
   maxWorkers: 1,
 };

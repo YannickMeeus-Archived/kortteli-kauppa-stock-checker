@@ -1,6 +1,7 @@
 import { Shop } from "../../../src/shops";
+import { dbShop } from "./models/dbShop";
 
-const parseOneRow: (rows: any[]) => Shop = (rows) => {
+const parseOneRow: (rows: dbShop[]) => Shop = (rows) => {
   if (rows.length != 1) {
     throw new Error("Unexpected amount of rows returned from query");
   }

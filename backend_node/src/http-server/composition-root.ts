@@ -8,12 +8,12 @@ import { MakeRequireApiKey } from "./middleware/requireApiKey";
 import { makeShopsRouter } from "./shops/shopsRouter";
 import { makeSingleShopRouter } from "./shops/singleShopRouter";
 import { Postgres } from "../postgres/configuration";
+import { DeleteShopFromMemory } from "../shops";
 import {
-  GetAllShopsFromMemory,
-  CreateNewShopInMemory,
-  GetSingleShopFromMemory,
-  DeleteShopFromMemory,
-} from "../shops";
+  CreateNewShopInPostgres,
+  GetSingleShopFromPostgres,
+} from "../postgres/shops";
+import { GetAllShopsFromPostgres } from "../postgres/shops/getAllShopsFromPostgres";
 
 interface SecurityConfiguration {
   apiKey: string;
@@ -22,13 +22,13 @@ interface HttpConfiguration {
   security: SecurityConfiguration;
   database: Postgres;
 }
-const makeHttpApi = ({ security, database: _database }: HttpConfiguration) => {
+const makeHttpApi = ({ security, database: database }: HttpConfiguration) => {
   const { apiKey } = security;
   const shops: Shop[] = [];
 
-  const getAllShops = new GetAllShopsFromMemory(shops);
-  const createNewShop = new CreateNewShopInMemory(shops);
-  const getSingleShop = new GetSingleShopFromMemory(shops);
+  const getAllShops = new GetAllShopsFromPostgres(database);
+  const createNewShop = new CreateNewShopInPostgres(database);
+  const getSingleShop = new GetSingleShopFromPostgres(database);
   const deleteShop = new DeleteShopFromMemory(shops);
 
   const requireApiKey = MakeRequireApiKey(apiKey);

@@ -6,9 +6,8 @@ import { ShopAlreadyExistsError } from "../../shops/errors/ShopAlreadyExistsErro
 class CreateNewShopInPostgres implements CreateNewShop {
   constructor(private readonly postgres: Postgres) {}
   async execute({ name }: CreatableShop): Promise<Shop> {
-    const client = await this.postgres.sql.connect();
     try {
-      const created = await client.query(
+      const created = await this.postgres.sql.query(
         `INSERT INTO shops (name) VALUES ($1) RETURNING id, name`,
         [name]
       );
@@ -21,8 +20,6 @@ class CreateNewShopInPostgres implements CreateNewShop {
         throw new ShopAlreadyExistsError(name);
       }
       throw e;
-    } finally {
-      client.release();
     }
   }
 }
