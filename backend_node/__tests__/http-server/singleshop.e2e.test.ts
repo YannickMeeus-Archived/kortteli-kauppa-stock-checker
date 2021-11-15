@@ -59,7 +59,7 @@ describe("Single Shop Routes", () => {
 
       expect(statusCode).toEqual(404);
     });
-    it.skip("should reject calls without an x-api-key header", async () => {
+    it("should reject calls without an x-api-key header", async () => {
       const app = makeFakeHttpApi();
 
       const existingShop = { name: "Existing Shop" };
@@ -71,7 +71,7 @@ describe("Single Shop Routes", () => {
 
       expect(statusCode).toEqual(401);
     });
-    it.skip("should reject calls with an invalid x-api-key header", async () => {
+    it("should reject calls with an invalid x-api-key header", async () => {
       const app = makeFakeHttpApi();
 
       const existingShop = { name: "Existing Shop" };

@@ -16,8 +16,17 @@ beforeAll(async () => {
   (global as any).__DBFIXTURE__ = fixture;
 });
 beforeEach(async () => {
-  await getTestDatabase().database.sql.query("TRUNCATE TABLE shops");
+  const { database } = getTestDatabase();
+  const allTables = await database.sql.query(`
+  SELECT table_name
+  FROM information_schema.tables
+  WHERE table_type='BASE TABLE'
+    AND table_schema='public'
+      and table_name <> 'pgmigrations'`);
+  const tableNames = allTables.rows.map((row) => row.table_name).join(", ");
+  const truncateAllApartFromMigrationTable = `TRUNCATE TABLE ${tableNames} RESTART IDENTITY CASCADE`;
+  await database.sql.query(truncateAllApartFromMigrationTable);
 });
 afterAll(async () => {
-  await getTestDatabase().database.sql.end();
+  await getTestDatabase().stop();
 });
