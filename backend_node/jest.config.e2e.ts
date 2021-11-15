@@ -6,6 +6,6 @@ const config: Config.InitialOptions = {
   testRegex: ".*\\.e2e.test.ts$",
   testTimeout: 30000,
   verbose: true,
-  setupFilesAfterEnv: ["<rootDir>/__tests__/lifecycle/setup.ts"],
+  maxWorkers: 1,
 };
 export default config;

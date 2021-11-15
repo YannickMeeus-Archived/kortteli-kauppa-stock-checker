@@ -6,8 +6,9 @@ const config: Config.InitialOptions = {
     "^.+\\.tsx?$": "ts-jest",
   },
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  testRegex: "\\.unit.test\\.ts$",
+  testRegex: "\\**.test\\.ts$",
   coverageDirectory: "coverage",
   collectCoverageFrom: ["src/**/*.{ts,tsx,js,jsx}", "!src/**/*.d.ts"],
+  setupFilesAfterEnv: ["<rootDir>/__tests__/lifecycle/setup.ts"],
 };
 export default config;

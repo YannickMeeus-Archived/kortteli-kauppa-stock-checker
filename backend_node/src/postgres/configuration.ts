@@ -14,10 +14,15 @@ class Postgres {
     this.pool = new Pool({
       connectionString: this.connectionString,
     });
+    this.pool.on("error", (e) => console.log(e.message));
   }
 
   public getConnectionString() {
     return this.connectionString;
+  }
+
+  public get sql() {
+    return this.pool;
   }
 }
 
