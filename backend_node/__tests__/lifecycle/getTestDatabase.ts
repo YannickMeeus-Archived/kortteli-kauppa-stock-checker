@@ -1,6 +1,6 @@
 import { asNumber } from "../../src/lib/asNumber";
 import { asString } from "../../src/lib/asString";
-import { Postgres } from "../../src/postgres/configuration";
+import { Postgres } from "../../src/postgres/postgres";
 
 export interface TestingDatabase {
   database: Postgres;

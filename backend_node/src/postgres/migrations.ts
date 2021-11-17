@@ -1,4 +1,4 @@
-import { Postgres } from "./configuration";
+import { Postgres } from "./postgres";
 import runner, { RunnerOption } from "node-pg-migrate";
 
 interface Opts {

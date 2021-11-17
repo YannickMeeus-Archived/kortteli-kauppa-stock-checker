@@ -15,6 +15,7 @@ beforeAll(async () => {
 
   (global as any).__DBFIXTURE__ = fixture;
 });
+
 beforeEach(async () => {
   const { database } = getTestDatabase();
   const allTables = await database.sql.query(`
