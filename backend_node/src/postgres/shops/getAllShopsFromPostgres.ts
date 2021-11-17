@@ -1,4 +1,4 @@
-import { dbShop } from "../../../__tests__/postgres/shops/models/dbShop";
+import { dbShop } from "./models/dbShop";
 import { GetAllShops, Shop } from "../../shops";
 import { Postgres } from "../postgres";
 

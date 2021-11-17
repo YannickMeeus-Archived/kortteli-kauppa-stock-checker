@@ -4,6 +4,9 @@
     "incremental": true /* Enable incremental compilation */,
     "tsBuildInfoFile": "./.tsbuildinfo" /* Specify the folder for .tsbuildinfo incremental compilation files. */,
     "outDir": "./dist" /* Specify an output folder for all emitted files. */,
-    "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */
-  }
+    "allowSyntheticDefaultImports": true /* Allow 'import x from y' when a module doesn't have a default export. */,
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["__tests__/"]
 }
