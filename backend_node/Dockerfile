@@ -18,6 +18,7 @@ RUN yarn autoclean
 FROM gcr.io/distroless/nodejs:16
 
 COPY --from=build-backend /usr/app/dist /dist
+COPY --from=build-backend /usr/app/migrations /migrations
 COPY --from=build-dependencies /usr/deps/node_modules /node_modules
 
 EXPOSE 3000

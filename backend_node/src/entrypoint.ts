@@ -11,45 +11,50 @@ import { asString } from "./lib/asString";
 import { asNumber } from "./lib/asNumber";
 
 (async () => {
-  // TODO: Remove this once live
-  if (process.env.NODE_ENV !== "production") {
-    const configurationLoadingResult = config();
-    if (configurationLoadingResult.error) {
-      throw configurationLoadingResult.error;
+  try {
+    // TODO: Remove this once live
+    if (process.env.NODE_ENV !== "production") {
+      const configurationLoadingResult = config();
+      if (configurationLoadingResult.error) {
+        throw configurationLoadingResult.error;
+      }
+      console.log("---- DEV MODE ----");
+      console.log("---- Configuration Loaded ----");
+      console.log(configurationLoadingResult.parsed);
+      console.log("------------------------------");
     }
-    console.log("---- DEV MODE ----");
-    console.log("---- Configuration Loaded ----");
-    console.log(configurationLoadingResult.parsed);
-    console.log("------------------------------");
+
+    const serverPort = process.env.PORT || 3000;
+    const apiKey = process.env.API_KEY || randomUUID();
+
+    // TODO: Implement safe configuration parser
+    const postgres = new Postgres(
+      asString(process.env.DATABASE_HOST, "DATABASE_HOST"),
+      asNumber(process.env.DATABASE_PORT, "DATABASE_PORT"),
+      asString(process.env.DATABASE_NAME, "DATABASE_NAME"),
+      asString(process.env.DATABASE_USERNAME, "DATABASE_USERNAME"),
+      asString(process.env.DATABASE_PASSWORD, "DATABASE_PASSWORD")
+    ); // TODO: Fix this up so that it blows up when it's not set
+
+    console.log("---- Postgres URL ----");
+    if (process.env.NODE_ENV !== "production") {
+      console.log(postgres.getConnectionString());
+    }
+
+    console.log("---- Migrations ----");
+    const migrations = new Migrations(postgres, root);
+    await migrations.execute();
+    const httpApi = makeHttpApi({
+      security: { apiKey },
+      database: postgres,
+    });
+
+    httpApi.listen(serverPort, () => {
+      console.log(listEndpoints(httpApi));
+      console.log(`Server is listening on port ${serverPort}`);
+    });
+  } catch (e) {
+    console.error(e);
+    throw e;
   }
-
-  const serverPort = process.env.PORT || 3000;
-  const apiKey = process.env.API_KEY || randomUUID();
-
-  // TODO: Implement safe configuration parser
-  const postgres = new Postgres(
-    asString(process.env.DATABASE_HOST, "DATABASE_HOST"),
-    asNumber(process.env.DATABASE_PORT, "DATABASE_PORT"),
-    asString(process.env.DATABASE_NAME, "DATABASE_NAME"),
-    asString(process.env.DATABASE_USERNAME, "DATABASE_USERNAME"),
-    asString(process.env.DATABASE_PASSWORD, "DATABASE_PASSWORD")
-  ); // TODO: Fix this up so that it blows up when it's not set
-
-  console.log("---- Postgres URL ----");
-  if (process.env.NODE_ENV !== "production") {
-    console.log(postgres.getConnectionString());
-  }
-
-  console.log("---- Migrations ----");
-  const migrations = new Migrations(postgres, root);
-  await migrations.execute();
-  const httpApi = makeHttpApi({
-    security: { apiKey },
-    database: postgres,
-  });
-
-  httpApi.listen(serverPort, () => {
-    console.log(listEndpoints(httpApi));
-    console.log(`Server is listening on port ${serverPort}`);
-  });
 })();
