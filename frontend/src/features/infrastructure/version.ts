@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { apiBaseUrl } from "../../lib/configuration";
 
 interface VersionResponse {
-  data: string;
+  data: { short: string; full: string };
 }
 
 export const versionApi = createApi({

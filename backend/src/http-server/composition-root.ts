@@ -12,6 +12,7 @@ import {
 } from "../postgres/shops";
 import { GetAllShopsFromPostgres } from "../postgres/shops/getAllShopsFromPostgres";
 import { DeleteShopInPostgres } from "../postgres/shops/deleteShopInPostgres";
+import cors from "cors";
 
 interface SecurityConfiguration {
   apiKey: string;
@@ -31,6 +32,7 @@ const makeHttpApi = ({ security, database: database }: HttpConfiguration) => {
   const requireApiKey = MakeRequireApiKey(apiKey);
 
   const httpApi = express();
+  httpApi.use(cors());
   httpApi.use(json());
   httpApi.use("/", makeInfrastructureRouter({ requireApiKey }));
   httpApi.use("/shops/", makeShopsRouter({ getAllShops, createNewShop }));
