@@ -1,34 +1,26 @@
-FROM ruby:3.0.2-alpine as builder
+FROM node:16-alpine AS build-backend
 
-RUN apk update && apk upgrade
-RUN apk add --update alpine-sdk postgresql-dev tzdata && rm -rf /var/cache/apk/*
+WORKDIR /usr/app/
 
-ENV APP_HOME /app
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
+COPY ./package.json ./yarn.lock ./
 
-COPY Gemfile* $APP_HOME/
-ENV RAILS_ENV=production
-RUN bundle config set without development test
-RUN bundle config set deployment true
-RUN bundle install --jobs=8
-COPY . $APP_HOME
-RUN rm -rf $APP_HOME/tmp/*
+RUN yarn install --frozen-lockfile
+COPY . ./
+RUN yarn build
 
-FROM ruby:3.0.2-alpine
-RUN apk update && apk add --no-cache --update postgresql-dev tzdata && rm -rf /var/cache/apk/*
+FROM node:16-alpine AS build-dependencies
+WORKDIR /usr/deps
 
-ENV APP_HOME /app
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
+COPY ./package.json ./yarn.lock ./
+RUN yarn install --production --frozen-lockfile
+RUN yarn autoclean
 
-COPY --from=builder /app $APP_HOME
-ENV RAILS_ENV=production
-RUN bundle config --local path vendor/bundle
+FROM gcr.io/distroless/nodejs:16
 
-RUN bundle config --local without development:test:assets
+COPY --from=build-backend /usr/app/dist /dist
+COPY --from=build-backend /usr/app/migrations /migrations
+COPY --from=build-dependencies /usr/deps/node_modules /node_modules
 
-EXPOSE 3000:3000
-CMD rm -f tmp/pids/server.pid \
-  && bundle exec rails db:migrate \
-  && bundle exec rails s -b 0.0.0.0 -p 3000
+EXPOSE 3000
+
+CMD ["dist/entrypoint.js"]

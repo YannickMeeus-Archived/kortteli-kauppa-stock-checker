@@ -1,5 +1,5 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Text, Link, Divider } from "@chakra-ui/react";
+import { Text, Link, Divider, Heading, Box } from "@chakra-ui/react";
 import { InformationCard } from "../../components/information-card";
 import { Page } from "../../components/page";
 import { PageHeader } from "../../components/page-header";
@@ -36,6 +36,21 @@ function ExplanationPage() {
           this is running against a Rails back-end, but with God as my witness I
           will wrangle the Rust compiler, and ultimately swap over.
         </Text>
+      </InformationCard>
+      <InformationCard>
+        <Text>
+          <Heading as="h2" mb="4">
+            Stats
+          </Heading>
+        </Text>
+        {data && (
+          <Text>
+            Backend:{" "}
+            <Box as="span" fontWeight="bold">
+              {data.data.short}
+            </Box>
+          </Text>
+        )}
       </InformationCard>
     </Page>
   );

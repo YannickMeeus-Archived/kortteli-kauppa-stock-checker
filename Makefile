@@ -1,6 +1,6 @@
 clean:
 	@cd ./frontend && yarn clean
-	@cd ./backend && cargo clean
+	@cd ./backend && yarn clean
 
 up:
 	@docker compose up -d
@@ -10,10 +10,10 @@ down:
 
 init:
 	@cd ./frontend && yarn install
-	@cd ./backend && ./bin/bundle install
+	@cd ./backend && yarn install
 
 dev: init up
-	npx stmux -M [ "yarn --cwd frontend start" .. "cd ./backend && rails s" ]
+	npx stmux -M [ "yarn --cwd frontend start" .. "yarn --cwd backend dev" ]
 
 deploy-frontend:
 	@cd ./frontend && yarn deploy
@@ -22,7 +22,7 @@ deploy-backend:
 	@cd ./backend && flyctl deploy
 
 build-backend:
-	@cd ./backend && cargo build --manifest-path ./backend/Cargo.toml
+	@cd ./backend && yarn build
 	
 build-backend-docker:
 	@cd ./backend && docker build .
