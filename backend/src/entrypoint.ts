@@ -12,7 +12,6 @@ import { asNumber } from "./lib/asNumber";
 
 (async () => {
   try {
-    // TODO: Remove this once live
     if (process.env.NODE_ENV !== "production") {
       const configurationLoadingResult = config();
       if (configurationLoadingResult.error) {
@@ -27,14 +26,13 @@ import { asNumber } from "./lib/asNumber";
     const serverPort = process.env.PORT || 3000;
     const apiKey = process.env.API_KEY || randomUUID();
 
-    // TODO: Implement safe configuration parser
     const postgres = new Postgres(
       asString(process.env.DATABASE_HOST, "DATABASE_HOST"),
       asNumber(process.env.DATABASE_PORT, "DATABASE_PORT"),
       asString(process.env.DATABASE_NAME, "DATABASE_NAME"),
       asString(process.env.DATABASE_USERNAME, "DATABASE_USERNAME"),
       asString(process.env.DATABASE_PASSWORD, "DATABASE_PASSWORD")
-    ); // TODO: Fix this up so that it blows up when it's not set
+    );
 
     console.log("---- Postgres URL ----");
     if (process.env.NODE_ENV !== "production") {
