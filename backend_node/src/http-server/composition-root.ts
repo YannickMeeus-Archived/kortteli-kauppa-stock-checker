@@ -5,7 +5,7 @@ import { makeInfrastructureRouter } from "./infrastructure/pingRouter";
 import { MakeRequireApiKey } from "./middleware/requireApiKey";
 import { makeShopsRouter } from "./shops/shopsRouter";
 import { makeSingleShopRouter } from "./shops/singleShopRouter";
-import { Postgres } from "../postgres/configuration";
+import { Postgres } from "../postgres/postgres";
 import {
   CreateNewShopInPostgres,
   GetSingleShopFromPostgres,

@@ -1,6 +1,6 @@
-import { parseOneRow } from "../../../__tests__/postgres/shops/parseOneRow";
+import { parseOneRow } from "../lib/parseOneRow";
 import { GetSingleShop, Shop } from "../../shops";
-import { Postgres } from "../configuration";
+import { Postgres } from "../postgres";
 
 class GetSingleShopFromPostgres implements GetSingleShop {
   constructor(private readonly postgres: Postgres) {}

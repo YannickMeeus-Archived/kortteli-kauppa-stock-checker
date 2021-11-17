@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Postgres } from "./postgres/configuration";
+import { Postgres } from "./postgres/postgres";
 import { path as root } from "app-root-path";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { config } from "dotenv";

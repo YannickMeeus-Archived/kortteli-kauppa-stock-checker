@@ -1,5 +1,5 @@
-import { Shop } from "../../../src/shops";
-import { dbShop } from "./models/dbShop";
+import { Shop } from "../../shops";
+import { dbShop } from "../../../__tests__/postgres/shops/models/dbShop";
 
 const parseOneRow: (rows: dbShop[]) => Shop = (rows) => {
   if (rows.length != 1) {

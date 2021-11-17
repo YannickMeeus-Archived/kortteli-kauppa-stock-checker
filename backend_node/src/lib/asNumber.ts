@@ -1,4 +1,5 @@
 import { Guard } from "./guard";
+
 import isNumberCheck from "is-number";
 const isNumber = (value: unknown): value is number => {
   return isNumberCheck(value);

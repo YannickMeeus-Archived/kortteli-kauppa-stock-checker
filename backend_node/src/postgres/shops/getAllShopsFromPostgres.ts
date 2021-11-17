@@ -1,6 +1,6 @@
 import { dbShop } from "../../../__tests__/postgres/shops/models/dbShop";
 import { GetAllShops, Shop } from "../../shops";
-import { Postgres } from "../configuration";
+import { Postgres } from "../postgres";
 
 class GetAllShopsFromPostgres implements GetAllShops {
   constructor(private readonly database: Postgres) {}
