@@ -18,6 +18,16 @@
     "fmt": "eslint . --ext .ts --fix",
     "migrate": "node-pg-migrate"
   },
+  "dependencies": {
+    "app-root-path": "^3.0.0",
+    "body-parser": "^1.19.0",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-list-endpoints": "^6.0.0",
+    "is-number": "^7.0.0",
+    "node-pg-migrate": "^6.0.0",
+    "pg": "^8.7.1"
+  },
   "devDependencies": {
     "@tsconfig/node16": "^1.0.2",
     "@types/app-root-path": "^1.2.4",
@@ -30,7 +40,6 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "~5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
-    "app-root-path": "^3.0.0",
     "eslint": "^8.1.0",
     "eslint-config-prettier": "~8.3.0",
     "eslint-plugin-jest": "^25.2.2",
@@ -41,14 +50,5 @@
     "ts-jest": "~27.0.5",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.4"
-  },
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "express-list-endpoints": "^6.0.0",
-    "is-number": "^7.0.0",
-    "node-pg-migrate": "^6.0.0",
-    "pg": "^8.7.1"
   }
 }

@@ -1,7 +1,7 @@
 class Guard {
-  static againstNullOrUndefined(value: unknown) {
+  static againstNullOrUndefined(value: unknown, context: string) {
     if (value === null || value === undefined) {
-      throw new Error("Unexpected null or undefined value");
+      throw new Error(`Unexpected null or undefined value. context=${context}`);
     }
   }
 }

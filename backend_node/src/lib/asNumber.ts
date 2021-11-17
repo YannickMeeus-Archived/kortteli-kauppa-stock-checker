@@ -4,8 +4,8 @@ import isNumberCheck from "is-number";
 const isNumber = (value: unknown): value is number => {
   return isNumberCheck(value);
 };
-const asNumber = (value: unknown): number => {
-  Guard.againstNullOrUndefined(value);
+const asNumber = (value: unknown, context: string): number => {
+  Guard.againstNullOrUndefined(value, context);
   if (isNumber(value)) {
     return Number(value);
   }

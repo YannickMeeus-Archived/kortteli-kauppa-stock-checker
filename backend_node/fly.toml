@@ -1,6 +1,6 @@
 # fly.toml file generated for kortteli-kauppa-stock-checker-backend on 2021-07-04T19:37:45+03:00
 
-app = "kortteli-kauppa-stock-checker-backend"
+app = "kortteli-kauppa-stock-checker-backend-node"
 
 kill_signal = "SIGINT"
 kill_timeout = 5
