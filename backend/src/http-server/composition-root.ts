@@ -2,7 +2,7 @@ import { json } from "body-parser";
 import express from "express";
 
 import { makeInfrastructureRouter } from "./infrastructure/pingRouter";
-import { MakeRequireApiKey } from "./middleware/requireApiKey";
+import { makeRequireApiKey } from "./middleware/requireApiKey";
 import { makeShopsRouter } from "./shops/shopsRouter";
 import { makeSingleShopRouter } from "./shops/singleShopRouter";
 import { Postgres } from "../postgres/postgres";
@@ -29,7 +29,7 @@ const makeHttpApi = ({ security, database: database }: HttpConfiguration) => {
   const getSingleShop = new GetSingleShopFromPostgres(database);
   const deleteShop = new DeleteShopInPostgres(database);
 
-  const requireApiKey = MakeRequireApiKey(apiKey);
+  const requireApiKey = makeRequireApiKey(apiKey);
 
   const httpApi = express();
   httpApi.use(cors());
