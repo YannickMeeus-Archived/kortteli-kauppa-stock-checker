@@ -5,7 +5,8 @@ import { Page } from "../../components/page";
 import { PageHeader } from "../../components/page-header";
 import { useGetVersionQuery } from "../../features/infrastructure/version";
 
-interface StatsCardProps {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+interface _StatsCardProps {
   title: string;
   stat: string;
 }

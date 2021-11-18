@@ -19,7 +19,6 @@ test: init up
 	yarn --cwd frontend test  --watchAll=false --passWithNoTests
 	yarn --cwd backend unit
 
-
 deploy-frontend:
 	@cd ./frontend && yarn deploy
 	
