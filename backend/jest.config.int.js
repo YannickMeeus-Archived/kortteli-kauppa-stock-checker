@@ -3,7 +3,7 @@ const baseConfig = require('./jest.config')
 const config = {
   ...baseConfig,
   testRegex: "\\.int.test\\.ts$",
-  setupFilesAfterEnv: [],
+  maxWorkers: 1,
 };
 
 module.exports = config;

@@ -8,12 +8,16 @@ import path from "path";
 config({ path: path.join(RootPath.path, ".env.test") });
 
 beforeAll(async () => {
-  const fixture = await makeTestingDatabase();
-  const migration = new Migrations(fixture.database, RootPath.path);
-  await migration.execute({ silent: true });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  try {
+    const fixture = await makeTestingDatabase();
+    const migration = new Migrations(fixture.database, RootPath.path);
+    await migration.execute({ silent: true });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-  (global as any).__DBFIXTURE__ = fixture;
+    (global as any).__DBFIXTURE__ = fixture;
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 beforeEach(async () => {
