@@ -1,6 +1,4 @@
-import type { Config } from "@jest/types";
-
-const config: Config.InitialOptions = {
+const config = {
   testEnvironment: "node",
   transform: {
     "^.+\\.tsx?$": "ts-jest",
@@ -11,4 +9,5 @@ const config: Config.InitialOptions = {
   collectCoverageFrom: ["src/**/*.{ts,tsx,js,jsx}", "!src/**/*.d.ts"],
   setupFilesAfterEnv: ["<rootDir>/__tests__/lifecycle/setup.ts"],
 };
-export default config;
+
+module.exports = config;

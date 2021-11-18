@@ -1,15 +1,15 @@
 import { Guard } from "./guard";
+import { ParsingError } from "./parsing/parsingError";
 
 const isString = (value: unknown): value is string => {
   return typeof value === "string";
 };
-const asString = (value: unknown, context: string): string => {
+const asString = (value: unknown, context: unknown): string => {
   Guard.againstNullOrUndefined(value, context);
   if (isString(value)) {
     return value;
   }
-  // TODO: Needs a Parsing Error
-  throw new Error(`Failed to parse '${value}' as String`);
+  throw new ParsingError(asString.name, value);
 };
 
 export { asString };

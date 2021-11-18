@@ -1,7 +1,9 @@
+import { UnexpectedUndefinedError } from "./parsing/unexpectedUndefinedError";
+
 class Guard {
-  static againstNullOrUndefined(value: unknown, context: string) {
+  static againstNullOrUndefined(value: unknown, context: unknown) {
     if (value === null || value === undefined) {
-      throw new Error(`Unexpected null or undefined value. context=${context}`);
+      throw new UnexpectedUndefinedError(context);
     }
   }
 }
