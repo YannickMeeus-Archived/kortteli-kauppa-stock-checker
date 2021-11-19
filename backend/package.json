@@ -28,7 +28,8 @@
     "git-rev-sync": "^3.0.1",
     "is-number": "^7.0.0",
     "node-pg-migrate": "^6.0.0",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "pg-boss": "^6.2.2"
   },
   "devDependencies": {
     "@jest-mock/express": "^1.4.5",
