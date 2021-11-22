@@ -7,8 +7,8 @@ import { randomUUID } from "crypto";
 import listEndpoints from "express-list-endpoints";
 import { makeHttpApi } from "./http-server/composition-root";
 import { Migrations } from "./postgres/migrations";
-import { asString } from "./lib/asString";
-import { asNumber } from "./lib/asNumber";
+import { asNumber } from "./lib/parsing/asNumber";
+import { asString } from "./lib/parsing/asString";
 
 (async () => {
   try {

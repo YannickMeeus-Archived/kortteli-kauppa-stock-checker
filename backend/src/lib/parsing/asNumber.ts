@@ -1,7 +1,7 @@
-import { Guard } from "./guard";
+import { Guard } from "../guard";
 
 import isNumberCheck from "is-number";
-import { ParsingError } from "./parsing/parsingError";
+import { ParsingError } from "./parsingError";
 const isNumber = (value: unknown): value is number => {
   return isNumberCheck(value);
 };

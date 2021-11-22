@@ -1,5 +1,5 @@
-import { Guard } from "./guard";
-import { ParsingError } from "./parsing/parsingError";
+import { Guard } from "../guard";
+import { ParsingError } from "./parsingError";
 
 const isString = (value: unknown): value is string => {
   return typeof value === "string";

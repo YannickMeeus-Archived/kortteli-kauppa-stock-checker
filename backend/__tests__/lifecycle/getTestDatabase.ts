@@ -1,4 +1,4 @@
-import { asNumber } from "../../src/lib/asNumber";
+import { asNumber } from "../../src/lib/parsing/asNumber";
 import { asString } from "../../src/lib/asString";
 import { Postgres } from "../../src/postgres/postgres";
 

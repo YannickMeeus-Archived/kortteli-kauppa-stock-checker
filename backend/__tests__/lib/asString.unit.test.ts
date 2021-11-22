@@ -1,6 +1,8 @@
-import { asString } from "../../src/lib/asString";
-import { ParsingError } from "../../src/lib/parsing/parsingError";
-import { UnexpectedUndefinedError } from "../../src/lib/parsing/unexpectedUndefinedError";
+import {
+  asString,
+  UnexpectedUndefinedError,
+  ParsingError,
+} from "../../src/lib/parsing";
 
 describe("asString", () => {
   it("should return the value if it is a number", () => {
