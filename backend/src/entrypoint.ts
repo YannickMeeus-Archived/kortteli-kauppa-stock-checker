@@ -2,13 +2,14 @@ import { Postgres } from "./postgres/postgres";
 import { path as root } from "app-root-path";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { config } from "dotenv";
-
+import cronTime from "cron-time-generator";
 import { randomUUID } from "crypto";
 import listEndpoints from "express-list-endpoints";
 import { makeHttpApi } from "./http-server/composition-root";
 import { Migrations } from "./postgres/migrations";
 import { asNumber } from "./lib/parsing/asNumber";
 import { asString } from "./lib/parsing/asString";
+import { RetrieveInventoryWorker } from "./workers/retrieve-inventory-worker/retrieveInventoryWorker";
 
 (async () => {
   try {
@@ -47,6 +48,14 @@ import { asString } from "./lib/parsing/asString";
       database: postgres,
     });
 
+    console.log("---- Workers ----");
+
+    const retrieveInventoryWorker = new RetrieveInventoryWorker(
+      postgres,
+      cronTime.everyMinute()
+    );
+
+    await retrieveInventoryWorker.start();
     httpApi.listen(serverPort, () => {
       console.log(listEndpoints(httpApi));
       console.log(`Server is listening on port ${serverPort}`);

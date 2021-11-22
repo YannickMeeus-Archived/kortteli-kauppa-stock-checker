@@ -1407,6 +1407,11 @@ cron-parser@^4.0.0:
   dependencies:
     luxon "^1.26.0"
 
+cron-time-generator@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/cron-time-generator/-/cron-time-generator-1.2.2.tgz#96d7306121db6d2a0af5315d67a153dbbcd6c06a"
+  integrity sha512-xC7TXyx/mTbY1cKcuR4YR1bxLwUWxX1gbuPrlgAph3jgajA1Iwhxti51Oh6C/qE5mYNFxjqTUd6gRt8oqlOjGA==
+
 cross-spawn@^7.0.2, cross-spawn@^7.0.3:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
