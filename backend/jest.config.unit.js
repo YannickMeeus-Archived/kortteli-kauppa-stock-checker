@@ -3,7 +3,7 @@ const baseConfig = require('./jest.config')
 const config = {
   ...baseConfig,
   testRegex: "\\.unit.test\\.ts$",
-  setupFilesAfterEnv: [],
+  setupFilesAfterEnv: ["jest-extended/all"],
 };
 
 module.exports = config;

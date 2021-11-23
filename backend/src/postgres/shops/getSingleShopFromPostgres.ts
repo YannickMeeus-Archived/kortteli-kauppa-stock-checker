@@ -1,4 +1,4 @@
-import { parseOneRow } from "../lib/parseOneRow";
+import { parseOneRow } from "../lib/parseShopRow";
 import { GetSingleShop, Shop } from "../../shops";
 import { Postgres } from "../postgres";
 

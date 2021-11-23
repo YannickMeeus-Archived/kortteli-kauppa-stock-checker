@@ -2,13 +2,15 @@ import { Postgres } from "./postgres/postgres";
 import { path as root } from "app-root-path";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 import { config } from "dotenv";
-
+import cronTime from "cron-time-generator";
 import { randomUUID } from "crypto";
 import listEndpoints from "express-list-endpoints";
 import { makeHttpApi } from "./http-server/composition-root";
 import { Migrations } from "./postgres/migrations";
-import { asString } from "./lib/asString";
-import { asNumber } from "./lib/asNumber";
+import { asNumber } from "./lib/parsing/asNumber";
+import { asString } from "./lib/parsing/asString";
+import { makeRetrieveInventoryWorker } from "./workers/retrieve-inventory-worker/composition-root";
+import CronTime from "cron-time-generator";
 
 (async () => {
   try {
@@ -46,6 +48,16 @@ import { asNumber } from "./lib/asNumber";
       security: { apiKey },
       database: postgres,
     });
+
+    console.log("---- Workers ----");
+
+    const retrieveInventoryWorker = makeRetrieveInventoryWorker({
+      database: postgres,
+      kortteliKauppaBaseUrl: "http://188.166.11.123",
+      schedule: CronTime.everyHourAt(30),
+    });
+
+    await retrieveInventoryWorker.start();
 
     httpApi.listen(serverPort, () => {
       console.log(listEndpoints(httpApi));

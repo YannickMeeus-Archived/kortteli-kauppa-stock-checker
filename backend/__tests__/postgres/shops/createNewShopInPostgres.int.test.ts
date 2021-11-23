@@ -13,7 +13,7 @@ describe("createNewShopInPostgres", () => {
     expect(shop.id).toBeDefined();
     expect(shop.name).toBe("Test Shop Alpha");
   });
-  it("should throw an error stating the record already exists if we try to insert the same shop multipe times", async () => {
+  it("should throw an error stating the record already exists if we try to insert the same shop multiple times", async () => {
     const createShop = createSut();
     const payload = { name: "Shop Name" };
 
