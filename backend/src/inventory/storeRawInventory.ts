@@ -8,9 +8,6 @@ interface StoreRawInventory {
 class StoreRawInventoryInMemory implements StoreRawInventory {
   constructor(private readonly storeInventories: Map<string, CabinetItem[]>) {}
   async forShop({ id }: ShopId, rawInventory: CabinetItem[]): Promise<void> {
-    console.log(
-      `Storing ${rawInventory.length} items for shop with id '${id}'`
-    );
     this.storeInventories.set(id, rawInventory);
   }
 }

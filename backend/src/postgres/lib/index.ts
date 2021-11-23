@@ -1,1 +1,1 @@
-export * from './parseOneRow';
+export * from "./parseShopRow";

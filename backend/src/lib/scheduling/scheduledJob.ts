@@ -16,21 +16,17 @@ class ScheduledJob {
   private readonly schedule: string;
   private handler: PgBoss.SubscribeHandler<unknown, unknown>;
 
-  constructor(database: Postgres, scheduleName: string, schedule: string) {
+  constructor(
+    database: Postgres,
+    scheduleName: string,
+    schedule: string,
+    handler: PgBoss.SubscribeHandler<unknown, unknown>
+  ) {
     this.jobRunner = new PgBoss(database.getConnectionString());
     this.scheduleName = scheduleName;
     this.schedule = schedule;
-    this.handler = (_) => {
-      throw new Error(`Handler not set for schedule ${scheduleName}`);
-    };
-    this.jobRunner.on("error", (error) => console.error(error));
-  }
-
-  public withHandler(
-    handler: PgBoss.SubscribeHandler<unknown, unknown>
-  ): ScheduledJob {
     this.handler = handler;
-    return this;
+    this.jobRunner.on("error", (error) => console.error(error));
   }
 
   async start(): Promise<StopScheduler> {

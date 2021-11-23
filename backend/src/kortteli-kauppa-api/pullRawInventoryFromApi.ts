@@ -1,6 +1,6 @@
 import got from "got";
-import { CabinetItem } from "../inventory/models/cabinetItem";
-import { PullRawInventory, Query } from "../inventory/pullRawInventory";
+import { CabinetItem } from "../inventory/models/";
+import { PullRawInventory, Query } from "../inventory/";
 import { GetSingleShop } from "../shops";
 import { ShopNotFoundError } from "../shops/errors/ShopNotFoundError";
 
@@ -17,8 +17,9 @@ class PullRawInventoryFromExternalApi implements PullRawInventory {
 
     const results = await got(
       `${this.baseUrl}/Kortteliapp/api/cabin/list/v2/${shop.name}`
-    ).json();
-    return results as CabinetItem[];
+    ).json<CabinetItem[]>();
+
+    return results;
   }
 }
 

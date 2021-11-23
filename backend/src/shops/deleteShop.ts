@@ -1,6 +1,4 @@
-import { Shop } from "./models/shop";
-
-export type ShopId = Pick<Shop, "id">;
+import { Shop, ShopId } from "./models/shop";
 
 export interface DeleteShop {
   execute(shop: ShopId): Promise<void>;

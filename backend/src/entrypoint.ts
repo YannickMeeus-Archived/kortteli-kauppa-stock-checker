@@ -9,6 +9,8 @@ import { makeHttpApi } from "./http-server/composition-root";
 import { Migrations } from "./postgres/migrations";
 import { asNumber } from "./lib/parsing/asNumber";
 import { asString } from "./lib/parsing/asString";
+import { makeRetrieveInventoryWorker } from "./workers/retrieve-inventory-worker/composition-root";
+import CronTime from "cron-time-generator";
 
 (async () => {
   try {
@@ -48,6 +50,14 @@ import { asString } from "./lib/parsing/asString";
     });
 
     console.log("---- Workers ----");
+
+    const retrieveInventoryWorker = makeRetrieveInventoryWorker({
+      database: postgres,
+      kortteliKauppaBaseUrl: "http://188.166.11.123",
+      schedule: CronTime.everyHourAt(30),
+    });
+
+    await retrieveInventoryWorker.start();
 
     httpApi.listen(serverPort, () => {
       console.log(listEndpoints(httpApi));

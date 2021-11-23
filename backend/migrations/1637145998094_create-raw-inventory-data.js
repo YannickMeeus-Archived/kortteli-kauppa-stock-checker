@@ -9,8 +9,8 @@ exports.up = pgm => {
     id         uuid DEFAULT gen_random_uuid() NOT NULL CONSTRAINT ingested_product_informations_pkey  PRIMARY KEY,
     shop       uuid,
     raw_data   jsonb,
-    created_at TIMESTAMP(6)                   NOT NULL,
-    updated_at TIMESTAMP(6)                   NOT NULL
+    created_at TIMESTAMP(6)                   NOT NULL DEFAULT now(),
+    updated_at TIMESTAMP(6)                   NOT NULL DEFAULT now()
 );
   `);
   pgm.sql(`

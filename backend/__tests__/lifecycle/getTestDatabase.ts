@@ -1,5 +1,5 @@
+import { asString } from "../../src/lib/parsing";
 import { asNumber } from "../../src/lib/parsing/asNumber";
-import { asString } from "../../src/lib/asString";
 import { Postgres } from "../../src/postgres/postgres";
 
 export interface TestingDatabase {
@@ -8,11 +8,11 @@ export interface TestingDatabase {
 }
 export const makeTestingDatabase = async (): Promise<TestingDatabase> => {
   const database = new Postgres(
-    asString(process.env.DATABASE_HOST),
-    asNumber(process.env.DATABASE_PORT),
-    asString(process.env.DATABASE_NAME),
-    asString(process.env.DATABASE_USERNAME),
-    asString(process.env.DATABASE_PASSWORD)
+    asString(process.env.DATABASE_HOST, "DATABASE_HOST"),
+    asNumber(process.env.DATABASE_PORT, "DATABASE_PORT"),
+    asString(process.env.DATABASE_NAME, "DATABASE_NAME"),
+    asString(process.env.DATABASE_USERNAME, "DATABASE_USERNAME"),
+    asString(process.env.DATABASE_PASSWORD, "DATABASE_PASSWORD")
   );
 
   const stop = async (): Promise<void> => {
