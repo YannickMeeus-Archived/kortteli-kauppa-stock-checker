@@ -9,7 +9,6 @@ import { makeHttpApi } from "./http-server/composition-root";
 import { Migrations } from "./postgres/migrations";
 import { asNumber } from "./lib/parsing/asNumber";
 import { asString } from "./lib/parsing/asString";
-import { RetrieveInventoryWorker } from "./workers/retrieve-inventory-worker/retrieveInventoryWorker";
 
 (async () => {
   try {
@@ -50,12 +49,6 @@ import { RetrieveInventoryWorker } from "./workers/retrieve-inventory-worker/ret
 
     console.log("---- Workers ----");
 
-    const retrieveInventoryWorker = new RetrieveInventoryWorker(
-      postgres,
-      cronTime.everyMinute()
-    );
-
-    await retrieveInventoryWorker.start();
     httpApi.listen(serverPort, () => {
       console.log(listEndpoints(httpApi));
       console.log(`Server is listening on port ${serverPort}`);

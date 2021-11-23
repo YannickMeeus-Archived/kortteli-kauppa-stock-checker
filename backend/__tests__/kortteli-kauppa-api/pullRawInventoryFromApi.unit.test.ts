@@ -3,7 +3,7 @@ import nock from "nock";
 import {
   singleCabinetItem,
   singleCabinetItemReturned,
-} from "./fixtures/singleCabinetItemReturned";
+} from "../fixtures/singleCabinetItemReturned";
 import { GetSingleShopFromMemory, Shop } from "../../src/shops";
 import { ShopNotFoundError } from "../../src/shops/errors/ShopNotFoundError";
 
