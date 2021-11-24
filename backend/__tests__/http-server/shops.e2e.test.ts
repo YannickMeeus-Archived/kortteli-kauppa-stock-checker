@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import Request from "supertest";
 import { makeFakeHttpApi } from "./makeTestingApi";
 
@@ -27,6 +28,30 @@ describe("Shop Routes", () => {
       expect(response.status).toBe(201);
       expect(response.body.data).toHaveProperty("id");
       expect(response.body.data.name).toBe("Shop 1");
+    });
+    it("should reject calls without an x-api-key header", async () => {
+      const app = makeFakeHttpApi();
+
+      const existingShop = { name: "Existing Shop" };
+      await Request(app).post("/shops").send(existingShop);
+
+      const { statusCode } = await Request(app).delete(
+        "/shops/non-existent-id"
+      );
+
+      expect(statusCode).toEqual(401);
+    });
+    it("should reject calls with an invalid x-api-key header", async () => {
+      const app = makeFakeHttpApi();
+
+      const existingShop = { name: "Existing Shop" };
+      await Request(app).post("/shops").send(existingShop);
+
+      const { statusCode } = await Request(app)
+        .delete(`/shops/${randomUUID()}`)
+        .set("x-api-key", "foo");
+
+      expect(statusCode).toEqual(401);
     });
   });
 });

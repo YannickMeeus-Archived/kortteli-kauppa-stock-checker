@@ -62,11 +62,14 @@ describe("Single Shop Routes", () => {
     it("should reject calls without an x-api-key header", async () => {
       const app = makeFakeHttpApi();
 
-      const existingShop = { name: "Existing Shop" };
-      await Request(app).post("/shops").send(existingShop);
-
+      const expectedShop = { name: "Created Shop" };
+      const {
+        body: {
+          data: { id: createdShopId },
+        },
+      } = await Request(app).post("/shops").send(expectedShop);
       const { statusCode } = await Request(app).delete(
-        "/shops/non-existent-id"
+        `/shops/${createdShopId}`
       );
 
       expect(statusCode).toEqual(401);

@@ -1,5 +1,6 @@
 import { RequestHandler, Router } from "express";
 import { short, tag } from "git-rev-sync";
+
 interface ApplicableMiddleware {
   requireApiKey: RequestHandler;
 }
