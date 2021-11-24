@@ -4,7 +4,7 @@ import {
   GetRawInventoryFromPostgres,
 } from "../../../src/postgres/inventory";
 import { CreateNewShopInPostgres } from "../../../src/postgres/shops";
-import { singleCabinetItem } from "../../fixtures/singleCabinetItemReturned";
+import { singleCabinetItem } from "../../fixtures/";
 import { getTestDatabase } from "../../lifecycle/getTestDatabase";
 
 describe("GetRawInventoryFromPostgres", () => {

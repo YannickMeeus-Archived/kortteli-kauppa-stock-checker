@@ -1,6 +1,6 @@
 import { CreateNewShopInPostgres } from "../../../src/postgres/shops";
 import { getTestDatabase } from "../../lifecycle/getTestDatabase";
-import { ShopAlreadyExistsError } from "../../../src/shops/errors/ShopAlreadyExistsError";
+import { ShopAlreadyExistsError } from "../../../src/shops/errors";
 
 describe("createNewShopInPostgres", () => {
   const createSut = () => {

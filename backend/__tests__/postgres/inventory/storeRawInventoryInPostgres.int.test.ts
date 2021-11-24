@@ -1,11 +1,13 @@
 import { randomUUID } from "crypto";
-import { CabinetItem } from "../../../src/inventory/models/cabinetItem";
-import { GetRawInventoryFromPostgres } from "../../../src/postgres/inventory/getRawInventoryFromPostgres";
-import { StoreRawInventoryInPostgres } from "../../../src/postgres/inventory/storeRawInventoryInPostgres";
+import { CabinetItem } from "../../../src/inventory";
+import {
+  GetRawInventoryFromPostgres,
+  StoreRawInventoryInPostgres,
+} from "../../../src/postgres/inventory";
 import { CreateNewShopInPostgres } from "../../../src/postgres/shops";
-import { singleCabinetItem } from "../../fixtures/singleCabinetItemReturned";
+import { singleCabinetItem } from "../../fixtures";
 import { getTestDatabase } from "../../lifecycle/getTestDatabase";
-import "jest-extended";
+
 describe("StoreRawInventoryInPostgres", () => {
   const createSutAndFixtures = () => {
     const { database } = getTestDatabase();

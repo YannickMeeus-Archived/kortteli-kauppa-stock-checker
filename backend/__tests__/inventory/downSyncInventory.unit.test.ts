@@ -1,9 +1,11 @@
-import { DownSyncInventory } from "../../src/inventory/downSyncInventory";
-import { CabinetItem } from "../../src/inventory/models/cabinetItem";
-import { PullRawInventoryFromMemory } from "../../src/inventory/pullRawInventory";
-import { StoreRawInventoryInMemory } from "../../src/inventory/storeRawInventory";
-import { GetAllShopsFromMemory, Shop } from "../../src/shops";
-import { singleCabinetItem } from "../fixtures/singleCabinetItemReturned";
+import {
+  CabinetItem,
+  PullRawInventoryFromMemory,
+  StoreRawInventoryInMemory,
+  DownSyncInventory,
+} from "../../src/inventory";
+import { Shop, GetAllShopsFromMemory } from "../../src/shops";
+import { singleCabinetItem } from "../fixtures";
 
 describe("DownSyncInventory", () => {
   const firstShop = new Shop(

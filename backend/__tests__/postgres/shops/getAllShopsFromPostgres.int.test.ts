@@ -1,5 +1,7 @@
-import { CreateNewShopInPostgres } from "../../../src/postgres/shops";
-import { GetAllShopsFromPostgres } from "../../../src/postgres/shops/getAllShopsFromPostgres";
+import {
+  CreateNewShopInPostgres,
+  GetAllShopsFromPostgres,
+} from "../../../src/postgres/shops";
 import { getTestDatabase } from "../../lifecycle/getTestDatabase";
 
 describe("GetAllShopsFromPostgres", () => {

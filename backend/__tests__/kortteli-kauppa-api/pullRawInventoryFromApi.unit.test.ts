@@ -1,11 +1,8 @@
-import { PullRawInventoryFromExternalApi } from "../../src/kortteli-kauppa-api/pullRawInventoryFromApi";
 import nock from "nock";
-import {
-  singleCabinetItem,
-  singleCabinetItemReturned,
-} from "../fixtures/singleCabinetItemReturned";
-import { GetSingleShopFromMemory, Shop } from "../../src/shops";
-import { ShopNotFoundError } from "../../src/shops/errors/ShopNotFoundError";
+import { PullRawInventoryFromExternalApi } from "../../src/kortteli-kauppa-api";
+import { Shop, GetSingleShopFromMemory } from "../../src/shops";
+import { ShopNotFoundError } from "../../src/shops/errors/";
+import { singleCabinetItemReturned, singleCabinetItem } from "../fixtures";
 
 describe("pullRawInventoryFromApi", () => {
   const testBaseUrl = "http://www.kk-api.test";

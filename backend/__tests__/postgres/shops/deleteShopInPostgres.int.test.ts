@@ -1,8 +1,8 @@
 import {
   CreateNewShopInPostgres,
   GetSingleShopFromPostgres,
+  DeleteShopInPostgres,
 } from "../../../src/postgres/shops";
-import { DeleteShopInPostgres } from "../../../src/postgres/shops/deleteShopInPostgres";
 import { getTestDatabase } from "../../lifecycle/getTestDatabase";
 
 describe("DeleteShopInPostgres", () => {

@@ -1,5 +1,4 @@
-import { asString } from "../../src/lib/parsing";
-import { asNumber } from "../../src/lib/parsing/asNumber";
+import { asString, asNumber } from "../../src/lib/parsing";
 import { Postgres } from "../../src/postgres/postgres";
 
 export interface TestingDatabase {
