@@ -1,1 +1,1 @@
-export * from './singleCabinetItemReturned';
+export * from "./singleCabinetItemReturned";
