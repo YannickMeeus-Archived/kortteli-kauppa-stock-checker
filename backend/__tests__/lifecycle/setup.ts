@@ -1,5 +1,5 @@
 import RootPath from "app-root-path";
-import { Migrations } from "../../src/postgres/migrations";
+import { Migrations } from "../../src/ports/postgres/migrations";
 import { getTestDatabase, makeTestingDatabase } from "./getTestDatabase";
 
 import { config } from "dotenv";
@@ -13,6 +13,7 @@ beforeAll(async () => {
   await migration.execute({ silent: true });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (global as any).__DBFIXTURE__ = fixture;
 });
 

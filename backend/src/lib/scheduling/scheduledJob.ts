@@ -1,4 +1,4 @@
-import { Postgres } from "../../postgres/postgres";
+import { Postgres } from "../../ports/postgres/postgres";
 import PgBoss from "pg-boss";
 
 type StopScheduler = (

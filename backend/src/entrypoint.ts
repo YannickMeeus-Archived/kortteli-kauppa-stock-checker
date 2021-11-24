@@ -1,16 +1,14 @@
-import { Postgres } from "./postgres/postgres";
+import CronTime from "cron-time-generator";
 import { path as root } from "app-root-path";
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import { config } from "dotenv";
-import cronTime from "cron-time-generator";
 import { randomUUID } from "crypto";
 import listEndpoints from "express-list-endpoints";
-import { makeHttpApi } from "./http-server/composition-root";
-import { Migrations } from "./postgres/migrations";
-import { asNumber } from "./lib/parsing/asNumber";
-import { asString } from "./lib/parsing/asString";
-import { makeRetrieveInventoryWorker } from "./workers/retrieve-inventory-worker/composition-root";
-import CronTime from "cron-time-generator";
+
+import { Postgres } from "./ports/postgres/postgres";
+import { makeHttpApi } from "./apps/http-server/composition-root";
+import { Migrations } from "./ports/postgres/migrations";
+import { asNumber, asString } from "./lib/parsing";
+import { makeRetrieveInventoryWorker } from "./apps/workers/retrieve-inventory-worker/composition-root";
 
 (async () => {
   try {
