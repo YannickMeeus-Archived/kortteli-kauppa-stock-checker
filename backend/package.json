@@ -16,7 +16,8 @@
     "build": "tsc -p ./tsconfig.build.json",
     "lint": "eslint . --ext .ts",
     "fmt": "eslint . --ext .ts --fix",
-    "migrate": "node-pg-migrate"
+    "migrate": "node-pg-migrate",
+    "backfill": "ts-node ./tools/backfill-production-to-dev"
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
@@ -44,6 +45,7 @@
     "@types/is-number": "^7.0.1",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.6",
+    "@types/pg-format": "^1.0.2",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "~5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
@@ -53,6 +55,7 @@
     "jest": "~27.2.0",
     "jest-extended": "^1.1.0",
     "nock": "^13.2.1",
+    "pg-format": "^1.0.4",
     "prettier": "~2.4.1",
     "rimraf": "~3.0.2",
     "supertest": "^6.1.6",
