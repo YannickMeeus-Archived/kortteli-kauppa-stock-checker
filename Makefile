@@ -44,5 +44,8 @@ deploy: deploy-frontend deploy-backend
 browse:
 	@open https://korttelikauppastockchecker.sillygoose.io/
 
+backfill:
+	yarn --cwd backend backfill
+
 portal:
 	@flyctl dashboard
