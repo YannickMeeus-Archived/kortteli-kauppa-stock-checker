@@ -23,7 +23,6 @@ EXECUTE PROCEDURE trigger_set_updated_at_timestamp();
 };
 
 exports.down = pgm => {
-  pgm.sql(`DROP TRIGGER set_updated_on_raw_inventory_data ON raw_inventory_data;`)
   pgm.sql(`
     DROP TABLE IF EXISTS raw_inventory_data;
   `)

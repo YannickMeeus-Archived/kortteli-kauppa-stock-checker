@@ -1,5 +1,5 @@
 import { ShopId } from "../shops";
-import { CabinetItem } from "./models/cabinetItem";
+import { CabinetItem } from "./models/raw/cabinetItem";
 
 interface StoreRawInventory {
   forShop(id: ShopId, rawInventory: CabinetItem[]): Promise<void>;
