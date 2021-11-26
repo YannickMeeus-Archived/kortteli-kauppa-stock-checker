@@ -1,4 +1,4 @@
-import { CabinetItem } from "../../../domain/inventory/models/raw/cabinetItem";
+import { CabinetItem } from "../../../domain/inventory/models/snapshots/cabinetItem";
 import { StoreRawInventory } from "../../../domain/inventory/storeRawInventory";
 import { ShopId } from "../../../domain/shops";
 import { Postgres } from "../postgres";

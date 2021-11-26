@@ -1,5 +1,5 @@
 import { Shop } from "../shops";
-import { CabinetItem } from "./models/raw/cabinetItem";
+import { CabinetItem } from "./models/snapshots/cabinetItem";
 
 type Query = Pick<Shop, "id">;
 

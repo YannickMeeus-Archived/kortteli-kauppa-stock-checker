@@ -1,5 +1,5 @@
 import { ShopId } from "../shops";
-import { CabinetItem } from "./models/raw/cabinetItem";
+import { CabinetItem } from "./models/snapshots/cabinetItem";
 
 interface GetRawInventory {
   oldestForShop(id: ShopId): Promise<CabinetItem[]>;
