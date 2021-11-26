@@ -40,3 +40,11 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run the entire shebang
         run: make ci
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5433
+          DATABASE_USERNAME: db_user
+          DATABASE_PASSWORD: d9383e87-c02f-4032-8b18-7515cbbe0b8f
+          DATABASE_NAME: backend_test
+          NODE_ENV: test
+          API_KEY: 0dbc1726b2b74762a566fe2ff998132e
