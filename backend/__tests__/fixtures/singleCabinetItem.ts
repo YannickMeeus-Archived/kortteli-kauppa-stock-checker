@@ -1,4 +1,6 @@
-export const singleCabinetItem = {
+import { CabinetItem } from "../../src/domain/inventory";
+
+export const singleCabinetItem: CabinetItem = {
   amount: 24,
   antenna: 1,
   barcode: "0000000000000",
@@ -11,3 +13,8 @@ export const singleCabinetItem = {
   },
   quality: "good",
 };
+
+export const makeSingleCabinetItem = (patch?: Partial<CabinetItem>) => ({
+  ...singleCabinetItem,
+  ...patch,
+});

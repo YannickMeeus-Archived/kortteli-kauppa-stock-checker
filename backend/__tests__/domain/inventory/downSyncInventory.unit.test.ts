@@ -4,6 +4,7 @@ import {
   StoreSnapshotInMemory,
   DownSyncInventory,
 } from "../../../src/domain/inventory";
+import { Snapshot } from "../../../src/domain/inventory/models/snapshots/snapshot";
 import { Shop, GetAllShopsFromMemory } from "../../../src/domain/shops";
 import { singleCabinetItem } from "../../fixtures";
 
@@ -30,7 +31,7 @@ describe("DownSyncInventory", () => {
   externalShopInventories.set(firstShop.id, [firstShopInventory]);
   externalShopInventories.set(secondShop.id, [secondShopInventory]);
 
-  const synchronizedInventories = new Map<string, CabinetItem[]>();
+  const synchronizedInventories = new Map<string, Snapshot>();
   const getAllShops = new GetAllShopsFromMemory(shops);
   const fetchInventory = new FetchMockedSnapshotFromMemory(
     externalShopInventories
