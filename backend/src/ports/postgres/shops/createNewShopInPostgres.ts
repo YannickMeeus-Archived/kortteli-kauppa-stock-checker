@@ -12,10 +12,11 @@ class CreateNewShopInPostgres implements CreateNewShop {
         [name]
       );
       return parseOneRow(created.rows);
-    } catch (e: any) {
+    } catch (e: unknown) {
       if (
+        e instanceof Error &&
         e.message ===
-        'duplicate key value violates unique constraint "shops_name_key"'
+          'duplicate key value violates unique constraint "shops_name_key"'
       ) {
         throw new ShopAlreadyExistsError(name);
       }

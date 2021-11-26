@@ -36,7 +36,7 @@ const makeRetrieveInventoryWorker = ({
     database,
     "retrieve-inventory-worker",
     schedule,
-    (_) => synchronizeInventory.run()
+    () => synchronizeInventory.run()
   );
   return scheduledJob;
 };
