@@ -1,4 +1,4 @@
-import { CabinetItem } from "../../../../src/domain/inventory/models/cabinetItem";
+import { CabinetItem } from "../../../../src/domain/inventory/models/raw/cabinetItem";
 import {
   StoreRawInventoryInPostgres,
   GetRawInventoryFromPostgres,
