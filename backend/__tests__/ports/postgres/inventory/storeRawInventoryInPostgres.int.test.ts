@@ -41,6 +41,9 @@ describe("StoreRawInventoryInPostgres", () => {
     await storeRawInventory.forShop(createdShop, [firstItem, secondItem]);
 
     const storedRawInventory = await getRawInventory.oldestForShop(createdShop);
-    expect(storedRawInventory).toIncludeAllMembers([firstItem, secondItem]);
+    expect(storedRawInventory?.contents).toIncludeAllMembers([
+      firstItem,
+      secondItem,
+    ]);
   });
 });

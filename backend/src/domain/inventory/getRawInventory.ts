@@ -1,15 +1,15 @@
 import { ShopId } from "../shops";
-import { CabinetItem } from "./models/snapshots/cabinetItem";
+import { Snapshot } from "./models/snapshots/snapshot";
 
 interface GetRawInventory {
-  oldestForShop(id: ShopId): Promise<CabinetItem[]>;
+  oldestForShop(id: ShopId): Promise<Snapshot | undefined>;
 }
 
 class GetRawInventoryFromMemory implements GetRawInventory {
-  constructor(private readonly storeInventories: Map<string, CabinetItem[]>) {}
+  constructor(private readonly snapShots: Map<string, Snapshot>) {}
 
-  async oldestForShop({ id }: ShopId): Promise<CabinetItem[]> {
-    return this.storeInventories.get(id) || [];
+  async oldestForShop({ id }: ShopId): Promise<Snapshot | undefined> {
+    return this.snapShots.get(id) || undefined;
   }
 }
 
