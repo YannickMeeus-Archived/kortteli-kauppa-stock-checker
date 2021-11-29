@@ -1,4 +1,4 @@
-import { CabinetItem } from "../../../../src/domain/inventory";
+import { CabinetItem } from "../../../../src/domain/inventory/models";
 
 import { CreateNewShopInPostgres } from "../../../../src/ports/postgres/shops";
 import { singleCabinetItem } from "../../../fixtures";

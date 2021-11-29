@@ -7,7 +7,7 @@ export const makeProductToCreateFor = (
 ): ProductToCreate => {
   const template = {
     cabinet: "Cabinet 1",
-    ean: "12345678901",
+    epc: "12345678901",
     name: "Product 1",
     quantity: 10,
     shopId: forShop.id,

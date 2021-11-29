@@ -1,14 +1,14 @@
 import {
-  CabinetItem,
   FetchMockedSnapshotFromMemory,
   StoreSnapshotInMemory,
   TakeSnapshotsForAllShops,
 } from "../../../src/domain/inventory";
+import { CabinetItem } from "../../../src/domain/inventory/models";
 import { Snapshot } from "../../../src/domain/inventory/models/snapshots/snapshot";
 import { Shop, GetAllShopsFromMemory } from "../../../src/domain/shops";
 import { singleCabinetItem } from "../../fixtures";
 
-describe("DownSyncInventory", () => {
+describe("TakeInventorySnapshot", () => {
   const firstShop = new Shop(
     "c9b4da19-d70b-41d1-8272-cfea007eacc4",
     "First Shop"
