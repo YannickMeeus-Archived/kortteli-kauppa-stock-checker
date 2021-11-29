@@ -1,2 +1,4 @@
-export * from './getRawInventoryFromPostgres';
-export * from './storeRawInventoryInPostgres';
+export * from './createSimpleProductInPostgres';
+export * from './getSimpleProductFromPostgres';
+export * from './getSnapshotFromPostgres';
+export * from './storeSnapshotInPostgres';

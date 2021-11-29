@@ -1,9 +1,8 @@
-import { CabinetItem } from "../../../domain/inventory/models/snapshots/cabinetItem";
-import { StoreRawInventory } from "../../../domain/inventory/storeRawInventory";
 import { ShopId } from "../../../domain/shops";
 import { Postgres } from "../postgres";
+import { CabinetItem, StoreSnapshot } from "../../../domain/inventory";
 
-class StoreRawInventoryInPostgres implements StoreRawInventory {
+class StoreSnapshotInPostgres implements StoreSnapshot {
   constructor(private readonly postgres: Postgres) {}
   async forShop({ id }: ShopId, rawInventory: CabinetItem[]): Promise<void> {
     await this.postgres.sql.query(
@@ -13,4 +12,4 @@ class StoreRawInventoryInPostgres implements StoreRawInventory {
   }
 }
 
-export { StoreRawInventoryInPostgres };
+export { StoreSnapshotInPostgres };

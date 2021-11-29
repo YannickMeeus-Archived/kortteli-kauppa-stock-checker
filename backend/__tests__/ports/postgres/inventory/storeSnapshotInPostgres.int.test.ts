@@ -1,32 +1,32 @@
 import { randomUUID } from "crypto";
 import { CabinetItem } from "../../../../src/domain/inventory";
 import {
-  GetRawInventoryFromPostgres,
-  StoreRawInventoryInPostgres,
+  GetSnapshotFromPostgres,
+  StoreSnapshotInPostgres,
 } from "../../../../src/ports/postgres/inventory";
 import { CreateNewShopInPostgres } from "../../../../src/ports/postgres/shops";
 import { singleCabinetItem } from "../../../fixtures";
 import { getTestDatabase } from "../../../lifecycle/getTestDatabase";
 
-describe("StoreRawInventoryInPostgres", () => {
+describe("StoreSnapshot", () => {
   const createSutAndFixtures = () => {
     const { database } = getTestDatabase();
     return {
       fixtures: {
         createShop: new CreateNewShopInPostgres(database),
-        getRawInventory: new GetRawInventoryFromPostgres(database),
+        getSnapshot: new GetSnapshotFromPostgres(database),
       },
-      storeRawInventory: new StoreRawInventoryInPostgres(database),
+      storeSnapshot: new StoreSnapshotInPostgres(database),
     };
   };
   it("should exist", async () => {
-    const { storeRawInventory } = createSutAndFixtures();
-    expect(storeRawInventory).toBeDefined();
+    const { storeSnapshot } = createSutAndFixtures();
+    expect(storeSnapshot).toBeDefined();
   });
   it("should store raw inventory in postgres", async () => {
     const {
-      storeRawInventory,
-      fixtures: { createShop, getRawInventory },
+      storeSnapshot,
+      fixtures: { createShop, getSnapshot },
     } = createSutAndFixtures();
 
     const createdShop = await createShop.execute({ name: "test shop" });
@@ -38,10 +38,10 @@ describe("StoreRawInventoryInPostgres", () => {
       ...singleCabinetItem,
       location: randomUUID(),
     };
-    await storeRawInventory.forShop(createdShop, [firstItem, secondItem]);
+    await storeSnapshot.forShop(createdShop, [firstItem, secondItem]);
 
-    const storedRawInventory = await getRawInventory.oldestForShop(createdShop);
-    expect(storedRawInventory?.contents).toIncludeAllMembers([
+    const storedSnapshot = await getSnapshot.oldestForShop(createdShop);
+    expect(storedSnapshot?.contents).toIncludeAllMembers([
       firstItem,
       secondItem,
     ]);

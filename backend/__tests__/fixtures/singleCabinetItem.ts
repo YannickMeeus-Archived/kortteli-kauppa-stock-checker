@@ -11,4 +11,3 @@ export const singleCabinetItem = {
   },
   quality: "good",
 };
-export const singleCabinetItemReturned = [singleCabinetItem];

@@ -1,9 +1,9 @@
-import { GetRawInventory } from "../../../domain/inventory/getRawInventory";
+import { GetSnapshot } from "../../../domain/inventory";
 import { Snapshot } from "../../../domain/inventory/models/snapshots/snapshot";
 import { ShopId } from "../../../domain/shops";
 import { Postgres } from "../postgres";
 
-class GetRawInventoryFromPostgres implements GetRawInventory {
+class GetSnapshotFromPostgres implements GetSnapshot {
   constructor(private readonly postgres: Postgres) {}
 
   async oldestForShop({ id }: ShopId): Promise<Snapshot | undefined> {
@@ -25,4 +25,4 @@ class GetRawInventoryFromPostgres implements GetRawInventory {
   }
 }
 
-export { GetRawInventoryFromPostgres };
+export { GetSnapshotFromPostgres };

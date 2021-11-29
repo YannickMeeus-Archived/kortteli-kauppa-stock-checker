@@ -1,10 +1,13 @@
 import nock from "nock";
-import { PullRawInventoryFromExternalApi } from "../../../src/ports/kortteli-kauppa-api";
-import { Shop, GetSingleShopFromMemory } from "../../../src/domain/shops";
-import { ShopNotFoundError } from "../../../src/domain/shops/errors";
-import { singleCabinetItemReturned, singleCabinetItem } from "../../fixtures";
+import { FetchSnapshotFromKortteliKauppaApi } from "../../../src/ports/kortteli-kauppa-api";
+import {
+  GetSingleShopFromMemory,
+  Shop,
+  ShopNotFoundError,
+} from "../../../src/domain/shops";
+import { singleCabinetItem, singleCabinetItemAsArray } from "../../fixtures";
 
-describe("pullRawInventoryFromApi", () => {
+describe("FetchSnapshotFromKortteliKauppaApi", () => {
   const testBaseUrl = "http://www.kk-api.test";
   const existingShopWithStock = new Shop(
     "827ab95d-a0af-474b-a6aa-1e866584fb2e",
@@ -22,7 +25,7 @@ describe("pullRawInventoryFromApi", () => {
     const scope = nock(testBaseUrl)
       .get(`/Kortteliapp/api/cabin/list/v2/${existingShopWithoutStock.name}`)
       .reply(200, []);
-    const getInventory = new PullRawInventoryFromExternalApi(
+    const getInventory = new FetchSnapshotFromKortteliKauppaApi(
       testBaseUrl,
       getShopById
     );
@@ -36,8 +39,8 @@ describe("pullRawInventoryFromApi", () => {
   it("should return some data if a shop has data", async () => {
     const scope = nock(testBaseUrl)
       .get(`/Kortteliapp/api/cabin/list/v2/${existingShopWithStock.name}`)
-      .reply(200, singleCabinetItemReturned);
-    const getInventory = new PullRawInventoryFromExternalApi(
+      .reply(200, singleCabinetItemAsArray);
+    const getInventory = new FetchSnapshotFromKortteliKauppaApi(
       testBaseUrl,
       getShopById
     );
@@ -48,7 +51,7 @@ describe("pullRawInventoryFromApi", () => {
   });
 
   it("should throw a ShopNotFoundError if no shop exists", async () => {
-    const getInventory = new PullRawInventoryFromExternalApi(
+    const getInventory = new FetchSnapshotFromKortteliKauppaApi(
       testBaseUrl,
       getShopById
     );

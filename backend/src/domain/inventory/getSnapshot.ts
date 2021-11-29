@@ -1,11 +1,11 @@
 import { ShopId } from "../shops";
 import { Snapshot } from "./models/snapshots/snapshot";
 
-interface GetRawInventory {
+interface GetSnapshot {
   oldestForShop(id: ShopId): Promise<Snapshot | undefined>;
 }
 
-class GetRawInventoryFromMemory implements GetRawInventory {
+class GetSnapshotFromMemory implements GetSnapshot {
   constructor(private readonly snapShots: Map<string, Snapshot>) {}
 
   async oldestForShop({ id }: ShopId): Promise<Snapshot | undefined> {
@@ -13,4 +13,4 @@ class GetRawInventoryFromMemory implements GetRawInventory {
   }
 }
 
-export { GetRawInventory, GetRawInventoryFromMemory };
+export { GetSnapshot, GetSnapshotFromMemory };

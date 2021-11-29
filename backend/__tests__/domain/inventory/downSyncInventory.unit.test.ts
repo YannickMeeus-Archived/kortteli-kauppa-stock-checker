@@ -1,7 +1,7 @@
 import {
   CabinetItem,
-  PullRawInventoryFromMemory,
-  StoreRawInventoryInMemory,
+  FetchMockedSnapshotFromMemory,
+  StoreSnapshotInMemory,
   DownSyncInventory,
 } from "../../../src/domain/inventory";
 import { Shop, GetAllShopsFromMemory } from "../../../src/domain/shops";
@@ -32,10 +32,10 @@ describe("DownSyncInventory", () => {
 
   const synchronizedInventories = new Map<string, CabinetItem[]>();
   const getAllShops = new GetAllShopsFromMemory(shops);
-  const fetchInventory = new PullRawInventoryFromMemory(
+  const fetchInventory = new FetchMockedSnapshotFromMemory(
     externalShopInventories
   );
-  const storeInventory = new StoreRawInventoryInMemory(synchronizedInventories);
+  const storeInventory = new StoreSnapshotInMemory(synchronizedInventories);
   it("should retrieve and store all shops' inventory", async () => {
     const downSyncInventory = new DownSyncInventory(
       getAllShops,

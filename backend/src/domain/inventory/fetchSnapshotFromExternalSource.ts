@@ -3,15 +3,19 @@ import { CabinetItem } from "./models/snapshots/cabinetItem";
 
 type Query = Pick<Shop, "id">;
 
-interface PullRawInventory {
+interface FetchSnapshotFromExternalSource {
   forShop(shop: Query): Promise<CabinetItem[]>;
 }
 
-class PullRawInventoryFromMemory implements PullRawInventory {
+class FetchMockedSnapshotFromMemory implements FetchSnapshotFromExternalSource {
   constructor(private readonly storeInventories: Map<string, CabinetItem[]>) {}
   async forShop({ id }: Query): Promise<CabinetItem[]> {
     return this.storeInventories.get(id) || [];
   }
 }
 
-export { PullRawInventory, Query, PullRawInventoryFromMemory };
+export {
+  FetchSnapshotFromExternalSource,
+  Query,
+  FetchMockedSnapshotFromMemory,
+};

@@ -1,1 +1,2 @@
-export * from "./singleCabinetItemReturned";
+export * from "./singleCabinetItemAsArray";
+export * from "./singleCabinetItem";
