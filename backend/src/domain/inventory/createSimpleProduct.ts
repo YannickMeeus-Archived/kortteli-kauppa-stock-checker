@@ -12,7 +12,7 @@ class CreateSimpleProductInMemory implements CreateSimpleProduct {
   ) {}
   async execute({
     name,
-    ean,
+    epc,
     quantity,
     cabinet,
     shopId,
@@ -23,7 +23,7 @@ class CreateSimpleProductInMemory implements CreateSimpleProduct {
 
     const toCreate = new SimpleProduct(
       randomUUID(),
-      ean,
+      epc,
       name,
       quantity,
       cabinet,

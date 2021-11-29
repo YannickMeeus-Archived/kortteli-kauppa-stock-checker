@@ -34,14 +34,14 @@ describe("GetSimpleProductFromPostgres", () => {
       name: "My first product",
       shopId: shop.id,
       cabinet: "A",
-      ean: "1234567890123",
+      epc: "1234567890123",
       quantity: 10,
     });
     const secondProduct = await createProduct.execute({
       name: "My second product",
       shopId: shop.id,
       cabinet: "A",
-      ean: "1234567890124",
+      epc: "1234567890124",
       quantity: 10,
     });
     const results = await getProduct.forShop(shop);
@@ -60,14 +60,14 @@ describe("GetSimpleProductFromPostgres", () => {
       name: "My first product",
       shopId: firstShop.id,
       cabinet: "A",
-      ean: "1234567890123",
+      epc: "1234567890123",
       quantity: 10,
     });
     const secondProduct = await createProduct.execute({
       name: "My first product",
       shopId: secondShop.id,
       cabinet: "A",
-      ean: "1234567890123",
+      epc: "1234567890123",
       quantity: 10,
     });
     const productsForFirstShop = await getProduct.forShop(firstShop);
