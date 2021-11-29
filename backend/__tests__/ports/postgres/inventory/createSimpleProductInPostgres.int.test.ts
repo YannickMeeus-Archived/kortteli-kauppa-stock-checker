@@ -22,7 +22,7 @@ describe("CreateSimpleProductInPostgres", () => {
     const createdShop = await createShop.execute({ name: "test shop" });
     const productToCreate: ProductToCreate = {
       cabinet: "Cabinet 1",
-      ean: "12345678901",
+      epc: "12345678901",
       name: "Product 1",
       quantity: 10,
       shopId: createdShop.id,
@@ -30,7 +30,7 @@ describe("CreateSimpleProductInPostgres", () => {
     const product = await createSimpleProduct.execute(productToCreate);
     expect(product).toBeTruthy();
   });
-  it("should disallow duplicate EANs for a combination of shop and EAN", async () => {
+  it("should disallow duplicate EPCs for a combination of shop and EPC", async () => {
     const {
       createSimpleProduct,
       fixtures: { createShop },
@@ -38,7 +38,7 @@ describe("CreateSimpleProductInPostgres", () => {
     const createdShop = await createShop.execute({ name: "test shop" });
     const productToCreate: ProductToCreate = {
       cabinet: "Cabinet 1",
-      ean: "12345678901",
+      epc: "12345678901",
       name: "Product 1",
       quantity: 10,
       shopId: createdShop.id,
@@ -58,7 +58,7 @@ describe("CreateSimpleProductInPostgres", () => {
     const secondShop = await createShop.execute({ name: "test shop 2" });
     const firstShopsProduct: ProductToCreate = {
       cabinet: "Cabinet 1",
-      ean: "12345678901",
+      epc: "12345678901",
       name: "Product 1",
       quantity: 10,
       shopId: firstShop.id,

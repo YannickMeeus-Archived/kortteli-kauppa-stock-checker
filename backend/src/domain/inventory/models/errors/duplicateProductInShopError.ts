@@ -1,6 +1,6 @@
 class DuplicateProductInShopError extends Error {
-  constructor(ean: string, shopId: string) {
-    super(`Product with EAN ${ean} already exists in shop ${shopId}`);
+  constructor(epc: string, shopId: string) {
+    super(`Product with EPC ${epc} already exists in shop ${shopId}`);
   }
 }
 export { DuplicateProductInShopError };

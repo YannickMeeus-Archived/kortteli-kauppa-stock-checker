@@ -12,12 +12,12 @@ class CreateSimpleProductInPostgres implements CreateSimpleProduct {
     name,
     quantity,
     shopId,
-    ean,
+    epc,
     cabinet,
   }: ProductToCreate): Promise<SimpleProduct> {
     const query = `
       INSERT INTO simple_products (
-        ean,
+        epc,
         quantity,
         shop_id,
         name,
@@ -26,12 +26,12 @@ class CreateSimpleProductInPostgres implements CreateSimpleProduct {
       VALUES ($1, $2, $3, $4, $5)
       RETURNING *
     `;
-    const values = [ean, quantity, shopId, name, cabinet];
+    const values = [epc, quantity, shopId, name, cabinet];
     try {
       const created = await this.postgres.sql.query(query, values);
       return new SimpleProduct(
         created.rows[0].id,
-        created.rows[0].ean,
+        created.rows[0].epc,
         created.rows[0].name,
         created.rows[0].quantity,
         created.rows[0].cabinet,
@@ -42,7 +42,7 @@ class CreateSimpleProductInPostgres implements CreateSimpleProduct {
         error instanceof Error &&
         error.message.includes("simple_products_ean_shop_id_key")
       ) {
-        throw new DuplicateProductInShopError(ean, shopId);
+        throw new DuplicateProductInShopError(epc, shopId);
       }
       throw error;
     }

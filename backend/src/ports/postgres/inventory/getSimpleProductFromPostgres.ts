@@ -11,7 +11,7 @@ class GetSimpleProductFromPostgres implements GetSimpleProducts {
       `
     SELECT
         id
-      , ean
+      , epc
       , quantity
       , shop_id
       , cabinet
@@ -31,7 +31,7 @@ class GetSimpleProductFromPostgres implements GetSimpleProducts {
     return foundShops.rows.map(
       (row): SimpleProduct => ({
         id: row.id,
-        ean: row.ean,
+        epc: row.epc,
         quantity: row.quantity,
         shopId: row.shop_id,
         name: row.name,

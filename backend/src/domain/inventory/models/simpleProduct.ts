@@ -7,7 +7,7 @@
 class SimpleProduct {
   constructor(
     public readonly id: string,
-    public readonly ean: string,
+    public readonly epc: string,
     public readonly name: string,
     public readonly quantity: number,
     public readonly cabinet: string,
