@@ -1,10 +1,13 @@
 import got from "got";
-import { CabinetItem } from "../../domain/inventory/models";
-import { PullRawInventory, Query } from "../../domain/inventory";
-import { GetSingleShop } from "../../domain/shops";
-import { ShopNotFoundError } from "../../domain/shops/errors/ShopNotFoundError";
 
-class PullRawInventoryFromExternalApi implements PullRawInventory {
+import { CabinetItem } from "../../domain/inventory";
+import { FetchSnapshotFromExternalSource, Query } from "../../domain/inventory";
+import { GetSingleShop } from "../../domain/shops";
+import { ShopNotFoundError } from "../../domain/shops";
+
+class FetchSnapshotFromKortteliKauppaApi
+  implements FetchSnapshotFromExternalSource
+{
   constructor(
     private readonly baseUrl: string,
     private readonly getSingleShop: GetSingleShop
@@ -23,4 +26,4 @@ class PullRawInventoryFromExternalApi implements PullRawInventory {
   }
 }
 
-export { PullRawInventoryFromExternalApi };
+export { FetchSnapshotFromKortteliKauppaApi };

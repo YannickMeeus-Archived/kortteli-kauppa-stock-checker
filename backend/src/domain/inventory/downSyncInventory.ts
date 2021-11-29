@@ -1,24 +1,21 @@
 import { GetAllShops } from "../shops";
-import { PullRawInventory } from "./pullRawInventory";
-import { StoreRawInventory } from "./storeRawInventory";
+import { FetchSnapshotFromExternalSource } from "./fetchSnapshotFromExternalSource";
+import { StoreSnapshot } from "./storeSnapshot";
 
 class DownSyncInventory {
   constructor(
     private readonly getAllShops: GetAllShops,
-    private readonly pullRawInventory: PullRawInventory,
-    private readonly storeRawInventory: StoreRawInventory
+    private readonly fetchSnapshot: FetchSnapshotFromExternalSource,
+    private readonly storeSnapshot: StoreSnapshot
   ) {}
 
   public async run() {
     const allShops = await this.getAllShops.execute();
     for (const shop of allShops) {
-      const currentShopsInventory = await this.pullRawInventory.forShop({
+      const currentShopsInventory = await this.fetchSnapshot.forShop({
         id: shop.id,
       });
-      await this.storeRawInventory.forShop(
-        { id: shop.id },
-        currentShopsInventory
-      );
+      await this.storeSnapshot.forShop({ id: shop.id }, currentShopsInventory);
     }
   }
 }

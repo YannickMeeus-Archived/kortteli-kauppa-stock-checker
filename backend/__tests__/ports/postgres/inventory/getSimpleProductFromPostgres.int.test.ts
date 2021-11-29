@@ -1,5 +1,7 @@
-import { CreateSimpleProductInPostgres } from "../../../../src/ports/postgres/inventory/createSimpleProductInPostgres";
-import { GetSimpleProductFromPostgres } from "../../../../src/ports/postgres/inventory/getSimpleProductFromPostgres";
+import {
+  CreateSimpleProductInPostgres,
+  GetSimpleProductFromPostgres,
+} from "../../../../src/ports/postgres/inventory";
 import { CreateNewShopInPostgres } from "../../../../src/ports/postgres/shops";
 import { getTestDatabase } from "../../../lifecycle/getTestDatabase";
 

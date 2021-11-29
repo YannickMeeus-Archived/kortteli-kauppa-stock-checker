@@ -1,1 +1,1 @@
-export * from './pullRawInventoryFromApi';
+export * from "./fetchSnapshotFromKortteliKauppaApi";

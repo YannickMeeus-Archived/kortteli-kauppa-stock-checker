@@ -1,14 +1,14 @@
 import { ShopId } from "../shops";
-import { CabinetItem } from "./models/raw/cabinetItem";
+import { CabinetItem } from "./models";
 
-interface StoreRawInventory {
+interface StoreSnapshot {
   forShop(id: ShopId, rawInventory: CabinetItem[]): Promise<void>;
 }
 
-class StoreRawInventoryInMemory implements StoreRawInventory {
+class StoreSnapshotInMemory implements StoreSnapshot {
   constructor(private readonly storeInventories: Map<string, CabinetItem[]>) {}
   async forShop({ id }: ShopId, rawInventory: CabinetItem[]): Promise<void> {
     this.storeInventories.set(id, rawInventory);
   }
 }
-export { StoreRawInventory, StoreRawInventoryInMemory };
+export { StoreSnapshot, StoreSnapshotInMemory };

@@ -1,7 +1,7 @@
 import { DownSyncInventory } from "../../../domain/inventory";
-import { PullRawInventoryFromExternalApi } from "../../../ports/kortteli-kauppa-api";
+import { FetchSnapshotFromKortteliKauppaApi } from "../../../ports/kortteli-kauppa-api";
 import { ScheduledJob } from "../../../lib/scheduling";
-import { StoreRawInventoryInPostgres } from "../../../ports/postgres/inventory";
+import { StoreSnapshotInPostgres } from "../../../ports/postgres/inventory";
 import { Postgres } from "../../../ports/postgres/postgres";
 import {
   GetAllShopsFromPostgres,
@@ -20,11 +20,11 @@ const makeRetrieveInventoryWorker = ({
 }: RetrieveInventoryWorkerConfiguration): ScheduledJob => {
   const getAllShops = new GetAllShopsFromPostgres(database);
   const getSingleShop = new GetSingleShopFromPostgres(database);
-  const pullRawInventory = new PullRawInventoryFromExternalApi(
+  const pullRawInventory = new FetchSnapshotFromKortteliKauppaApi(
     kortteliKauppaBaseUrl,
     getSingleShop
   );
-  const storeRawInventory = new StoreRawInventoryInPostgres(database);
+  const storeRawInventory = new StoreSnapshotInPostgres(database);
 
   const synchronizeInventory = new DownSyncInventory(
     getAllShops,
@@ -32,13 +32,9 @@ const makeRetrieveInventoryWorker = ({
     storeRawInventory
   );
 
-  const scheduledJob = new ScheduledJob(
-    database,
-    "retrieve-inventory-worker",
-    schedule,
-    () => synchronizeInventory.run()
+  return new ScheduledJob(database, "retrieve-inventory-worker", schedule, () =>
+    synchronizeInventory.run()
   );
-  return scheduledJob;
 };
 
 export { makeRetrieveInventoryWorker };

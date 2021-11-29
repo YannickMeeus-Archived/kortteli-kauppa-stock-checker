@@ -1,6 +1,6 @@
 import { ProductToCreate } from "../../../../src/domain/inventory/createSimpleProduct";
 import { DuplicateProductInShopError } from "../../../../src/domain/inventory/models/errors/duplicateProductInShopError";
-import { CreateSimpleProductInPostgres } from "../../../../src/ports/postgres/inventory/createSimpleProductInPostgres";
+import { CreateSimpleProductInPostgres } from "../../../../src/ports/postgres/inventory";
 import { CreateNewShopInPostgres } from "../../../../src/ports/postgres/shops";
 import { getTestDatabase } from "../../../lifecycle/getTestDatabase";
 

@@ -8,6 +8,7 @@
     "clean": "rm -rf ./dist .tsbuildinfo",
     "prebuild": "yarn clean",
     "start": "node ./dist/entrypoint.js",
+    "tsc": "tsc -p tsconfig.json --noEmit --watch",
     "dev": "ts-node-dev --respawn --transpile-only src/entrypoint.ts",
     "test": "yarn unit && yarn int && yarn e2e",
     "unit": "jest -c jest.config.unit.js",
