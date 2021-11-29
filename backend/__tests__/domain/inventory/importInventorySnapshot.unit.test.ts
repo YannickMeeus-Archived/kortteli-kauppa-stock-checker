@@ -1,6 +1,4 @@
 import {
-  CabinetItem,
-  FetchMockedSnapshotFromMemory,
   GetSnapshotFromMemory,
   StoreSnapshotInMemory,
 } from "../../../src/domain/inventory";
@@ -27,7 +25,7 @@ describe("ImportInventorySnapshot", () => {
   const getAllShops = new GetAllShopsFromMemory(shops);
   const createProduct = new CreateSimpleProductInMemory(allInventories);
   const fetchSnapshotExternally = new GetSnapshotFromMemory(snapshots);
-  const storeRawInventory = new StoreSnapshotInMemory(snapshots);
+  const storeSnapshot = new StoreSnapshotInMemory(snapshots);
 
   const importInventorySnapshots = new ImportInventorySnapshots(
     getAllShops,
@@ -44,7 +42,7 @@ describe("ImportInventorySnapshot", () => {
   });
 
   it("should create a new product if one does not exist", async () => {
-    await storeRawInventory.forShop(shopA, singleCabinetItemAsArray);
+    await storeSnapshot.forShop(shopA, singleCabinetItemAsArray);
     await importInventorySnapshots.run();
     expect(allInventories.get(shopA.id)).toHaveLength(1);
   });
@@ -52,10 +50,12 @@ describe("ImportInventorySnapshot", () => {
     const existingProduct = await createProduct.execute(
       makeProductToCreateFor(shopA)
     );
-    const snapshotItem = makeSingleCabinetItem({ epc: existingProduct.ean });
-    await storeRawInventory.forShop(shopA, [snapshotItem]);
+    const snapshotItem = makeSingleCabinetItem({ epc: existingProduct.epc });
+    await storeSnapshot.forShop(shopA, [snapshotItem]);
     await importInventorySnapshots.run();
     expect(allInventories.get(shopA.id)).toHaveLength(1);
   });
-  it("should mark a snapshot as processed so that subsequent runs don't process it again", async () => {});
+  it.todo(
+    "should mark a snapshot as processed so that subsequent runs don't process it again"
+  );
 });

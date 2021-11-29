@@ -47,10 +47,10 @@ describe("DownSyncInventory", () => {
     await downSyncInventory.run();
 
     expect(synchronizedInventories.size).toBe(2);
-    expect(synchronizedInventories.get(firstShop.id)).toEqual([
+    expect(synchronizedInventories.get(firstShop.id)?.contents).toEqual([
       firstShopInventory,
     ]);
-    expect(synchronizedInventories.get(secondShop.id)).toEqual([
+    expect(synchronizedInventories.get(secondShop.id)?.contents).toEqual([
       secondShopInventory,
     ]);
   });
