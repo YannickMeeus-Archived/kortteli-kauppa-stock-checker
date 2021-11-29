@@ -1,4 +1,4 @@
-import { DownSyncInventory } from "../../../domain/inventory";
+import { TakeInventorySnapshots } from "../../../domain/inventory";
 import { FetchSnapshotFromKortteliKauppaApi } from "../../../ports/kortteli-kauppa-api";
 import { ScheduledJob } from "../../../lib/scheduling";
 import { StoreSnapshotInPostgres } from "../../../ports/postgres/inventory";
@@ -26,14 +26,14 @@ const makeRetrieveInventoryWorker = ({
   );
   const storeRawInventory = new StoreSnapshotInPostgres(database);
 
-  const synchronizeInventory = new DownSyncInventory(
+  const takeInventorySnapshots = new TakeInventorySnapshots(
     getAllShops,
     pullRawInventory,
     storeRawInventory
   );
 
   return new ScheduledJob(database, "retrieve-inventory-worker", schedule, () =>
-    synchronizeInventory.run()
+    takeInventorySnapshots.run()
   );
 };
 

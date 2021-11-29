@@ -2,7 +2,7 @@ import { GetAllShops } from "../shops";
 import { FetchSnapshotFromExternalSource } from "./fetchSnapshotFromExternalSource";
 import { StoreSnapshot } from "./storeSnapshot";
 
-class DownSyncInventory {
+class TakeInventorySnapshots {
   constructor(
     private readonly getAllShops: GetAllShops,
     private readonly fetchSnapshot: FetchSnapshotFromExternalSource,
@@ -20,4 +20,4 @@ class DownSyncInventory {
   }
 }
 
-export { DownSyncInventory };
+export { TakeInventorySnapshots };

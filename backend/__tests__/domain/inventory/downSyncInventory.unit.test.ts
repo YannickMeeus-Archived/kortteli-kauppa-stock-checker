@@ -1,14 +1,14 @@
 import {
-  CabinetItem,
   FetchMockedSnapshotFromMemory,
   StoreSnapshotInMemory,
-  DownSyncInventory,
+  TakeInventorySnapshots,
 } from "../../../src/domain/inventory";
+import { CabinetItem } from "../../../src/domain/inventory/models";
 import { Snapshot } from "../../../src/domain/inventory/models/snapshots/snapshot";
 import { Shop, GetAllShopsFromMemory } from "../../../src/domain/shops";
 import { singleCabinetItem } from "../../fixtures";
 
-describe("DownSyncInventory", () => {
+describe("TakeInventorySnapshot", () => {
   const firstShop = new Shop(
     "c9b4da19-d70b-41d1-8272-cfea007eacc4",
     "First Shop"
@@ -38,13 +38,13 @@ describe("DownSyncInventory", () => {
   );
   const storeInventory = new StoreSnapshotInMemory(synchronizedInventories);
   it("should retrieve and store all shops' inventory", async () => {
-    const downSyncInventory = new DownSyncInventory(
+    const takeInventorySnapshots = new TakeInventorySnapshots(
       getAllShops,
       fetchInventory,
       storeInventory
     );
 
-    await downSyncInventory.run();
+    await takeInventorySnapshots.run();
 
     expect(synchronizedInventories.size).toBe(2);
     expect(synchronizedInventories.get(firstShop.id)?.contents).toEqual([

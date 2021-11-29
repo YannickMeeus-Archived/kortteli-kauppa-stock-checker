@@ -1,6 +1,7 @@
+import { StoreSnapshot } from "../../../domain/inventory";
+import { CabinetItem } from "../../../domain/inventory/models";
 import { ShopId } from "../../../domain/shops";
 import { Postgres } from "../postgres";
-import { CabinetItem, StoreSnapshot } from "../../../domain/inventory";
 
 class StoreSnapshotInPostgres implements StoreSnapshot {
   constructor(private readonly postgres: Postgres) {}

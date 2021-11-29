@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
-import { CabinetItem } from "../../../../src/domain/inventory";
+import { CabinetItem } from "../../../../src/domain/inventory/models";
+
 import {
   GetSnapshotFromPostgres,
   StoreSnapshotInPostgres,

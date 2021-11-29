@@ -13,7 +13,7 @@ export const fromCabinetItemToSimpleProduct =
     return {
       name: name,
       cabinet: location,
-      ean: epc, //TODO: Fix this
+      epc,
       quantity: amount,
       shopId,
     };

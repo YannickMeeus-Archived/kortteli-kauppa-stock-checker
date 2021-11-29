@@ -1,4 +1,4 @@
-import { CabinetItem } from "../../src/domain/inventory";
+import { CabinetItem } from "../../src/domain/inventory/models";
 
 export const singleCabinetItem: CabinetItem = {
   amount: 24,

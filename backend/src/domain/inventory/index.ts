@@ -1,5 +1,4 @@
-export * from "./models";
-export * from "./downSyncInventory";
+export * from "./takeInventorySnapshots";
 export * from "./getSnapshot";
 export * from "./fetchSnapshotFromExternalSource";
 export * from "./storeSnapshot";

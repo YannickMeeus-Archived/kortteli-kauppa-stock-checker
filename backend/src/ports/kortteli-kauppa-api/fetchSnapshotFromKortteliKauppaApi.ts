@@ -1,6 +1,6 @@
 import got from "got";
 
-import { CabinetItem } from "../../domain/inventory";
+import { CabinetItem } from "../../domain/inventory/models";
 import { FetchSnapshotFromExternalSource, Query } from "../../domain/inventory";
 import { GetSingleShop } from "../../domain/shops";
 import { ShopNotFoundError } from "../../domain/shops";
