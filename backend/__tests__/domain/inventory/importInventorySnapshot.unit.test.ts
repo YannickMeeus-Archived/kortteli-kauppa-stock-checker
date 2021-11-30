@@ -1,19 +1,19 @@
 import {
+  CreateSimpleProductInMemory,
   GetSnapshotFromMemory,
   StoreSnapshotInMemory,
+  ImportInventorySnapshots,
+  SimpleProduct,
+  Snapshot,
 } from "../../../src/domain/inventory";
-import { CreateSimpleProductInMemory } from "../../../src/domain/inventory/createSimpleProduct";
-import { ImportInventorySnapshots } from "../../../src/domain/inventory/importInventorySnapshots";
-import { SimpleProduct } from "../../../src/domain/inventory/models/simpleProduct";
-import { Snapshot } from "../../../src/domain/inventory/models/snapshots/snapshot";
 import {
+  Shop,
   CreateNewShopInMemory,
   GetAllShopsFromMemory,
-  Shop,
 } from "../../../src/domain/shops";
 import {
-  makeSingleCabinetItem,
   singleCabinetItemAsArray,
+  makeSingleCabinetItem,
 } from "../../fixtures";
 import { makeProductToCreateFor } from "../../fixtures/simpleProduct";
 
