@@ -8,9 +8,12 @@ interface StoreSnapshot {
 }
 
 class StoreSnapshotInMemory implements StoreSnapshot {
-  constructor(private readonly storeInventories: Map<string, Snapshot>) {}
+  constructor(private readonly storeInventories: Map<string, Snapshot[]>) {}
   async forShop({ id }: ShopId, rawInventory: CabinetItem[]): Promise<void> {
-    this.storeInventories.set(id, new Snapshot(randomUUID(), rawInventory));
+    this.storeInventories.set(id, [
+      ...(this.storeInventories.get(id) || []),
+      new Snapshot(randomUUID(), rawInventory, false, new Date()),
+    ]);
   }
 }
 export { StoreSnapshot, StoreSnapshotInMemory };

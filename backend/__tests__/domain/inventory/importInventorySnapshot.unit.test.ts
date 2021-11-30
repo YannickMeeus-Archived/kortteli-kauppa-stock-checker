@@ -19,7 +19,7 @@ import { makeProductToCreateFor } from "../../fixtures/simpleProduct";
 
 describe("ImportInventorySnapshot", () => {
   const allInventories = new Map<string, SimpleProduct[]>();
-  const snapshots = new Map<string, Snapshot>();
+  const snapshots = new Map<string, Snapshot[]>();
   const shops: Shop[] = [];
   const createShop = new CreateNewShopInMemory(shops);
   const getAllShops = new GetAllShopsFromMemory(shops);

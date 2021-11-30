@@ -31,7 +31,7 @@ describe("TakeInventorySnapshot", () => {
   externalShopInventories.set(firstShop.id, [firstShopInventory]);
   externalShopInventories.set(secondShop.id, [secondShopInventory]);
 
-  const synchronizedInventories = new Map<string, Snapshot>();
+  const synchronizedInventories = new Map<string, Snapshot[]>();
   const getAllShops = new GetAllShopsFromMemory(shops);
   const fetchInventory = new FetchMockedSnapshotFromMemory(
     externalShopInventories
@@ -47,10 +47,10 @@ describe("TakeInventorySnapshot", () => {
     await takeInventorySnapshots.run();
 
     expect(synchronizedInventories.size).toBe(2);
-    expect(synchronizedInventories.get(firstShop.id)?.contents).toEqual([
+    expect(synchronizedInventories.get(firstShop.id)![0].contents).toEqual([
       firstShopInventory,
     ]);
-    expect(synchronizedInventories.get(secondShop.id)?.contents).toEqual([
+    expect(synchronizedInventories.get(secondShop.id)![0].contents).toEqual([
       secondShopInventory,
     ]);
   });

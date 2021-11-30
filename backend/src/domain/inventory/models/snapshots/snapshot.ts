@@ -4,7 +4,8 @@ class Snapshot {
   constructor(
     public readonly id: string,
     public readonly contents: CabinetItem[],
-    public readonly processed: boolean = false
+    public readonly processed: boolean = false,
+    public readonly createdTimestamp: Date
   ) {}
 }
 
