@@ -6,7 +6,6 @@ interface GetSnapshot {
   oldestForShop(id: ShopId): Promise<Snapshot | undefined>;
   byId(id: SnapshotId): Promise<Snapshot>;
 }
-
 class GetSnapshotFromMemory implements GetSnapshot {
   constructor(private readonly snapShots: Map<string, Snapshot[]>) {}
 
