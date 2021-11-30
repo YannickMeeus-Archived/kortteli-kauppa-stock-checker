@@ -24,12 +24,12 @@ describe("ImportInventorySnapshot", () => {
   const createShop = new CreateNewShopInMemory(shops);
   const getAllShops = new GetAllShopsFromMemory(shops);
   const createProduct = new CreateSimpleProductInMemory(allInventories);
-  const fetchSnapshotExternally = new GetSnapshotFromMemory(snapshots);
+  const getSnapshot = new GetSnapshotFromMemory(snapshots);
   const storeSnapshot = new StoreSnapshotInMemory(snapshots);
 
   const importInventorySnapshots = new ImportInventorySnapshots(
     getAllShops,
-    fetchSnapshotExternally,
+    getSnapshot,
     createProduct
   );
   let shopA: Shop;
@@ -53,6 +53,7 @@ describe("ImportInventorySnapshot", () => {
     const snapshotItem = makeSingleCabinetItem({ epc: existingProduct.epc });
     await storeSnapshot.forShop(shopA, [snapshotItem]);
     await importInventorySnapshots.run();
+
     expect(allInventories.get(shopA.id)).toHaveLength(1);
   });
   it.todo(
