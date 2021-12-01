@@ -3,7 +3,7 @@ import { ProductToCreate } from "./createSimpleProduct";
 import { CabinetItem } from "./models";
 
 export const fromCabinetItemToSimpleProduct =
-  ({ id: shopId }: ShopId) =>
+  (shopId: ShopId) =>
   ({
     amount,
     epc,
