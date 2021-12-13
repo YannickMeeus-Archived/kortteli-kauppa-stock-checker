@@ -21,6 +21,8 @@ COPY --from=build-backend /usr/app/dist /dist
 COPY --from=build-backend /usr/app/migrations /migrations
 COPY --from=build-dependencies /usr/deps/node_modules /node_modules
 
+ARG VERSION=unset
+ENV VERSION=$VERSION
 EXPOSE 3000
 
 CMD ["dist/entrypoint.js"]

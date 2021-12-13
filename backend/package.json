@@ -18,7 +18,8 @@
     "lint": "eslint . --ext .ts",
     "fmt": "eslint . --ext .ts --fix",
     "migrate": "node-pg-migrate",
-    "backfill": "ts-node ./tools/backfill-production-to-dev"
+    "backfill": "ts-node ./tools/backfill-production-to-dev",
+    "download:snapshots": "ts-node ./tools/pull-subset-of-data-from-prod"
   },
   "dependencies": {
     "app-root-path": "^3.0.0",
@@ -50,6 +51,7 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "~5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
+    "date-fns": "^2.27.0",
     "eslint": "^8.1.0",
     "eslint-config-prettier": "~8.3.0",
     "eslint-plugin-jest": "^25.2.2",

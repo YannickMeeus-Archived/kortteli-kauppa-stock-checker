@@ -1,3 +1,6 @@
+VERSION:=$(shell git rev-parse --short HEAD)
+
+
 clean:
 	@cd ./frontend && yarn clean
 	@cd ./backend && yarn clean
@@ -23,7 +26,7 @@ deploy-frontend:
 	@cd ./frontend && yarn deploy
 	
 deploy-backend:
-	@cd ./backend && flyctl deploy
+	@cd ./backend && flyctl deploy --build-arg VERSION=$(VERSION)
 
 lint-backend:
 	yarn --cwd backend lint
@@ -39,7 +42,8 @@ build-backend-docker:
 
 ci: init up test lint-backend build-backend build-frontend
 
-deploy: deploy-frontend deploy-backend
+deploy: deploy-frontend deploy-backend browse
+	
 
 browse:
 	@open https://korttelikauppastockchecker.sillygoose.io/

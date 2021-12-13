@@ -1,5 +1,5 @@
 import { RequestHandler, Router } from "express";
-import { short, tag } from "git-rev-sync";
+import { short } from "git-rev-sync";
 
 interface ApplicableMiddleware {
   requireApiKey: RequestHandler;
@@ -14,7 +14,8 @@ const makeInfrastructureRouter = ({ requireApiKey }: ApplicableMiddleware) => {
     res.send({ data: "secret pong" });
   });
   infrastructureRouter.get("/_version", (req, res) => {
-    res.send({ data: { short: short(), full: tag() } });
+    const version = process.env.VERSION || short();
+    res.send({ data: { version } });
   });
 
   return infrastructureRouter;
