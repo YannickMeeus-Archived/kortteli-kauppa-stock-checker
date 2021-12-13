@@ -49,10 +49,11 @@ import { makeRetrieveInventoryWorker } from "./apps/workers/retrieve-inventory-w
 
     console.log("---- Workers ----");
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const retrieveInventoryWorker = makeRetrieveInventoryWorker({
       database: postgres,
       kortteliKauppaBaseUrl: "http://188.166.11.123",
-      schedule: CronTime.everyHourAt(30),
+      schedule: CronTime.every(30).minutes(),
     });
 
     await retrieveInventoryWorker.start();
