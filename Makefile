@@ -42,7 +42,8 @@ build-backend-docker:
 
 ci: init up test lint-backend build-backend build-frontend
 
-deploy: deploy-frontend deploy-backend
+deploy: deploy-frontend deploy-backend browse
+	
 
 browse:
 	@open https://korttelikauppastockchecker.sillygoose.io/
