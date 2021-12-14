@@ -29,7 +29,7 @@ describe("StoreSnapshot", () => {
       fixtures: { createShop, getSnapshot },
     } = createSutAndFixtures();
 
-    const createdShop = await createShop.execute({ name: "test shop" });
+    const { id } = await createShop.execute({ name: "test shop" });
     const firstItem: CabinetItem = {
       ...singleCabinetItem,
       location: randomUUID(),
@@ -38,9 +38,9 @@ describe("StoreSnapshot", () => {
       ...singleCabinetItem,
       location: randomUUID(),
     };
-    await storeSnapshot.forShop(createdShop, [firstItem, secondItem]);
+    await storeSnapshot.forShop(id, [firstItem, secondItem]);
 
-    const storedSnapshot = await getSnapshot.oldestForShop(createdShop);
+    const storedSnapshot = await getSnapshot.oldestForShop(id);
     expect(storedSnapshot?.contents).toIncludeAllMembers([
       firstItem,
       secondItem,

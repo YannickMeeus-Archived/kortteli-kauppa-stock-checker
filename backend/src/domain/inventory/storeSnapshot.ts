@@ -7,7 +7,7 @@ interface StoreSnapshot {
 
 class StoreSnapshotInMemory implements StoreSnapshot {
   constructor(private readonly storeInventories: Map<string, CabinetItem[]>) {}
-  async forShop({ id }: ShopId, rawInventory: CabinetItem[]): Promise<void> {
+  async forShop(id: ShopId, rawInventory: CabinetItem[]): Promise<void> {
     this.storeInventories.set(id, rawInventory);
   }
 }

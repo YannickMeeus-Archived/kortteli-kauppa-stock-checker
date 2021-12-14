@@ -18,9 +18,9 @@ describe("GetSimpleProductFromPostgres", () => {
   };
   it("should return an empty array if no products are found for a shop", async () => {
     const { getProduct } = createSutAndFixtures();
-    const results = await getProduct.forShop({
-      id: "9ffe268e-a7a5-41a4-9f2d-12e96645b3c4",
-    });
+    const results = await getProduct.forShop(
+      "9ffe268e-a7a5-41a4-9f2d-12e96645b3c4"
+    );
 
     expect(results).toEqual([]);
   });
@@ -44,7 +44,7 @@ describe("GetSimpleProductFromPostgres", () => {
       epc: "1234567890124",
       quantity: 10,
     });
-    const results = await getProduct.forShop(shop);
+    const results = await getProduct.forShop(shop.id);
     expect(results).toHaveLength(2);
     expect(results).toContainEqual(firstProduct);
     expect(results).toContainEqual(secondProduct);
@@ -70,8 +70,8 @@ describe("GetSimpleProductFromPostgres", () => {
       epc: "1234567890123",
       quantity: 10,
     });
-    const productsForFirstShop = await getProduct.forShop(firstShop);
-    const productsForSecondShop = await getProduct.forShop(secondShop);
+    const productsForFirstShop = await getProduct.forShop(firstShop.id);
+    const productsForSecondShop = await getProduct.forShop(secondShop.id);
 
     expect(productsForFirstShop).toHaveLength(1);
     expect(productsForSecondShop).toHaveLength(1);

@@ -6,8 +6,8 @@ export interface DeleteShop {
 
 export class DeleteShopFromMemory implements DeleteShop {
   constructor(private readonly shops: Shop[]) {}
-  async execute(shop: ShopId): Promise<void> {
-    const index = this.shops.findIndex((s) => s.id === shop.id);
+  async execute(id: ShopId): Promise<void> {
+    const index = this.shops.findIndex((s) => s.id === id);
     if (index === -1) {
       throw new Error("Shop not found");
     }
