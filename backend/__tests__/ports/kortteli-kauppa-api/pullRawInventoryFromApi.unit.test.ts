@@ -29,9 +29,7 @@ describe("FetchSnapshotFromKortteliKauppaApi", () => {
       testBaseUrl,
       getShopById
     );
-    const result = await getInventory.forShop({
-      id: existingShopWithoutStock.id,
-    });
+    const result = await getInventory.forShop(existingShopWithoutStock.id);
     expect(result).toEqual([]);
     scope.done();
   });
@@ -44,7 +42,7 @@ describe("FetchSnapshotFromKortteliKauppaApi", () => {
       testBaseUrl,
       getShopById
     );
-    const found = await getInventory.forShop({ id: existingShopWithStock.id });
+    const found = await getInventory.forShop(existingShopWithStock.id);
     expect(found).toHaveLength(1);
     expect(found[0]).toMatchObject(singleCabinetItem);
     scope.done();
@@ -55,8 +53,8 @@ describe("FetchSnapshotFromKortteliKauppaApi", () => {
       testBaseUrl,
       getShopById
     );
-    await expect(() =>
-      getInventory.forShop({ id: "not-found" })
-    ).rejects.toThrow(ShopNotFoundError);
+    await expect(() => getInventory.forShop("not-found")).rejects.toThrow(
+      ShopNotFoundError
+    );
   });
 });

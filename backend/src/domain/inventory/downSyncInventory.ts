@@ -11,11 +11,9 @@ class DownSyncInventory {
 
   public async run() {
     const allShops = await this.getAllShops.execute();
-    for (const shop of allShops) {
-      const currentShopsInventory = await this.fetchSnapshot.forShop({
-        id: shop.id,
-      });
-      await this.storeSnapshot.forShop({ id: shop.id }, currentShopsInventory);
+    for (const { id } of allShops) {
+      const currentShopsInventory = await this.fetchSnapshot.forShop(id);
+      await this.storeSnapshot.forShop(id, currentShopsInventory);
     }
   }
 }

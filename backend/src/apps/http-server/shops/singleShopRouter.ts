@@ -42,7 +42,7 @@ const makeSingleShopRouter = (
       const { id } = req.params;
       const shop = await getSingleShop.byId(id);
       if (shop !== undefined) {
-        await deleteShop.execute({ id });
+        await deleteShop.execute(id);
         return res.sendStatus(204);
       }
 

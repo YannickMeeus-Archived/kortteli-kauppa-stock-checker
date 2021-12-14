@@ -1,8 +1,8 @@
 import got from "got";
 
 import { CabinetItem } from "../../domain/inventory";
-import { FetchSnapshotFromExternalSource, Query } from "../../domain/inventory";
-import { GetSingleShop } from "../../domain/shops";
+import { FetchSnapshotFromExternalSource } from "../../domain/inventory";
+import { GetSingleShop, ShopId } from "../../domain/shops";
 import { ShopNotFoundError } from "../../domain/shops";
 
 class FetchSnapshotFromKortteliKauppaApi
@@ -12,10 +12,10 @@ class FetchSnapshotFromKortteliKauppaApi
     private readonly baseUrl: string,
     private readonly getSingleShop: GetSingleShop
   ) {}
-  async forShop(_shop: Query): Promise<CabinetItem[]> {
-    const shop = await this.getSingleShop.byId(_shop.id);
+  async forShop(id: ShopId): Promise<CabinetItem[]> {
+    const shop = await this.getSingleShop.byId(id);
     if (!shop) {
-      throw new ShopNotFoundError(_shop.id);
+      throw new ShopNotFoundError(id);
     }
 
     const results = await got(
