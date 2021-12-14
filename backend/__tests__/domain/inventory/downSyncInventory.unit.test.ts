@@ -2,7 +2,7 @@ import {
   CabinetItem,
   FetchMockedSnapshotFromMemory,
   StoreSnapshotInMemory,
-  DownSyncInventory,
+  TakeSnapshotsForAllShops,
 } from "../../../src/domain/inventory";
 import { Shop, GetAllShopsFromMemory } from "../../../src/domain/shops";
 import { singleCabinetItem } from "../../fixtures";
@@ -37,7 +37,7 @@ describe("DownSyncInventory", () => {
   );
   const storeInventory = new StoreSnapshotInMemory(synchronizedInventories);
   it("should retrieve and store all shops' inventory", async () => {
-    const downSyncInventory = new DownSyncInventory(
+    const downSyncInventory = new TakeSnapshotsForAllShops(
       getAllShops,
       fetchInventory,
       storeInventory
