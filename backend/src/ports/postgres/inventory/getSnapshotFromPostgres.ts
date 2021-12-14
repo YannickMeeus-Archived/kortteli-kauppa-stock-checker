@@ -19,8 +19,11 @@ class GetSnapshotFromPostgres implements GetSnapshot {
     }
     const foundRow = result.rows[0];
 
-    // TODO: Add migration to create processed column
-    const snapshot = new Snapshot(foundRow.id, foundRow.raw_data, false);
+    const snapshot = new Snapshot(
+      foundRow.id,
+      foundRow.raw_data,
+      foundRow.created_at
+    );
     return snapshot;
   }
 }

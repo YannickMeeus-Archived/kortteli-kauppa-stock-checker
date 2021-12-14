@@ -4,6 +4,7 @@ import {
   StoreSnapshotInMemory,
   TakeSnapshotsForAllShops,
 } from "../../../src/domain/inventory";
+import { Snapshot } from "../../../src/domain/inventory/models/snapshots/snapshot";
 import { Shop, GetAllShopsFromMemory } from "../../../src/domain/shops";
 import { singleCabinetItem } from "../../fixtures";
 
@@ -30,12 +31,12 @@ describe("DownSyncInventory", () => {
   externalShopInventories.set(firstShop.id, [firstShopInventory]);
   externalShopInventories.set(secondShop.id, [secondShopInventory]);
 
-  const synchronizedInventories = new Map<string, CabinetItem[]>();
+  const storedSnapshots = new Map<string, Snapshot[]>();
   const getAllShops = new GetAllShopsFromMemory(shops);
   const fetchInventory = new FetchMockedSnapshotFromMemory(
     externalShopInventories
   );
-  const storeInventory = new StoreSnapshotInMemory(synchronizedInventories);
+  const storeInventory = new StoreSnapshotInMemory(storedSnapshots);
   it("should retrieve and store all shops' inventory", async () => {
     const downSyncInventory = new TakeSnapshotsForAllShops(
       getAllShops,
@@ -45,12 +46,12 @@ describe("DownSyncInventory", () => {
 
     await downSyncInventory.run();
 
-    expect(synchronizedInventories.size).toBe(2);
-    expect(synchronizedInventories.get(firstShop.id)).toEqual([
-      firstShopInventory,
-    ]);
-    expect(synchronizedInventories.get(secondShop.id)).toEqual([
-      secondShopInventory,
-    ]);
+    expect(storedSnapshots.size).toBe(2);
+    expect(
+      storedSnapshots.get(firstShop.id)?.flatMap((s) => s.contents)
+    ).toEqual([firstShopInventory]);
+    expect(
+      storedSnapshots.get(secondShop.id)?.flatMap((s) => s.contents)
+    ).toEqual([secondShopInventory]);
   });
 });
