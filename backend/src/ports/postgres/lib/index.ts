@@ -1,1 +1,2 @@
-export * from "./parseShopRow";
+export * from "./fromDbShopRow";
+export * from "./parseOneRow";

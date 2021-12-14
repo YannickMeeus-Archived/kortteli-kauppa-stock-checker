@@ -1,6 +1,6 @@
 import { CreatableShop, CreateNewShop, Shop } from "../../../domain/shops";
 import { Postgres } from "../postgres";
-import { parseOneRow } from "../lib/parseShopRow";
+import { parseOneRow } from "../lib/parseOneRow";
 import { ShopAlreadyExistsError } from "../../../domain/shops/errors/ShopAlreadyExistsError";
 
 class CreateNewShopInPostgres implements CreateNewShop {

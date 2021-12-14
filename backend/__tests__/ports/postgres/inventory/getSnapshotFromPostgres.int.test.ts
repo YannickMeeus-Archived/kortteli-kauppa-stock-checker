@@ -7,6 +7,7 @@ import {
   GetSnapshotFromPostgres,
   StoreSnapshotInPostgres,
 } from "../../../../src/ports/postgres/inventory";
+import { makeShopId, makeShopName } from "../../../../src/domain/shops";
 
 describe("GetSnapshotFromPostgres", () => {
   const createSutAndFixtures = () => {
@@ -21,9 +22,9 @@ describe("GetSnapshotFromPostgres", () => {
   };
   it("should return undefined if no cabinet items were found", async () => {
     const { getSnapshot } = createSutAndFixtures();
-    const possiblyCabinetItems = await getSnapshot.oldestForShop({
-      id: "a8d49b4c-91c7-4128-8dc8-5a821736dde7",
-    });
+    const possiblyCabinetItems = await getSnapshot.oldestForShop(
+      makeShopId("a8d49b4c-91c7-4128-8dc8-5a821736dde7")
+    );
 
     expect(possiblyCabinetItems).toBeUndefined();
   });
@@ -34,27 +35,31 @@ describe("GetSnapshotFromPostgres", () => {
       fixtures: { createShop, storeSnapshot },
     } = createSutAndFixtures();
 
-    const shop = await createShop.execute({ name: "test shop" });
+    const { id } = await createShop.execute({
+      name: makeShopName("test shop"),
+    });
     const expected = [singleCabinetItem];
-    await storeSnapshot.forShop(shop, expected);
-    const actualSnapshot = await getSnapshot.oldestForShop(shop);
+    await storeSnapshot.forShop(id, expected);
+    const actualSnapshot = await getSnapshot.oldestForShop(id);
 
     expect(actualSnapshot?.contents).toEqual(expected);
   });
 
-  it("should return the oldest inventory snapshop if multiple exist for a given shop", async () => {
+  it("should return the oldest inventory snap-shop if multiple exist for a given shop", async () => {
     const {
       getSnapshot,
       fixtures: { createShop, storeSnapshot },
     } = createSutAndFixtures();
 
-    const shop = await createShop.execute({ name: "test shop" });
+    const { id } = await createShop.execute({
+      name: makeShopName("test shop"),
+    });
     const older: CabinetItem[] = [{ ...singleCabinetItem, location: "Older" }];
     const newer: CabinetItem[] = [{ ...singleCabinetItem, location: "Newer" }];
-    await storeSnapshot.forShop(shop, older);
-    await storeSnapshot.forShop(shop, newer);
+    await storeSnapshot.forShop(id, older);
+    await storeSnapshot.forShop(id, newer);
 
-    const actual = await getSnapshot.oldestForShop(shop);
+    const actual = await getSnapshot.oldestForShop(id);
     expect(actual?.contents).toEqual(older);
   });
 });

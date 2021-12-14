@@ -4,17 +4,22 @@ import {
   StoreSnapshotInMemory,
   DownSyncInventory,
 } from "../../../src/domain/inventory";
-import { Shop, GetAllShopsFromMemory } from "../../../src/domain/shops";
+import {
+  Shop,
+  GetAllShopsFromMemory,
+  makeShopId,
+  makeShopName,
+} from "../../../src/domain/shops";
 import { singleCabinetItem } from "../../fixtures";
 
 describe("DownSyncInventory", () => {
   const firstShop = new Shop(
-    "c9b4da19-d70b-41d1-8272-cfea007eacc4",
-    "First Shop"
+    makeShopId("c9b4da19-d70b-41d1-8272-cfea007eacc4"),
+    makeShopName("First Shop")
   );
   const secondShop = new Shop(
-    "d836b46b-66a6-4b43-b0b4-ac8eae2d876f",
-    "Second Shop"
+    makeShopId("d836b46b-66a6-4b43-b0b4-ac8eae2d876f"),
+    makeShopName("Second Shop")
   );
   const shops = [firstShop, secondShop];
   const externalShopInventories = new Map<string, CabinetItem[]>();

@@ -1,13 +1,13 @@
-import { Shop } from "./models/shop";
+import { Shop, ShopId } from "./models/shop";
 
 export interface GetSingleShop {
-  byId(id: string): Promise<Shop | undefined>;
+  byId(id: ShopId): Promise<Shop | undefined>;
 }
 
 export class GetSingleShopFromMemory implements GetSingleShop {
   constructor(private readonly shops: Shop[]) {}
 
-  async byId(id: string): Promise<Shop | undefined> {
+  async byId(id: ShopId): Promise<Shop | undefined> {
     return this.shops.find((shop) => shop.id === id);
   }
 }

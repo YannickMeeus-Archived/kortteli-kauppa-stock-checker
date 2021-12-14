@@ -1,5 +1,6 @@
 import { randomUUID } from "crypto";
 import { CabinetItem } from "../../../../src/domain/inventory";
+import { makeShopName } from "../../../../src/domain/shops";
 import {
   GetSnapshotFromPostgres,
   StoreSnapshotInPostgres,
@@ -29,7 +30,9 @@ describe("StoreSnapshot", () => {
       fixtures: { createShop, getSnapshot },
     } = createSutAndFixtures();
 
-    const createdShop = await createShop.execute({ name: "test shop" });
+    const { id: shopId } = await createShop.execute({
+      name: makeShopName("test shop"),
+    });
     const firstItem: CabinetItem = {
       ...singleCabinetItem,
       location: randomUUID(),
@@ -38,9 +41,9 @@ describe("StoreSnapshot", () => {
       ...singleCabinetItem,
       location: randomUUID(),
     };
-    await storeSnapshot.forShop(createdShop, [firstItem, secondItem]);
+    await storeSnapshot.forShop(shopId, [firstItem, secondItem]);
 
-    const storedSnapshot = await getSnapshot.oldestForShop(createdShop);
+    const storedSnapshot = await getSnapshot.oldestForShop(shopId);
     expect(storedSnapshot?.contents).toIncludeAllMembers([
       firstItem,
       secondItem,

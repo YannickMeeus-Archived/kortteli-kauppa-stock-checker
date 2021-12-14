@@ -1,3 +1,4 @@
+import { makeNewShopId, makeShopName } from "../../../../src/domain/shops";
 import {
   CreateNewShopInPostgres,
   GetSingleShopFromPostgres,
@@ -19,7 +20,7 @@ describe("DeleteShopInPostgres", () => {
   it("should just return if the shop does not exist", async () => {
     expect.assertions(0);
     const { deleteShop } = createSutAndFixtures();
-    await deleteShop.execute({ id: "d98054d9-5d11-4bcd-a678-8beac0432547" });
+    await deleteShop.execute(makeNewShopId());
   });
   it("should delete a shop if there is one to delete", async () => {
     const {
@@ -28,12 +29,12 @@ describe("DeleteShopInPostgres", () => {
     } = createSutAndFixtures();
 
     const { id: createdId } = await createShop.execute({
-      name: "Created Shop",
+      name: makeShopName("Created Shop"),
     });
 
     const shouldBeAShop = await getSingleShop.byId(createdId);
     expect(shouldBeAShop).toBeDefined();
-    await deleteShop.execute({ id: createdId });
+    await deleteShop.execute(createdId);
 
     const shouldNotBeAShop = await getSingleShop.byId(createdId);
     expect(shouldNotBeAShop).toBeUndefined();

@@ -8,7 +8,7 @@ interface GetSnapshot {
 class GetSnapshotFromMemory implements GetSnapshot {
   constructor(private readonly snapShots: Map<string, Snapshot>) {}
 
-  async oldestForShop({ id }: ShopId): Promise<Snapshot | undefined> {
+  async oldestForShop(id: ShopId): Promise<Snapshot | undefined> {
     return this.snapShots.get(id) || undefined;
   }
 }

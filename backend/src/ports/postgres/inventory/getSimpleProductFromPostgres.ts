@@ -6,7 +6,7 @@ import { Postgres } from "../postgres";
 class GetSimpleProductFromPostgres implements GetSimpleProducts {
   constructor(private readonly postgres: Postgres) {}
 
-  async forShop({ id }: ShopId): Promise<SimpleProduct[]> {
+  async forShop(id: ShopId): Promise<SimpleProduct[]> {
     const foundShops = await this.postgres.sql.query(
       `
     SELECT

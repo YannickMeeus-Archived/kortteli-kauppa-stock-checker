@@ -1,3 +1,4 @@
+import { makeShopName } from "../../../../src/domain/shops";
 import {
   CreateNewShopInPostgres,
   GetSingleShopFromPostgres,
@@ -19,7 +20,7 @@ describe("GetSingleShopFromPostgres", () => {
       getSingleShop,
       fixtures: { createShop },
     } = createSutAndFixtures();
-    const expectedName = "Test Shop - GetSingleShopFromPostgres";
+    const expectedName = makeShopName("Test Shop - GetSingleShopFromPostgres");
     const { id: createdId } = await createShop.execute({
       name: expectedName,
     });

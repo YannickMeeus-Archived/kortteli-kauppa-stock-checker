@@ -1,5 +1,6 @@
 import { ProductToCreate } from "../../../../src/domain/inventory/createSimpleProduct";
 import { DuplicateProductInShopError } from "../../../../src/domain/inventory/models/errors/duplicateProductInShopError";
+import { makeShopName } from "../../../../src/domain/shops";
 import { CreateSimpleProductInPostgres } from "../../../../src/ports/postgres/inventory";
 import { CreateNewShopInPostgres } from "../../../../src/ports/postgres/shops";
 import { getTestDatabase } from "../../../lifecycle/getTestDatabase";
@@ -19,7 +20,9 @@ describe("CreateSimpleProductInPostgres", () => {
       createSimpleProduct,
       fixtures: { createShop },
     } = createSutAndFixtures();
-    const createdShop = await createShop.execute({ name: "test shop" });
+    const createdShop = await createShop.execute({
+      name: makeShopName("test shop"),
+    });
     const productToCreate: ProductToCreate = {
       cabinet: "Cabinet 1",
       epc: "12345678901",
@@ -35,7 +38,9 @@ describe("CreateSimpleProductInPostgres", () => {
       createSimpleProduct,
       fixtures: { createShop },
     } = createSutAndFixtures();
-    const createdShop = await createShop.execute({ name: "test shop" });
+    const createdShop = await createShop.execute({
+      name: makeShopName("test shop"),
+    });
     const productToCreate: ProductToCreate = {
       cabinet: "Cabinet 1",
       epc: "12345678901",
@@ -54,8 +59,12 @@ describe("CreateSimpleProductInPostgres", () => {
       createSimpleProduct,
       fixtures: { createShop },
     } = createSutAndFixtures();
-    const firstShop = await createShop.execute({ name: "test shop 1" });
-    const secondShop = await createShop.execute({ name: "test shop 2" });
+    const firstShop = await createShop.execute({
+      name: makeShopName("test shop 1"),
+    });
+    const secondShop = await createShop.execute({
+      name: makeShopName("test shop 2"),
+    });
     const firstShopsProduct: ProductToCreate = {
       cabinet: "Cabinet 1",
       epc: "12345678901",

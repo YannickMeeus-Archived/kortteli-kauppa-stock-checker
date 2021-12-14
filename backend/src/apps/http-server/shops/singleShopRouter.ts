@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { RequestHandler, Router } from "express";
-import { Request } from "express";
+import { Request, RequestHandler, Router } from "express";
+import { makeShopId } from "../../../domain/shops";
 import { DeleteShop } from "../../../domain/shops/deleteShop";
 import { GetSingleShop } from "../../../domain/shops/getSingleShop";
 
@@ -28,7 +28,8 @@ const makeSingleShopRouter = (
   singleShopRouter.get("/", async (req, res) => {
     if (hasId(req)) {
       const { id } = req.params;
-      const shop = await getSingleShop.byId(id);
+      const shopId = makeShopId(id);
+      const shop = await getSingleShop.byId(shopId);
       if (shop !== undefined) {
         return res.status(200).json({ data: shop });
       }
@@ -40,9 +41,10 @@ const makeSingleShopRouter = (
   singleShopRouter.delete("/", requireApiKey, async (req, res) => {
     if (hasId(req)) {
       const { id } = req.params;
-      const shop = await getSingleShop.byId(id);
+      const shopId = makeShopId(id);
+      const shop = await getSingleShop.byId(shopId);
       if (shop !== undefined) {
-        await deleteShop.execute({ id });
+        await deleteShop.execute(shopId);
         return res.sendStatus(204);
       }
 

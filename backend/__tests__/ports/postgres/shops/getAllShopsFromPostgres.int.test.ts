@@ -1,3 +1,4 @@
+import { makeShopName } from "../../../../src/domain/shops";
 import {
   CreateNewShopInPostgres,
   GetAllShopsFromPostgres,
@@ -24,8 +25,8 @@ describe("GetAllShopsFromPostgres", () => {
       getAllShops,
       fixtures: { createShop },
     } = createSutAndFixtures();
-    await createShop.execute({ name: "First Shop" });
-    await createShop.execute({ name: "Second Shop" });
+    await createShop.execute({ name: makeShopName("First Shop") });
+    await createShop.execute({ name: makeShopName("Second Shop") });
     const existingShops = await getAllShops.execute();
     expect(existingShops).toHaveLength(2);
   });
