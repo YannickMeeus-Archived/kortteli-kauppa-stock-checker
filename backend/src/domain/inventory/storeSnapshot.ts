@@ -4,19 +4,18 @@ import { CabinetItem } from "./models";
 import { Snapshot } from "./models/snapshots/snapshot";
 
 interface StoreSnapshot {
-  forShop(id: ShopId, rawInventory: CabinetItem[]): Promise<void>;
+  forShop(id: ShopId, rawInventory: CabinetItem[]): Promise<Snapshot>;
 }
 
 class StoreSnapshotInMemory implements StoreSnapshot {
   constructor(private readonly storeInventories: Map<string, Snapshot[]>) {}
 
-  async forShop(id: ShopId, cabinetItems: CabinetItem[]): Promise<void> {
+  async forShop(id: ShopId, cabinetItems: CabinetItem[]): Promise<Snapshot> {
     const existingSnapshots = this.storeInventories.get(id) || [];
-    const toStore = [
-      ...existingSnapshots,
-      new Snapshot(randomUUID(), cabinetItems),
-    ];
+    const newSnapshot = new Snapshot(randomUUID(), id, cabinetItems);
+    const toStore = [...existingSnapshots, newSnapshot];
     this.storeInventories.set(id, toStore);
+    return newSnapshot;
   }
 }
 export { StoreSnapshot, StoreSnapshotInMemory };
