@@ -36,13 +36,12 @@ describe("ImportInventorySnapshot", () => {
     markSnapshotAsProcessed
   );
   let shopA: Shop;
-  let shopB: Shop;
   beforeEach(async () => {
     allInventories.clear();
     snapshots.clear();
     shops = [];
     shopA = await createShop.execute({ name: "shopA" });
-    shopB = await createShop.execute({ name: "shopB" });
+    await createShop.execute({ name: "shopB" });
   });
 
   it("should create a new product if one does not exist", async () => {
@@ -70,7 +69,4 @@ describe("ImportInventorySnapshot", () => {
     const relevantSnapshot = snapshots.get(existingSnapshot.id);
     expect(relevantSnapshot?.archived).toBeTruthy();
   });
-  it.todo(
-    "should mark a snapshot as processed so that subsequent runs don't process it again 2"
-  );
 });
