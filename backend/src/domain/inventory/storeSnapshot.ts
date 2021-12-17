@@ -1,20 +1,18 @@
 import { randomUUID } from "crypto";
 import { ShopId } from "../shops";
 import { CabinetItem } from "./models";
-import { Snapshot } from "./models/snapshots/snapshot";
+import { Snapshot, SnapshotId } from "./models/snapshots/snapshot";
 
 interface StoreSnapshot {
   forShop(id: ShopId, rawInventory: CabinetItem[]): Promise<Snapshot>;
 }
 
 class StoreSnapshotInMemory implements StoreSnapshot {
-  constructor(private readonly storeInventories: Map<string, Snapshot[]>) {}
+  constructor(private readonly snapshots: Map<SnapshotId, Snapshot>) {}
 
   async forShop(id: ShopId, cabinetItems: CabinetItem[]): Promise<Snapshot> {
-    const existingSnapshots = this.storeInventories.get(id) || [];
     const newSnapshot = new Snapshot(randomUUID(), id, cabinetItems);
-    const toStore = [...existingSnapshots, newSnapshot];
-    this.storeInventories.set(id, toStore);
+    this.snapshots.set(newSnapshot.id, newSnapshot);
     return newSnapshot;
   }
 }

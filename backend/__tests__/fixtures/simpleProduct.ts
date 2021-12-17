@@ -10,7 +10,7 @@ export const makeProductToCreateFor = (
     epc: "12345678901",
     name: "Product 1",
     quantity: 10,
-    shopId: forShop.id,
+    shopId: forShop,
   };
   return { ...template, ...patch };
 };

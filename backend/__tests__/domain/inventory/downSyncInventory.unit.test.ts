@@ -4,7 +4,10 @@ import {
   TakeSnapshotsForAllShops,
 } from "../../../src/domain/inventory";
 import { CabinetItem } from "../../../src/domain/inventory/models";
-import { Snapshot } from "../../../src/domain/inventory/models/snapshots/snapshot";
+import {
+  Snapshot,
+  SnapshotId,
+} from "../../../src/domain/inventory/models/snapshots/snapshot";
 import { Shop, GetAllShopsFromMemory } from "../../../src/domain/shops";
 import { singleCabinetItem } from "../../fixtures";
 
@@ -31,7 +34,7 @@ describe("TakeInventorySnapshot", () => {
   externalShopInventories.set(firstShop.id, [firstShopInventory]);
   externalShopInventories.set(secondShop.id, [secondShopInventory]);
 
-  const storedSnapshots = new Map<string, Snapshot[]>();
+  const storedSnapshots = new Map<SnapshotId, Snapshot>();
   const getAllShops = new GetAllShopsFromMemory(shops);
   const fetchInventory = new FetchMockedSnapshotFromMemory(
     externalShopInventories
@@ -48,10 +51,7 @@ describe("TakeInventorySnapshot", () => {
 
     expect(storedSnapshots.size).toBe(2);
     expect(
-      storedSnapshots.get(firstShop.id)?.flatMap((s) => s.contents)
-    ).toEqual([firstShopInventory]);
-    expect(
-      storedSnapshots.get(secondShop.id)?.flatMap((s) => s.contents)
-    ).toEqual([secondShopInventory]);
+      [...storedSnapshots.values()].flatMap((s) => s.contents)
+    ).toContainEqual(firstShopInventory);
   });
 });

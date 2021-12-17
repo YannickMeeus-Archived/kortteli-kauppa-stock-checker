@@ -4,6 +4,7 @@ import {
   ImportInventorySnapshots,
   SimpleProduct,
   Snapshot,
+  SnapshotId,
 } from "../../../src/domain/inventory";
 import { ArchiveSnapshotInMemory } from "../../../src/domain/inventory/archiveSnapshot";
 import { CreateSimpleProductInMemory } from "../../../src/domain/inventory/createSimpleProduct";
@@ -12,7 +13,6 @@ import {
   CreateNewShopInMemory,
   GetAllShopsFromMemory,
 } from "../../../src/domain/shops";
-import { ArchiveSnapshotInPostgres } from "../../../src/ports/postgres/inventory/archiveSnapshotInPostgres";
 import {
   singleCabinetItemAsArray,
   makeSingleCabinetItem,
@@ -21,7 +21,7 @@ import { makeProductToCreateFor } from "../../fixtures/simpleProduct";
 
 describe("ImportInventorySnapshot", () => {
   const allInventories = new Map<string, SimpleProduct[]>();
-  const snapshots = new Map<string, Snapshot[]>();
+  const snapshots = new Map<SnapshotId, Snapshot>();
   let shops: Shop[] = [];
   const createShop = new CreateNewShopInMemory(shops);
   const getAllShops = new GetAllShopsFromMemory(shops);
@@ -61,10 +61,13 @@ describe("ImportInventorySnapshot", () => {
     expect(allInventories.get(shopA.id)).toHaveLength(1);
   });
   it("should mark a snapshot as processed so that subsequent runs don't process it again", async () => {
-    await storeSnapshot.forShop(shopA.id, singleCabinetItemAsArray);
+    const existingSnapshot = await storeSnapshot.forShop(
+      shopA.id,
+      singleCabinetItemAsArray
+    );
     await importInventorySnapshots.run();
 
-    const relevantSnapshot = snapshots.get(shopA.id)?.[0];
+    const relevantSnapshot = snapshots.get(existingSnapshot.id);
     expect(relevantSnapshot?.archived).toBeTruthy();
   });
   it.todo(
