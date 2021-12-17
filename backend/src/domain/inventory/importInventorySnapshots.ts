@@ -15,6 +15,7 @@ class ImportInventorySnapshots {
     const allShops = await this.getAllShops.execute();
     for (const { id: shopId } of allShops) {
       const snapshot = await this.getSnapshot.oldestForShop(shopId);
+
       if (!snapshot) {
         continue;
       }

@@ -12,6 +12,7 @@ import {
   Shop,
   CreateNewShopInMemory,
   GetAllShopsFromMemory,
+  ShopId,
 } from "../../../src/domain/shops";
 import {
   singleCabinetItemAsArray,
@@ -20,7 +21,7 @@ import {
 import { makeProductToCreateFor } from "../../fixtures/simpleProduct";
 
 describe("ImportInventorySnapshot", () => {
-  const allInventories = new Map<string, SimpleProduct[]>();
+  const allInventories = new Map<ShopId, SimpleProduct[]>();
   const snapshots = new Map<SnapshotId, Snapshot>();
   let shops: Shop[] = [];
   const createShop = new CreateNewShopInMemory(shops);

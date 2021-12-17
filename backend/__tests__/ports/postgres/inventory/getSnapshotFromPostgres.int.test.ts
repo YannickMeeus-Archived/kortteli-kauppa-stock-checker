@@ -41,6 +41,21 @@ describe("GetSnapshotFromPostgres", () => {
 
     expect(actualSnapshot?.contents).toEqual(expected);
   });
+  it("should return the entire snapshot, not just a subset", async () => {
+    const {
+      getSnapshot,
+      fixtures: { createShop, storeSnapshot },
+    } = createSutAndFixtures();
+    const { id } = await createShop.execute({ name: "test shop" });
+    const expected = [singleCabinetItem];
+    await storeSnapshot.forShop(id, expected);
+    const actualSnapshot = await getSnapshot.oldestForShop(id);
+
+    expect(actualSnapshot?.id).toBeDefined();
+    expect(actualSnapshot?.shop).toEqual(id);
+    expect(actualSnapshot?.createdAt).toBeDefined();
+    expect(actualSnapshot?.archived).toBeFalse();
+  });
 
   it("should return the oldest inventory snapshop if multiple exist for a given shop", async () => {
     const {

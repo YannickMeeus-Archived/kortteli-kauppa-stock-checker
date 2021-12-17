@@ -11,7 +11,7 @@ class GetSnapshotFromPostgres implements GetSnapshot {
   constructor(private readonly postgres: Postgres) {}
 
   async oldestForShop(shopId: ShopId): Promise<Snapshot | undefined> {
-    const query = `SELECT raw_data FROM raw_inventory_data WHERE shop=$1 ORDER BY created_at ASC LIMIT 1`;
+    const query = `SELECT id, shop, raw_data, archived, created_at FROM raw_inventory_data WHERE shop=$1 ORDER BY created_at ASC LIMIT 1`;
     const result = await this.postgres.sql.query(query, [shopId]);
 
     if (result.rowCount === 0) {
@@ -25,7 +25,7 @@ class GetSnapshotFromPostgres implements GetSnapshot {
 
     return new Snapshot(
       foundRow.id,
-      shopId,
+      foundRow.shop,
       foundRow.raw_data,
       foundRow.created_at,
       foundRow.archived

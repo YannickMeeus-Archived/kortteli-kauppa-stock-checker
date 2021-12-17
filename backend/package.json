@@ -18,8 +18,9 @@
     "lint": "eslint . --ext .ts --max-warnings=0",
     "fmt": "eslint . --ext .ts --fix",
     "migrate": "node-pg-migrate",
-    "backfill": "ts-node ./tools/backfill-production-to-dev",
-    "download:snapshots": "ts-node ./tools/pull-subset-of-data-from-prod"
+    "snapshots:download": "ts-node ./tools/pull-subset-of-data-from-prod",
+    "snapshots:backfill": "ts-node ./tools/backfill-production-to-dev",
+    "snapshots:import": "ts-node ./tools/manually-import-inventory-snapshots"
   },
   "dependencies": {
     "@coderspirit/nominal": "^3.0.0",

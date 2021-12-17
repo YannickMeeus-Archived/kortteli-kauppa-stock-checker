@@ -1,3 +1,9 @@
+/*
+  This is used to pull down a set of data and store it into ./snapshots.
+  Ideally it will automatically upload them to a bucket in supabase, but
+  let's not focus on that just yet.
+*/
+
 import { config } from "dotenv";
 import { asNumber, asString } from "../src/lib/parsing";
 import { Postgres } from "../src/ports/postgres/postgres";

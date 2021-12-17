@@ -36,11 +36,10 @@ class ScheduledJob {
 
     console.log(`${this.scheduleName} started`);
 
-    const stopAndLog = () => {
+    return () => {
       console.log(`${this.scheduleName} stopped`);
       return this.jobRunner.stop();
     };
-    return stopAndLog;
   }
 }
 export { ScheduledJob };

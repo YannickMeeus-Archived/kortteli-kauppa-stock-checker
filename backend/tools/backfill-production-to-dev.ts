@@ -50,6 +50,20 @@ import format from "pg-format";
     `SELECT id, name from shops`
   );
 
+  end("pull shops identifiers");
+  start("migration");
+  const allProductionRows = await production.sql.query(
+    `SELECT shop, raw_data from raw_inventory_data LIMIT 100`
+  );
+
+  const inventoryDataFromProduction = allProductionRows.rows.map((row) => [
+    row.shop,
+    JSON.stringify(row.raw_data),
+  ]);
+  const insertQueryTemplate = `INSERT INTO raw_inventory_data (shop, raw_data) VALUES %L`;
+  const fullQuery = format(insertQueryTemplate, inventoryDataFromProduction);
+  await development.sql.query(fullQuery);
+
   type fromId = string;
   type toId = string;
 
@@ -63,26 +77,12 @@ import format from "pg-format";
     const { id: devId } = devShops.find((s) => s.name === shop.name)!;
     mappings.set(shop.id, devId);
   }
-
-  end("pull shops identifiers");
-  start("migration");
-  const allProductionRows = await production.sql.query(
-    `SELECT shop, raw_data from raw_inventory_data LIMIT 100`
-  );
-
-  const inventoryDataFromProduction = allProductionRows.rows.map((row) => [
-    row.shop,
-    JSON.stringify(row.raw_data),
-  ]);
-  const insertQueryTemplate = `INSERT INTO raw_inventory_data (shop, raw_data) VALUES %L`;
   for (const [from, to] of mappings.entries()) {
-    development.sql.query(
+    console.log("mapping", from, to);
+    await development.sql.query(
       `UPDATE raw_inventory_data SET shop = '${to}' WHERE shop = '${from}'`
     );
   }
-
-  const fullQuery = format(insertQueryTemplate, inventoryDataFromProduction);
-  await development.sql.query(fullQuery);
   end("migration");
   process.exit(0);
 })();

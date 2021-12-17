@@ -32,8 +32,13 @@ const makeRetrieveInventoryWorker = ({
     storeRawInventory
   );
 
-  return new ScheduledJob(database, "retrieve-inventory-worker", schedule, () =>
-    takenSnapshotsForAllShops.run()
+  return new ScheduledJob(
+    database,
+    "retrieve-inventory-worker",
+    schedule,
+    () => {
+      takenSnapshotsForAllShops.run();
+    }
   );
 };
 

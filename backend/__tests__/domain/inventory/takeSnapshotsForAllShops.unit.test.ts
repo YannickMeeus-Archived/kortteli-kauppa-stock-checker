@@ -11,7 +11,7 @@ import {
 import { Shop, GetAllShopsFromMemory } from "../../../src/domain/shops";
 import { singleCabinetItem } from "../../fixtures";
 
-describe("TakeInventorySnapshot", () => {
+describe("TakeSnapshotsForAllShops", () => {
   const firstShop = new Shop(
     "c9b4da19-d70b-41d1-8272-cfea007eacc4",
     "First Shop"
