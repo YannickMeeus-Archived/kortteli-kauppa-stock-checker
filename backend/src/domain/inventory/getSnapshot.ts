@@ -1,8 +1,10 @@
 import { ShopId } from "../shops";
-import { Snapshot } from "./models/snapshots/snapshot";
+import { SnapshotNotFoundError } from "./models/errors/snapshotNotFoundError";
+import { Snapshot, SnapshotId } from "./models/snapshots/snapshot";
 
 interface GetSnapshot {
   oldestForShop(id: ShopId): Promise<Snapshot | undefined>;
+  byId(id: SnapshotId): Promise<Snapshot>;
 }
 
 class GetSnapshotFromMemory implements GetSnapshot {
@@ -17,6 +19,13 @@ class GetSnapshotFromMemory implements GetSnapshot {
     return allSnapshots
       .filter((s) => !s.archived)
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())[0];
+  }
+  async byId(id: SnapshotId): Promise<Snapshot> {
+    const found = [...this.snapShots.values()].flat().find((s) => s.id === id);
+    if (!found) {
+      throw new SnapshotNotFoundError(id);
+    }
+    return found;
   }
 }
 
