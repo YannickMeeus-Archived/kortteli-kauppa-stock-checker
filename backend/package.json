@@ -15,7 +15,7 @@
     "int": "jest -c jest.config.int.js",
     "e2e": "jest -c jest.config.e2e.js --runInBand",
     "build": "tsc -p ./tsconfig.build.json",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint . --ext .ts --max-warnings=0",
     "fmt": "eslint . --ext .ts --fix",
     "migrate": "node-pg-migrate",
     "backfill": "ts-node ./tools/backfill-production-to-dev",

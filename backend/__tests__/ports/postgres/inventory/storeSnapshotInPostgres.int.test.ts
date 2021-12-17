@@ -46,4 +46,32 @@ describe("StoreSnapshot", () => {
       secondItem,
     ]);
   });
+  it("should return the created snapshot", async () => {
+    expect.hasAssertions();
+    const {
+      storeSnapshot,
+      fixtures: { createShop },
+    } = createSutAndFixtures();
+    const { id } = await createShop.execute({ name: "test shop" });
+    const created = await storeSnapshot.forShop(id, [singleCabinetItem]);
+    expect(created).toBeDefined();
+  });
+  it("should stamp a snapshot with a time of creation", async () => {
+    const {
+      storeSnapshot,
+      fixtures: { createShop },
+    } = createSutAndFixtures();
+    const { id } = await createShop.execute({ name: "test shop" });
+    const created = await storeSnapshot.forShop(id, [singleCabinetItem]);
+    expect(created.createdAt).toBeDefined();
+  });
+  it("should initially set it to unarchived", async () => {
+    const {
+      storeSnapshot,
+      fixtures: { createShop },
+    } = createSutAndFixtures();
+    const { id } = await createShop.execute({ name: "test shop" });
+    const created = await storeSnapshot.forShop(id, [singleCabinetItem]);
+    expect(created.archived).toBeFalse();
+  });
 });

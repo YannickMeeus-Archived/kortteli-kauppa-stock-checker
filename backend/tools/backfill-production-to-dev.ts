@@ -42,9 +42,32 @@ import format from "pg-format";
   start("nuke development table");
   await development.sql.query(`TRUNCATE raw_inventory_data`);
   end("nuke development table");
+  start("pull shops identifiers");
+  const developmentShops = await development.sql.query(
+    `SELECT id, name from shops`
+  );
+  const productionShops = await production.sql.query(
+    `SELECT id, name from shops`
+  );
+
+  type fromId = string;
+  type toId = string;
+
+  const mappings: Map<fromId, toId> = new Map();
+  const devShops = developmentShops.rows.map((row) => ({
+    id: row.id,
+    name: row.name,
+  }));
+  for (const shop of productionShops.rows) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const { id: devId } = devShops.find((s) => s.name === shop.name)!;
+    mappings.set(shop.id, devId);
+  }
+
+  end("pull shops identifiers");
   start("migration");
   const allProductionRows = await production.sql.query(
-    `SELECT shop, raw_data from raw_inventory_data`
+    `SELECT shop, raw_data from raw_inventory_data LIMIT 100`
   );
 
   const inventoryDataFromProduction = allProductionRows.rows.map((row) => [
@@ -52,6 +75,12 @@ import format from "pg-format";
     JSON.stringify(row.raw_data),
   ]);
   const insertQueryTemplate = `INSERT INTO raw_inventory_data (shop, raw_data) VALUES %L`;
+  for (const [from, to] of mappings.entries()) {
+    development.sql.query(
+      `UPDATE raw_inventory_data SET shop = '${to}' WHERE shop = '${from}'`
+    );
+  }
+
   const fullQuery = format(insertQueryTemplate, inventoryDataFromProduction);
   await development.sql.query(fullQuery);
   end("migration");

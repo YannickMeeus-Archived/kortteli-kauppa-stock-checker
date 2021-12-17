@@ -40,7 +40,7 @@ build-backend:
 build-backend-docker:
 	@cd ./backend && docker build .
 
-ci: init up test lint-backend build-backend build-frontend
+ci: init up lint-backend test build-backend build-frontend
 
 deploy: deploy-frontend deploy-backend browse
 	
