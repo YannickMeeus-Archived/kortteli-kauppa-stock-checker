@@ -1,8 +1,5 @@
-import { assert } from "console";
 import { randomUUID } from "crypto";
 import { SnapshotNotFoundError } from "../../../../src/domain/inventory/models/errors/snapshotNotFoundError";
-import { Snapshot } from "../../../../src/domain/inventory/models/snapshots/snapshot";
-import { Shop } from "../../../../src/domain/shops";
 import {
   GetSnapshotFromPostgres,
   StoreSnapshotInPostgres,

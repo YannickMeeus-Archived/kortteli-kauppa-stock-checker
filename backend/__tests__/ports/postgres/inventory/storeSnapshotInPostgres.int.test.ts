@@ -1,4 +1,3 @@
-import { assert } from "console";
 import { randomUUID } from "crypto";
 import { CabinetItem } from "../../../../src/domain/inventory";
 import {

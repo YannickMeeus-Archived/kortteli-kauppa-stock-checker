@@ -1,7 +1,7 @@
 import { config } from "dotenv";
 import { asNumber, asString } from "../src/lib/parsing";
 import { Postgres } from "../src/ports/postgres/postgres";
-import format, { string } from "pg-format";
+import format from "pg-format";
 (async () => {
   const start = (status: string) =>
     console.log(`-------START - ${status.toUpperCase()} -------`);
@@ -50,12 +50,6 @@ import format, { string } from "pg-format";
     `SELECT id, name from shops`
   );
 
-  type ShopMapping = {
-    name: string;
-    from: string;
-    to: string;
-  };
-
   type fromId = string;
   type toId = string;
 
@@ -65,6 +59,7 @@ import format, { string } from "pg-format";
     name: row.name,
   }));
   for (const shop of productionShops.rows) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const { id: devId } = devShops.find((s) => s.name === shop.name)!;
     mappings.set(shop.id, devId);
   }
