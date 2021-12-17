@@ -6,18 +6,13 @@ interface GetSnapshot {
   oldestForShop(id: ShopId): Promise<Snapshot | undefined>;
   byId(id: SnapshotId): Promise<Snapshot>;
 }
-
 class GetSnapshotFromMemory implements GetSnapshot {
-  constructor(private readonly snapShots: Map<string, Snapshot[]>) {}
+  constructor(private readonly snapShots: Map<SnapshotId, Snapshot>) {}
 
-  async oldestForShop(id: ShopId): Promise<Snapshot | undefined> {
-    const allSnapshots = this.snapShots.get(id);
-    if (!allSnapshots) {
-      return undefined;
-    }
-    // return oldest snapshot
+  async oldestForShop(shopId: ShopId): Promise<Snapshot | undefined> {
+    const allSnapshots = [...this.snapShots.values()];
     return allSnapshots
-      .filter((s) => !s.archived)
+      .filter((s) => !s.archived && s.shop === shopId)
       .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())[0];
   }
   async byId(id: SnapshotId): Promise<Snapshot> {

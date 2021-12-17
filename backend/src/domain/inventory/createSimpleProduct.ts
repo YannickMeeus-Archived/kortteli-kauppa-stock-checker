@@ -29,7 +29,19 @@ class CreateSimpleProductInMemory implements CreateSimpleProduct {
       cabinet,
       shopId
     );
-    this.allShopInventories.get(shopId)?.push(toCreate);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const inventory = this.allShopInventories.get(shopId)!;
+    // All of this is dirty as heck, and needs to be replicated in the postgres
+    //  implementation as well. So yeah, not "great"
+    const indexOfExistingProduct = inventory.findIndex(
+      (product) => product.epc === epc
+    );
+    if (indexOfExistingProduct >= 0) {
+      inventory[indexOfExistingProduct] = toCreate;
+    } else {
+      inventory.push(toCreate);
+    }
+
     return toCreate;
   }
 }

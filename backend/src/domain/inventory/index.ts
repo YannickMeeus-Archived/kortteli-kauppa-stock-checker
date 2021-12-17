@@ -2,4 +2,8 @@ export * from "./models";
 export * from "./takeSnapshotsForAllShops";
 export * from "./getSnapshot";
 export * from "./fetchSnapshotFromExternalSource";
+export * from "./fromCabinetItemToSimpleProduct";
+export * from "./getSimpleProduct";
+export * from "./getSnapshot";
+export * from "./importInventorySnapshots";
 export * from "./storeSnapshot";

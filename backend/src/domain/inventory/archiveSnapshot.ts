@@ -6,7 +6,7 @@ interface ArchiveSnapshot {
 }
 
 class ArchiveSnapshotInMemory implements ArchiveSnapshot {
-  constructor(private readonly snapShots: Map<string, Snapshot>) {}
+  constructor(private readonly snapShots: Map<SnapshotId, Snapshot>) {}
 
   async execute(id: SnapshotId): Promise<void> {
     const foundSnapshot = this.snapShots.get(id);
