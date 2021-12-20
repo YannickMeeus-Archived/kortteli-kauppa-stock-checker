@@ -9,6 +9,7 @@ import { makeHttpApi } from "./apps/http-server/composition-root";
 import { Migrations } from "./ports/postgres/migrations";
 import { asNumber, asString } from "./lib/parsing";
 import { makeRetrieveInventoryWorker } from "./apps/workers/retrieve-inventory-worker/composition-root";
+import { makeImportSnapshotWorker } from "./apps/workers/import-snapshots-worker/composition-root";
 
 (async () => {
   try {
@@ -56,7 +57,13 @@ import { makeRetrieveInventoryWorker } from "./apps/workers/retrieve-inventory-w
       schedule: CronTime.every(30).minutes(),
     });
 
+    const importSnapshotWorker = makeImportSnapshotWorker({
+      database: postgres,
+      schedule: CronTime.every(1).minutes(),
+    });
+
     await retrieveInventoryWorker.start();
+    await importSnapshotWorker.start();
 
     httpApi.listen(serverPort, () => {
       console.log(listEndpoints(httpApi));

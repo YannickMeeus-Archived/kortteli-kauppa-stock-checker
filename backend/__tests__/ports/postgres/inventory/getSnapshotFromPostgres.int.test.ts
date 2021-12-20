@@ -21,7 +21,7 @@ describe("GetSnapshotFromPostgres", () => {
   };
   it("should return undefined if no cabinet items were found", async () => {
     const { getSnapshot } = createSutAndFixtures();
-    const possiblyCabinetItems = await getSnapshot.oldestForShop(
+    const possiblyCabinetItems = await getSnapshot.oldestUnArchivedForShop(
       "a8d49b4c-91c7-4128-8dc8-5a821736dde7"
     );
 
@@ -37,7 +37,7 @@ describe("GetSnapshotFromPostgres", () => {
     const { id } = await createShop.execute({ name: "test shop" });
     const expected = [singleCabinetItem];
     await storeSnapshot.forShop(id, expected);
-    const actualSnapshot = await getSnapshot.oldestForShop(id);
+    const actualSnapshot = await getSnapshot.oldestUnArchivedForShop(id);
 
     expect(actualSnapshot?.contents).toEqual(expected);
   });
@@ -54,7 +54,7 @@ describe("GetSnapshotFromPostgres", () => {
     await storeSnapshot.forShop(id, older);
     await storeSnapshot.forShop(id, newer);
 
-    const actual = await getSnapshot.oldestForShop(id);
+    const actual = await getSnapshot.oldestUnArchivedForShop(id);
     expect(actual?.contents).toEqual(older);
   });
 });

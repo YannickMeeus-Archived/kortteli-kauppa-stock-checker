@@ -31,7 +31,10 @@ class ScheduledJob {
 
   async start(): Promise<StopScheduler> {
     await this.jobRunner.start();
-    await this.jobRunner.schedule(this.scheduleName, this.schedule);
+
+    await this.jobRunner.schedule(this.scheduleName, this.schedule, undefined, {
+      singletonKey: this.scheduleName, // Only allow for one concurrent job to be run of this type.
+    });
     await this.jobRunner.subscribe(this.scheduleName, this.handler);
 
     console.log(`${this.scheduleName} started`);

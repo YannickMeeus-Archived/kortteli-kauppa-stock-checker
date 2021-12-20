@@ -14,7 +14,7 @@ const makeJobsRouter = (
 ) => {
   const shopsRouter = Router();
 
-  shopsRouter.get("/import-snapshots", requireApiKey, async (req, res) => {
+  shopsRouter.post("/import-snapshots", requireApiKey, async (req, res) => {
     await importSnapshots.run();
     res.status(200).json({ result: "success" });
   });

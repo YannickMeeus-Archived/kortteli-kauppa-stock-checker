@@ -3,13 +3,13 @@ import { SnapshotNotFoundError } from "./models/errors/snapshotNotFoundError";
 import { Snapshot, SnapshotId } from "./models/snapshots/snapshot";
 
 interface GetSnapshot {
-  oldestForShop(id: ShopId): Promise<Snapshot | undefined>;
+  oldestUnArchivedForShop(id: ShopId): Promise<Snapshot | undefined>;
   byId(id: SnapshotId): Promise<Snapshot>;
 }
 class GetSnapshotFromMemory implements GetSnapshot {
   constructor(private readonly snapShots: Map<SnapshotId, Snapshot>) {}
 
-  async oldestForShop(shopId: ShopId): Promise<Snapshot | undefined> {
+  async oldestUnArchivedForShop(shopId: ShopId): Promise<Snapshot | undefined> {
     const allSnapshots = [...this.snapShots.values()];
     return allSnapshots
       .filter((s) => !s.archived && s.shop === shopId)

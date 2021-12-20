@@ -41,7 +41,7 @@ describe("StoreSnapshot", () => {
     };
     await storeSnapshot.forShop(id, [firstItem, secondItem]);
 
-    const storedSnapshot = await getSnapshot.oldestForShop(id);
+    const storedSnapshot = await getSnapshot.oldestUnArchivedForShop(id);
     expect(storedSnapshot?.contents).toIncludeAllMembers([
       firstItem,
       secondItem,

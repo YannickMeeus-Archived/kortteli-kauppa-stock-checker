@@ -11,7 +11,10 @@ describe("Single Shop Routes", () => {
         body: {
           data: { id: createdShopId },
         },
-      } = await Request(app).post("/shops").send(expectedShop);
+      } = await Request(app)
+        .post("/shops")
+        .send(expectedShop)
+        .set("x-api-key", testingApiKey);
 
       const { body } = await Request(app).get(`/shops/${createdShopId}`);
 
@@ -23,7 +26,10 @@ describe("Single Shop Routes", () => {
       const app = makeFakeHttpApi();
 
       const existingShop = { name: "Existing Shop" };
-      await Request(app).post("/shops").send(existingShop);
+      await Request(app)
+        .post("/shops")
+        .send(existingShop)
+        .set("x-api-key", testingApiKey);
 
       const { statusCode } = await Request(app).get(
         `/shops/4f964528-2847-412f-ae9a-52ac405884c7`
@@ -41,7 +47,10 @@ describe("Single Shop Routes", () => {
         body: {
           data: { id: createdShopId },
         },
-      } = await Request(app).post("/shops").send(expectedShop);
+      } = await Request(app)
+        .post("/shops")
+        .send(expectedShop)
+        .set("x-api-key", testingApiKey);
       const { statusCode } = await Request(app)
         .delete(`/shops/${createdShopId}`)
         .set("x-api-key", testingApiKey);
@@ -67,7 +76,10 @@ describe("Single Shop Routes", () => {
         body: {
           data: { id: createdShopId },
         },
-      } = await Request(app).post("/shops").send(expectedShop);
+      } = await Request(app)
+        .post("/shops")
+        .send(expectedShop)
+        .set("x-api-key", testingApiKey);
       const { statusCode } = await Request(app).delete(
         `/shops/${createdShopId}`
       );
