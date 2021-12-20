@@ -14,7 +14,7 @@ class Postgres {
     this.pool = new Pool({
       connectionString: this.connectionString,
       min: 20,
-      max: 20,
+      max: 40,
     });
     this.pool.on("error", (e) => console.log(e.message));
   }

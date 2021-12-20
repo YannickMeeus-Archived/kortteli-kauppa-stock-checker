@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@coderspirit/nominal": "^3.0.0",
+    "@supercharge/promise-pool": "^2.1.0",
     "app-root-path": "^3.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",

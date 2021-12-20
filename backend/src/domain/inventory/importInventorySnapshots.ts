@@ -3,7 +3,7 @@ import { GetAllShops } from "../shops";
 import { ArchiveSnapshot } from "./archiveSnapshot";
 import { CreateSimpleProduct } from "./createSimpleProduct";
 import { fromCabinetItemToSimpleProduct } from "./fromCabinetItemToSimpleProduct";
-
+import { PromisePool } from "@supercharge/promise-pool";
 class ImportInventorySnapshots {
   constructor(
     private readonly getAllShops: GetAllShops,
@@ -29,9 +29,13 @@ class ImportInventorySnapshots {
           fromCabinetItemToSimpleProduct(shopId)
         );
         console.log(`Creating products: ${productsToCreate.length}`);
-        for (const product of productsToCreate) {
-          await this.createProduct.execute(product, true);
-        }
+
+        await PromisePool.for(productsToCreate)
+          .withConcurrency(40)
+          .process(async (product) =>
+            this.createProduct.execute(product, true)
+          );
+
         await this.archiveSnapshot.execute(currentSnapshot.id);
         currentSnapshot = await this.getSnapshot.oldestUnArchivedForShop(
           shopId
