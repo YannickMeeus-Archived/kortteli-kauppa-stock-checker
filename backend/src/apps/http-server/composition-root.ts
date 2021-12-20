@@ -13,13 +13,6 @@ import {
 import { GetAllShopsFromPostgres } from "../../ports/postgres/shops/getAllShopsFromPostgres";
 import { DeleteShopInPostgres } from "../../ports/postgres/shops/deleteShopInPostgres";
 import cors from "cors";
-import { makeJobsRouter } from "./jobs/jobsRouter";
-import { ImportInventorySnapshots } from "../../domain/inventory";
-import {
-  CreateSimpleProductInPostgres,
-  GetSnapshotFromPostgres,
-} from "../../ports/postgres/inventory";
-import { ArchiveSnapshotInPostgres } from "../../ports/postgres/inventory/archiveSnapshotInPostgres";
 
 interface SecurityConfiguration {
   apiKey: string;
@@ -36,15 +29,6 @@ const makeHttpApi = ({ security, database: database }: HttpConfiguration) => {
   const getSingleShop = new GetSingleShopFromPostgres(database);
   const deleteShop = new DeleteShopInPostgres(database);
 
-  const getSnapshot = new GetSnapshotFromPostgres(database);
-  const createProduct = new CreateSimpleProductInPostgres(database);
-  const archiveSnapshot = new ArchiveSnapshotInPostgres(database);
-  const importSnapshots = new ImportInventorySnapshots(
-    getAllShops,
-    getSnapshot,
-    createProduct,
-    archiveSnapshot
-  );
   const requireApiKey = makeRequireApiKey(apiKey);
 
   const httpApi = express();
@@ -59,7 +43,6 @@ const makeHttpApi = ({ security, database: database }: HttpConfiguration) => {
     "/shops/:id",
     makeSingleShopRouter({ getSingleShop, deleteShop }, { requireApiKey })
   );
-  httpApi.use("/jobs/", makeJobsRouter({ importSnapshots }, { requireApiKey }));
 
   return httpApi;
 };
