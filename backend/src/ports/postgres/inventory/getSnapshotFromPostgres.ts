@@ -10,8 +10,8 @@ import { Postgres } from "../postgres";
 class GetSnapshotFromPostgres implements GetSnapshot {
   constructor(private readonly postgres: Postgres) {}
 
-  async oldestForShop(shopId: ShopId): Promise<Snapshot | undefined> {
-    const query = `SELECT raw_data FROM raw_inventory_data WHERE shop=$1 ORDER BY created_at ASC LIMIT 1`;
+  async oldestUnArchivedForShop(shopId: ShopId): Promise<Snapshot | undefined> {
+    const query = `SELECT id, raw_data, shop, created_at, archived FROM raw_inventory_data WHERE shop=$1 AND archived = false ORDER BY created_at ASC LIMIT 1`;
     const result = await this.postgres.sql.query(query, [shopId]);
 
     if (result.rowCount === 0) {

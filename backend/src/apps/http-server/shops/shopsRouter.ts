@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import { CreateNewShop } from "../../../domain/shops/createNewShop";
 import { GetAllShops } from "../../../domain/shops/getShops";
 
@@ -6,8 +6,13 @@ interface UseCases {
   getAllShops: GetAllShops;
   createNewShop: CreateNewShop;
 }
-
-const makeShopsRouter = ({ getAllShops, createNewShop }: UseCases) => {
+interface ApplicableMiddleware {
+  requireApiKey: RequestHandler;
+}
+const makeShopsRouter = (
+  { getAllShops, createNewShop }: UseCases,
+  { requireApiKey }: ApplicableMiddleware
+) => {
   const shopsRouter = Router();
 
   shopsRouter.get("/", async (req, res) => {
@@ -15,7 +20,7 @@ const makeShopsRouter = ({ getAllShops, createNewShop }: UseCases) => {
     res.status(200).json({ data: allShops });
   });
 
-  shopsRouter.post("/", async (req, res) => {
+  shopsRouter.post("/", requireApiKey, async (req, res) => {
     const { name } = req.body;
     const createdShop = await createNewShop.execute({ name });
     res.status(201).json({ data: createdShop });

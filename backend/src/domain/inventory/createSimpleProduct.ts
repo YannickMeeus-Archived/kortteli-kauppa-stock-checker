@@ -3,7 +3,10 @@ import { SimpleProduct } from "./models/simpleProduct";
 
 export type ProductToCreate = Omit<SimpleProduct, "id">;
 interface CreateSimpleProduct {
-  execute(productToCreate: ProductToCreate): Promise<SimpleProduct>;
+  execute(
+    productToCreate: ProductToCreate,
+    overwrite: boolean
+  ): Promise<SimpleProduct>;
 }
 
 class CreateSimpleProductInMemory implements CreateSimpleProduct {

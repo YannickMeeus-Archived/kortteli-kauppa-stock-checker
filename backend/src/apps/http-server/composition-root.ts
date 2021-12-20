@@ -35,7 +35,10 @@ const makeHttpApi = ({ security, database: database }: HttpConfiguration) => {
   httpApi.use(cors());
   httpApi.use(json());
   httpApi.use("/", makeInfrastructureRouter({ requireApiKey }));
-  httpApi.use("/shops/", makeShopsRouter({ getAllShops, createNewShop }));
+  httpApi.use(
+    "/shops/",
+    makeShopsRouter({ getAllShops, createNewShop }, { requireApiKey })
+  );
   httpApi.use(
     "/shops/:id",
     makeSingleShopRouter({ getSingleShop, deleteShop }, { requireApiKey })

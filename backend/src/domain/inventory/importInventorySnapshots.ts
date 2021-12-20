@@ -1,4 +1,4 @@
-import { GetSnapshot } from ".";
+import { GetSnapshot, Snapshot } from ".";
 import { GetAllShops } from "../shops";
 import { ArchiveSnapshot } from "./archiveSnapshot";
 import { CreateSimpleProduct } from "./createSimpleProduct";
@@ -13,18 +13,26 @@ class ImportInventorySnapshots {
   ) {}
   async run(): Promise<void> {
     const allShops = await this.getAllShops.execute();
+
     for (const { id: shopId } of allShops) {
-      const snapshot = await this.getSnapshot.oldestForShop(shopId);
-      if (!snapshot) {
+      let currentSnapshot: Snapshot | undefined = undefined;
+      currentSnapshot = await this.getSnapshot.oldestUnArchivedForShop(shopId);
+
+      if (!currentSnapshot) {
         continue;
       }
-      const productsToCreate = snapshot.contents.map(
-        fromCabinetItemToSimpleProduct(shopId)
-      );
-      for (const product of productsToCreate) {
-        await this.createProduct.execute(product);
-      }
-      await this.archiveSnapshot.execute(snapshot.id);
+      do {
+        const productsToCreate = currentSnapshot.contents.map(
+          fromCabinetItemToSimpleProduct(shopId)
+        );
+        for (const product of productsToCreate) {
+          await this.createProduct.execute(product, true);
+        }
+        await this.archiveSnapshot.execute(currentSnapshot.id);
+        currentSnapshot = await this.getSnapshot.oldestUnArchivedForShop(
+          shopId
+        );
+      } while (currentSnapshot != undefined);
     }
   }
 }

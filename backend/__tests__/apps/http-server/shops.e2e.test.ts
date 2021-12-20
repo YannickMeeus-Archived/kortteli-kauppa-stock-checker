@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import Request from "supertest";
-import { makeFakeHttpApi } from "./makeTestingApi";
+import { makeFakeHttpApi, testingApiKey } from "./makeTestingApi";
 
 describe("Shop Routes", () => {
   describe("GET /shops", () => {
@@ -8,8 +8,14 @@ describe("Shop Routes", () => {
       const app = makeFakeHttpApi();
 
       // Create a few shops
-      await Request(app).post("/shops").send({ name: "Shop 1" });
-      await Request(app).post("/shops").send({ name: "Shop 2" });
+      await Request(app)
+        .post("/shops")
+        .send({ name: "Shop 1" })
+        .set("x-api-key", testingApiKey);
+      await Request(app)
+        .post("/shops")
+        .send({ name: "Shop 2" })
+        .set("x-api-key", testingApiKey);
 
       const response = await Request(app).get("/shops");
 
@@ -23,7 +29,8 @@ describe("Shop Routes", () => {
 
       const response = await Request(app)
         .post("/shops")
-        .send({ name: "Shop 1" });
+        .send({ name: "Shop 1" })
+        .set("x-api-key", testingApiKey);
 
       expect(response.status).toBe(201);
       expect(response.body.data).toHaveProperty("id");
@@ -33,7 +40,10 @@ describe("Shop Routes", () => {
       const app = makeFakeHttpApi();
 
       const existingShop = { name: "Existing Shop" };
-      await Request(app).post("/shops").send(existingShop);
+      await Request(app)
+        .post("/shops")
+        .send(existingShop)
+        .set("x-api-key", testingApiKey);
 
       const { statusCode } = await Request(app).delete(
         "/shops/non-existent-id"
@@ -45,11 +55,14 @@ describe("Shop Routes", () => {
       const app = makeFakeHttpApi();
 
       const existingShop = { name: "Existing Shop" };
-      await Request(app).post("/shops").send(existingShop);
+      await Request(app)
+        .post("/shops")
+        .send(existingShop)
+        .set("x-api-key", testingApiKey);
 
-      const { statusCode } = await Request(app)
-        .delete(`/shops/${randomUUID()}`)
-        .set("x-api-key", "foo");
+      const { statusCode } = await Request(app).delete(
+        `/shops/${randomUUID()}`
+      );
 
       expect(statusCode).toEqual(401);
     });
