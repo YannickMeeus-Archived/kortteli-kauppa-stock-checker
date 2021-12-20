@@ -13,6 +13,8 @@ class Postgres {
     this.connectionString = `postgres://${username}:${password}@${host}:${port}/${dbName}`;
     this.pool = new Pool({
       connectionString: this.connectionString,
+      min: 20,
+      max: 20,
     });
     this.pool.on("error", (e) => console.log(e.message));
   }

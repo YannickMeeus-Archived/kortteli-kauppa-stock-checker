@@ -22,9 +22,13 @@ class ImportInventorySnapshots {
         continue;
       }
       do {
+        console.log(
+          `Importing snapshot ${currentSnapshot.id} for shop ${shopId}`
+        );
         const productsToCreate = currentSnapshot.contents.map(
           fromCabinetItemToSimpleProduct(shopId)
         );
+        console.log(`Creating products: ${productsToCreate.length}`);
         for (const product of productsToCreate) {
           await this.createProduct.execute(product, true);
         }

@@ -59,7 +59,7 @@ import { makeImportSnapshotWorker } from "./apps/workers/import-snapshots-worker
 
     const importSnapshotWorker = makeImportSnapshotWorker({
       database: postgres,
-      schedule: CronTime.every(5).minutes(),
+      schedule: CronTime.every(1).minutes(),
     });
 
     await retrieveInventoryWorker.start();
