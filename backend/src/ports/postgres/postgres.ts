@@ -1,7 +1,61 @@
-import { Pool } from "pg";
+import {
+  Pool,
+  QueryArrayConfig,
+  QueryArrayResult,
+  QueryConfig,
+  QueryResult,
+  QueryResultRow,
+  Submittable,
+} from "pg";
+import polly from "polly-js";
 
+class RetryableQueryPool extends Pool {
+  query<T extends Submittable>(queryStream: T): T;
+  query<R extends any[] = any[], I extends any[] = any[]>(
+    queryConfig: QueryArrayConfig<I>,
+    values?: I
+  ): Promise<QueryArrayResult<R>>;
+  query<R extends QueryResultRow = any, I extends any[] = any[]>(
+    queryConfig: QueryConfig<I>
+  ): Promise<QueryResult<R>>;
+  query<R extends QueryResultRow = any, I extends any[] = any[]>(
+    queryTextOrConfig: string | QueryConfig<I>,
+    values?: I
+  ): Promise<QueryResult<R>>;
+  query<R extends any[] = any[], I extends any[] = any[]>(
+    queryConfig: QueryArrayConfig<I>,
+    callback: (err: Error, result: QueryArrayResult<R>) => void
+  ): void;
+  query<R extends QueryResultRow = any, I extends any[] = any[]>(
+    queryTextOrConfig: string | QueryConfig<I>,
+    callback: (err: Error, result: QueryResult<R>) => void
+  ): void;
+  query<R extends QueryResultRow = any, I extends any[] = any[]>(
+    queryText: string,
+    values: I,
+    callback: (err: Error, result: QueryResult<R>) => void
+  ): void;
+  query(...args: any[]): unknown {
+    // Don't do this at home, or in production. Please
+    if (args.length == 1) {
+      return polly()
+        .waitAndRetry(2)
+        .executeForPromise(() => super.query(args[0]));
+    }
+    if (args.length == 2) {
+      return polly()
+        .waitAndRetry(2)
+        .executeForPromise(() => super.query(args[0], args[1]));
+    }
+    if (args.length == 3) {
+      return polly()
+        .waitAndRetry(2)
+        .executeForNode(() => super.query(args[0], args[1], args[2]));
+    }
+  }
+}
 class Postgres {
-  private readonly pool: Pool;
+  private readonly pool: RetryableQueryPool;
   private readonly connectionString: string;
   constructor(
     host: string,
@@ -11,7 +65,7 @@ class Postgres {
     password: string
   ) {
     this.connectionString = `postgres://${username}:${password}@${host}:${port}/${dbName}`;
-    this.pool = new Pool({
+    this.pool = new RetryableQueryPool({
       connectionString: this.connectionString,
       min: 20,
       max: 40,
