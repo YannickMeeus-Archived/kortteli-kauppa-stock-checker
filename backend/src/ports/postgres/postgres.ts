@@ -11,30 +11,38 @@ import polly from "polly-js";
 
 class RetryableQueryPool extends Pool {
   query<T extends Submittable>(queryStream: T): T;
+  // I know.... THESE ARE NOT MY TYPINGS OKAY?
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query<R extends any[] = any[], I extends any[] = any[]>(
     queryConfig: QueryArrayConfig<I>,
     values?: I
   ): Promise<QueryArrayResult<R>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query<R extends QueryResultRow = any, I extends any[] = any[]>(
     queryConfig: QueryConfig<I>
   ): Promise<QueryResult<R>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query<R extends QueryResultRow = any, I extends any[] = any[]>(
     queryTextOrConfig: string | QueryConfig<I>,
     values?: I
   ): Promise<QueryResult<R>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query<R extends any[] = any[], I extends any[] = any[]>(
     queryConfig: QueryArrayConfig<I>,
     callback: (err: Error, result: QueryArrayResult<R>) => void
   ): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query<R extends QueryResultRow = any, I extends any[] = any[]>(
     queryTextOrConfig: string | QueryConfig<I>,
     callback: (err: Error, result: QueryResult<R>) => void
   ): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query<R extends QueryResultRow = any, I extends any[] = any[]>(
     queryText: string,
     values: I,
     callback: (err: Error, result: QueryResult<R>) => void
   ): void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query(...args: any[]): unknown {
     // Don't do this at home, or in production. Please
     if (args.length == 1) {

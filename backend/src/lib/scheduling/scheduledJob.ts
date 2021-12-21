@@ -34,6 +34,7 @@ class ScheduledJob {
 
     await this.jobRunner.schedule(this.scheduleName, this.schedule, undefined, {
       singletonKey: this.scheduleName, // Only allow for one concurrent job to be run of this type.
+      singletonHours: 6, // Only allow for one concurrent job to be run for this long. It's overkill but there's a lot of stuff to run right now...
     });
     await this.jobRunner.subscribe(this.scheduleName, this.handler);
 
