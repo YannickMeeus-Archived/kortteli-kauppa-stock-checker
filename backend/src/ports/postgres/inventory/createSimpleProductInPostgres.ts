@@ -8,10 +8,13 @@ import { Postgres } from "../postgres";
 
 class CreateSimpleProductInPostgres implements CreateSimpleProduct {
   constructor(private readonly postgres: Postgres) {}
-  async execute(
-    { name, quantity, shopId, epc, cabinet }: ProductToCreate,
-    overwrite = false
-  ): Promise<SimpleProduct> {
+  async execute({
+    name,
+    quantity,
+    shopId,
+    epc,
+    cabinet,
+  }: ProductToCreate): Promise<SimpleProduct> {
     const query = `
       INSERT INTO simple_products (
         epc,
@@ -39,30 +42,7 @@ class CreateSimpleProductInPostgres implements CreateSimpleProduct {
         error instanceof Error &&
         error.message.includes("simple_products_ean_shop_id_key")
       ) {
-        if (!overwrite) {
-          throw new DuplicateProductInShopError(epc, shopId);
-        }
-
-        const updated = await this.postgres.sql.query(
-          `
-          UPDATE simple_products
-          SET
-            quantity = $1,
-            name = $2,
-            cabinet = $3
-          WHERE epc = $4 AND shop_id = $5
-          returning *
-        `,
-          [quantity, name, cabinet, epc, shopId]
-        );
-        return new SimpleProduct(
-          updated.rows[0].id,
-          updated.rows[0].epc,
-          updated.rows[0].name,
-          updated.rows[0].quantity,
-          updated.rows[0].cabinet,
-          updated.rows[0].shop_id
-        );
+        throw new DuplicateProductInShopError(epc, shopId);
       }
       throw error;
     }
