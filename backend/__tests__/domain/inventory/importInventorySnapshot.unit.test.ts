@@ -1,3 +1,4 @@
+import { randomUUID } from "crypto";
 import {
   GetSnapshotFromMemory,
   StoreSnapshotInMemory,
@@ -5,6 +6,8 @@ import {
   SimpleProduct,
   Snapshot,
   SnapshotId,
+  GetSimpleProductsFromMemory,
+  RemoveAllSimpleProductsInMemory,
 } from "../../../src/domain/inventory";
 import { ArchiveSnapshotInMemory } from "../../../src/domain/inventory/archiveSnapshot";
 import { CreateSimpleProductInMemory } from "../../../src/domain/inventory/createSimpleProduct";
@@ -26,6 +29,8 @@ describe("ImportInventorySnapshot", () => {
   const createShop = new CreateNewShopInMemory(shops);
   const getAllShops = new GetAllShopsFromMemory(shops);
   const createProduct = new CreateSimpleProductInMemory(allInventories);
+  const getAllProduct = new GetSimpleProductsFromMemory(allInventories);
+  const removeAllProducts = new RemoveAllSimpleProductsInMemory(allInventories);
   const getSnapshot = new GetSnapshotFromMemory(snapshots);
   const storeSnapshot = new StoreSnapshotInMemory(snapshots);
   const markSnapshotAsProcessed = new ArchiveSnapshotInMemory(snapshots);
@@ -33,40 +38,44 @@ describe("ImportInventorySnapshot", () => {
     getAllShops,
     getSnapshot,
     createProduct,
-    markSnapshotAsProcessed
+    markSnapshotAsProcessed,
+    removeAllProducts
   );
-  let shopA: Shop;
+  let myShop: Shop;
   beforeEach(async () => {
     allInventories.clear();
     snapshots.clear();
     shops = [];
-    shopA = await createShop.execute({ name: "shopA" });
+    myShop = await createShop.execute({ name: "shopA" });
     await createShop.execute({ name: "shopB" });
   });
 
   it("should create a new product if one does not exist", async () => {
-    await storeSnapshot.forShop(shopA.id, singleCabinetItemAsArray);
+    await storeSnapshot.forShop(myShop.id, singleCabinetItemAsArray);
     await importInventorySnapshots.run();
-    expect(allInventories.get(shopA.id)).toHaveLength(1);
-  });
-  it("should update an existing product if one exists", async () => {
-    const existingProduct = await createProduct.execute(
-      makeProductToCreateFor(shopA.id)
-    );
-    const snapshotItem = makeSingleCabinetItem({ epc: existingProduct.epc });
-    await storeSnapshot.forShop(shopA.id, [snapshotItem]);
-    await importInventorySnapshots.run();
-
-    expect(allInventories.get(shopA.id)).toHaveLength(1);
+    expect(allInventories.get(myShop.id)).toHaveLength(1);
   });
   it("should mark a snapshot as processed so that subsequent runs don't process it again", async () => {
     const existingSnapshot = await storeSnapshot.forShop(
-      shopA.id,
+      myShop.id,
       singleCabinetItemAsArray
     );
     await importInventorySnapshots.run();
 
     const relevantSnapshot = snapshots.get(existingSnapshot.id);
     expect(relevantSnapshot?.archived).toBeTruthy();
+  });
+  it("should replace the existing stock for a given shop instead of just adding toit", async () => {
+    const existingProduct = await createProduct.execute(
+      makeProductToCreateFor(myShop.id)
+    );
+    const epcForNewProduct = randomUUID();
+    const snapshotItem = makeSingleCabinetItem({ epc: epcForNewProduct });
+    await storeSnapshot.forShop(myShop.id, [snapshotItem]);
+    await importInventorySnapshots.run();
+
+    const currentShopInventory = await getAllProduct.forShop(myShop.id);
+    expect(currentShopInventory).toHaveLength(1);
+    expect(currentShopInventory).not.toContainEqual(existingProduct);
   });
 });

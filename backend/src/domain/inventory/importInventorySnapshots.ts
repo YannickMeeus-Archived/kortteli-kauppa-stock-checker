@@ -1,4 +1,4 @@
-import { GetSnapshot, Snapshot } from ".";
+import { GetSnapshot, RemoveAllSimpleProducts, Snapshot } from ".";
 import { GetAllShops } from "../shops";
 import { ArchiveSnapshot } from "./archiveSnapshot";
 import { CreateSimpleProduct } from "./createSimpleProduct";
@@ -9,7 +9,8 @@ class ImportInventorySnapshots {
     private readonly getAllShops: GetAllShops,
     private readonly getSnapshot: GetSnapshot,
     private readonly createProduct: CreateSimpleProduct,
-    private readonly archiveSnapshot: ArchiveSnapshot
+    private readonly archiveSnapshot: ArchiveSnapshot,
+    private readonly removeSimpleProducts: RemoveAllSimpleProducts
   ) {}
   async run(): Promise<void> {
     const allShops = await this.getAllShops.execute();
@@ -22,6 +23,7 @@ class ImportInventorySnapshots {
         continue;
       }
       do {
+        await this.removeSimpleProducts.forAGivenShop(shopId);
         console.log(
           `Importing snapshot ${currentSnapshot.id} for shop ${shopId}`
         );
