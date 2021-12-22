@@ -1,4 +1,4 @@
-import { GetSimpleProducts } from "../../../domain/inventory/getSimpleProduct";
+import { GetSimpleProducts } from "../../../domain/inventory/getSimpleProducts";
 import { SimpleProduct } from "../../../domain/inventory/models/simpleProduct";
 import { ShopId } from "../../../domain/shops";
 import { Postgres } from "../postgres";
@@ -6,7 +6,7 @@ import { Postgres } from "../postgres";
 class GetSimpleProductFromPostgres implements GetSimpleProducts {
   constructor(private readonly postgres: Postgres) {}
 
-  async forShop(id : ShopId): Promise<SimpleProduct[]> {
+  async forShop(id: ShopId): Promise<SimpleProduct[]> {
     const foundShops = await this.postgres.sql.query(
       `
     SELECT
