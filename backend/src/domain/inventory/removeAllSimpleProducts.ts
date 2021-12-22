@@ -1,10 +1,10 @@
 import { SimpleProduct } from ".";
 
-interface RemoveAllSimpleProduct {
+interface RemoveAllSimpleProducts {
   forAGivenShop(shopId: string): Promise<void>;
 }
 
-class RemoveAllSimpleProductInMemory implements RemoveAllSimpleProduct {
+class RemoveAllSimpleProductsInMemory implements RemoveAllSimpleProducts {
   constructor(
     private readonly allShopInventories: Map<string, SimpleProduct[]>
   ) {}
@@ -13,4 +13,4 @@ class RemoveAllSimpleProductInMemory implements RemoveAllSimpleProduct {
   }
 }
 
-export { RemoveAllSimpleProduct, RemoveAllSimpleProductInMemory };
+export { RemoveAllSimpleProducts, RemoveAllSimpleProductsInMemory };
