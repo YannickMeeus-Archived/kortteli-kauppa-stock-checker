@@ -37,7 +37,7 @@
     "is-number": "^7.0.0",
     "node-pg-migrate": "^6.0.0",
     "pg": "^8.7.1",
-    "pg-boss": "^6.2.2",
+    "pg-boss": "^7.0.1",
     "polly-js": "^1.8.3"
   },
   "devDependencies": {
