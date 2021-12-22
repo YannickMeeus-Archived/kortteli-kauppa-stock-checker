@@ -1,3 +1,19 @@
+// So apparently fly.io has an issue when smashing their internal DNS server to pulp...
+//  In order to sidestep absolutely breaking their *free* service I am taking advantage of..
+//  I'll be monkey-patching node's dns module by wrapping a cache around it.
+//  That's right... I am adding a naive cache around DNS, what could possibly go wrong?
+
+// Everything
+
+// Everything could go wrong
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+require("dnscache")({
+  enable: true,
+  ttl: 30, // This should be enough... I just need to resolve the supabase IP once
+  cachesize: 10, // Just in case there's more mcguffings that'll be cached.
+});
+// Don't judge me, I don't want to pay for this, alright?
 import CronTime from "cron-time-generator";
 import { path as root } from "app-root-path";
 import { config } from "dotenv";
@@ -59,7 +75,7 @@ import { makeImportSnapshotWorker } from "./apps/workers/import-snapshots-worker
 
     const importSnapshotWorker = makeImportSnapshotWorker({
       database: postgres,
-      schedule: CronTime.every(5).minutes(),
+      schedule: CronTime.every(1).minutes(),
     });
 
     await retrieveInventoryWorker.start();

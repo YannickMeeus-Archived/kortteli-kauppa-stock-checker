@@ -23,10 +23,12 @@
   },
   "dependencies": {
     "@coderspirit/nominal": "^3.0.0",
+    "@supercharge/promise-pool": "^2.1.0",
     "app-root-path": "^3.0.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "cron-time-generator": "^1.2.2",
+    "dnscache": "^1.0.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-list-endpoints": "^6.0.0",
@@ -35,7 +37,8 @@
     "is-number": "^7.0.0",
     "node-pg-migrate": "^6.0.0",
     "pg": "^8.7.1",
-    "pg-boss": "^6.2.2"
+    "pg-boss": "^6.2.2",
+    "polly-js": "^1.8.3"
   },
   "devDependencies": {
     "@jest-mock/express": "^1.4.5",
