@@ -2,8 +2,8 @@ VERSION:=$(shell git rev-parse --short HEAD)
 
 
 clean:
-	@cd ./frontend && yarn clean
-	@cd ./backend && yarn clean
+	@yarn --cwd ./frontend clean
+	@yarn --cwd ./backend clean
 
 up:
 	@docker compose up -d
