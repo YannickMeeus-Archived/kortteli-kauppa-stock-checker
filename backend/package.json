@@ -33,7 +33,7 @@
     "express": "^4.17.1",
     "express-list-endpoints": "^6.0.0",
     "git-rev-sync": "^3.0.1",
-    "got": "^11.8.3",
+    "got": "^11.8.5",
     "is-number": "^7.0.0",
     "node-pg-migrate": "^6.0.0",
     "pg": "^8.7.1",
